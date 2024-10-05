@@ -25,10 +25,14 @@ run:
 	@echo "Running the program..."
 	@java -cp $(SRC_DIR) $(MAIN_CLASS) $(INPUT_FILE)
 
+test: compile
+	@./test/automated_test_lexer.sh
+
+
 # Clean: remove all compiled class files
 clean:
 	@echo "Cleaning up..."
 	@rm -f $(CLASS_FILES) 
 	@rm -f $(LEXER_FILE)*
 
-.PHONY: all compile run clean
+.PHONY: all compile run test clean 

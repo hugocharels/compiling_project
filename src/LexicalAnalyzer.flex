@@ -6,6 +6,9 @@
 %column                 // Use character counter by line (yycolumn variable)
 %type Symbol            // Return type of the scanner is Symbol
 
+// Define a state to handle the special rule after "LET"
+%state LET_STATE
+
 // Extended Regular Expressions
 AlphaUpperCase = [A-Z]
 AlphaLowerCase = [a-z]
@@ -26,7 +29,9 @@ Whitespace     = [ \t\r\n]+
 
 %%// Lexical rules to match tokens
 // Keywords
-"LET"           { return new Symbol(LexicalUnit.LET, yyline, yycolumn, "LET"); }
+"LET"           { yybegin(LET_STATE); return new Symbol(LexicalUnit.LET, yyline, yycolumn, "LET"); }
+<LET_STATE>{Identifier} { yybegin(YYINITIAL); return new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()); }
+
 "BE"            { return new Symbol(LexicalUnit.BE, yyline, yycolumn, "BE"); }
 "END"           { return new Symbol(LexicalUnit.END, yyline, yycolumn, "END"); }
 "IF"            { return new Symbol(LexicalUnit.IF, yyline, yycolumn, "IF"); }
@@ -58,8 +63,6 @@ Whitespace     = [ \t\r\n]+
 {Identifier}    { return new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext()); }
 {Real}          { return new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, Double.parseDouble(yytext())); }
 {Integer}       { return new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, Integer.parseInt(yytext())); }
-
-//"!!" {System.out.println("yalla !!");}
 
 // Whitespace (ignore)
 {Whitespace}    { /* Skip whitespace */ }
