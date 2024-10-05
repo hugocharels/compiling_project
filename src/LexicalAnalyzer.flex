@@ -22,6 +22,7 @@ Decimal        = \.[0-9]+
 Exponent       = [eE]{Sign}?{Numeric}+ 
 Real           = {Integer}{Decimal}?({Exponent})? 
 Identifier     = {Alpha}{AlphaNumeric}*
+ProgName       = {AlphaUpperCase}({Alpha}|_)*
 
 Whitespace     = [ \t\r\n]+
 //Comment        = "!!" {AlphaNumeric}|{Whitespace}* "!!" | "$" {AlphaNumeric}* "\n"
@@ -30,7 +31,8 @@ Whitespace     = [ \t\r\n]+
 %%// Lexical rules to match tokens
 // Keywords
 "LET"           { yybegin(LET_STATE); return new Symbol(LexicalUnit.LET, yyline, yycolumn, "LET"); }
-<LET_STATE>{Identifier} { yybegin(YYINITIAL); return new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()); }
+<LET_STATE>{ProgName} { yybegin(YYINITIAL); return new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()); }
+<LET_STATE>{Identifier}    {yybegin(YYINITIAL); throw new Error("Unexpected character: " + yytext()); }
 
 "BE"            { return new Symbol(LexicalUnit.BE, yyline, yycolumn, "BE"); }
 "END"           { return new Symbol(LexicalUnit.END, yyline, yycolumn, "END"); }
