@@ -13,28 +13,8 @@ public class Main {
             // Tokenize the input and process the tokens
             Symbol symbol;
             while ((symbol = lexer.yylex()) != null) {
-                // Print the token and its associated information
+                if (symbol.getType() == LexicalUnit.EOS) { break;}
                 System.out.println(symbol.toString());
-
-                // Optional: handle tokens by their type (LexicalUnit)
-                LexicalUnit unit = symbol.getType();
-                switch (unit) {
-                    case PROGNAME:
-                        // Handle PROGNAME token
-                        System.out.println("Program name detected: " + symbol.getValue());
-                        break;
-                    case VARNAME:
-                        // Handle variable name token
-                        System.out.println("Variable name detected: " + symbol.getValue());
-                        break;
-                    case NUMBER:
-                        // Handle number token
-                        System.out.println("Number detected: " + symbol.getValue());
-                        break;
-                    // Add other cases based on the LexicalUnit enums
-                    default:
-                        System.out.println("Other token detected: " + unit);
-                }
             }
 
         } catch (IOException e) {

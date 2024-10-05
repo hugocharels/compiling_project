@@ -13,27 +13,22 @@ all: compile run
 # Compile step: first generate the LexicalAnalyzer.java from the .flex file, then compile all Java files
 compile: $(LEXER_FILE)
 	@echo "Compiling Java files..."
-	javac $(JAVA_FILES)
+	@javac $(JAVA_FILES)
 
 # Generate LexicalAnalyzer.java from LexicalAnalyzer.flex
 $(LEXER_FILE): $(FLEX_FILE)
 	@echo "Running JFlex to generate LexicalAnalyzer.java..."
-	java -jar jflex*.jar $(FLEX_FILE)
+	@java -jar jflex*.jar $(FLEX_FILE)
 
 # Run the compiled program
 run:
 	@echo "Running the program..."
-	java -cp $(SRC_DIR) $(MAIN_CLASS) $(INPUT_FILE)
+	@java -cp $(SRC_DIR) $(MAIN_CLASS) $(INPUT_FILE)
 
 # Clean: remove all compiled class files
 clean:
 	@echo "Cleaning up..."
-	rm -f $(CLASS_FILES)
-	rm -f $(LEXER_FILE)
+	@rm -f $(CLASS_FILES) 
+	@rm -f $(LEXER_FILE)*
 
-# Clean and reset everything (includes removing the generated LexicalAnalyzer.java)
-reset: clean
-	@echo "Resetting project..."
-	rm -f $(LEXER_FILE)
-
-.PHONY: all compile run clean reset
+.PHONY: all compile run clean
