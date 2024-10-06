@@ -15,6 +15,7 @@
 // When the code is finished (after END)
 %state END
 
+
 // Extended Regular Expressions
 
 AlphaUpperCase = [A-Z]
@@ -25,8 +26,11 @@ AlphaNumeric   = {Alpha}|{Numeric}
 
 ProgName       = {AlphaUpperCase}({Alpha}|_)*
 VarName        = {AlphaLowerCase}({Alpha}|{Numeric})*
+Number         = {Numeric}+
 
 Whitespace     = [ \t\r\n]+
+
+Comment        = "$"({AlphaNumeric}|[ \t])* | "!!"({AlphaNumeric}|{Whitespace})*"!!" // should accept special character and reject $
 
 
 %%// Lexical rules to match tokens
@@ -34,12 +38,15 @@ Whitespace     = [ \t\r\n]+
 <YYINITIAL> "LET"      { yybegin(LET);       return new Symbol(LexicalUnit.LET, yyline, yycolumn, yytext()); }
 <LET>       {ProgName} { yybegin(PROG_NAME); return new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()); }
 <PROG_NAME> "BE"       { yybegin(CODE);      return new Symbol(LexicalUnit.BE, yyline, yycolumn, yytext()); }
-<CODE>      "END"      { yybegin(END);       return new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()); }
+<CODE>      "END"      { /*yybegin(END)*/;   return new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()); }
 
 
 
 // Whitespace (ignore)
 {Whitespace}    { /* Skip whitespace */ }
+
+// Comments
+{Comment}       { /* Skip comments */ }
 
 // End of file
 <<EOF>>         { return new Symbol(LexicalUnit.EOS, yyline, yycolumn); }
