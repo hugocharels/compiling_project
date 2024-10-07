@@ -33,43 +33,46 @@ Whitespace     = [ \t\r\n]+
 "BE"            { return new Symbol(LexicalUnit.BE, yyline, yycolumn, yytext()); }
 "END"           { return new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()); }
 "IF"            { return new Symbol(LexicalUnit.IF, yyline, yycolumn, yytext()); }
-"THEN"          { return new Symbol(LexicalUnit.THEN, yyline, yycolumn, "THEN"); }
-"ELSE"          { return new Symbol(LexicalUnit.ELSE, yyline, yycolumn, "ELSE"); }
-"WHILE"         { return new Symbol(LexicalUnit.WHILE, yyline, yycolumn, "WHILE"); }
-"REPEAT"        { return new Symbol(LexicalUnit.REPEAT, yyline, yycolumn, "REPEAT"); }
-"OUT"           { return new Symbol(LexicalUnit.OUTPUT, yyline, yycolumn, "OUT"); }
-"IN"            { return new Symbol(LexicalUnit.INPUT, yyline, yycolumn, "IN"); }
+"THEN"          { return new Symbol(LexicalUnit.THEN, yyline, yycolumn, yytext()); }
+"ELSE"          { return new Symbol(LexicalUnit.ELSE, yyline, yycolumn, yytext()); }
+"WHILE"         { return new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext()); }
+"REPEAT"        { return new Symbol(LexicalUnit.REPEAT, yyline, yycolumn, yytext()); }
+"OUT"           { return new Symbol(LexicalUnit.OUTPUT, yyline, yycolumn, yytext()); }
+"IN"            { return new Symbol(LexicalUnit.INPUT, yyline, yycolumn, yytext()); }
 
 // Operators and Punctuation
-":"             { return new Symbol(LexicalUnit.COLUMN, yyline, yycolumn, ":"); }
-"="             { return new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, "="); }
-"("             { return new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, "("); }
-")"             { return new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, ")"); }
-"-"             { return new Symbol(LexicalUnit.MINUS, yyline, yycolumn, "-"); }
-"+"             { return new Symbol(LexicalUnit.PLUS, yyline, yycolumn, "+"); }
-"*"             { return new Symbol(LexicalUnit.TIMES, yyline, yycolumn, "*"); }
-"/"             { return new Symbol(LexicalUnit.DIVIDE, yyline, yycolumn, "/"); }
-"{"             { return new Symbol(LexicalUnit.LBRACK, yyline, yycolumn, "{"); }
-"}"             { return new Symbol(LexicalUnit.RBRACK, yyline, yycolumn, "}"); }
-"->"            { return new Symbol(LexicalUnit.IMPLIES, yyline, yycolumn, "->"); }
-"|"             { return new Symbol(LexicalUnit.PIPE, yyline, yycolumn, "|"); }
-"=="            { return new Symbol(LexicalUnit.EQUAL, yyline, yycolumn, "=="); }
-"<="            { return new Symbol(LexicalUnit.SMALEQ, yyline, yycolumn, "<="); }
-"<"             { return new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, "<"); }
+":"             { return new Symbol(LexicalUnit.COLUMN, yyline, yycolumn, yytext()); }
+"="             { return new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, yytext()); }
+"("             { return new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext()); }
+")"             { return new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, yytext()); }
+"-"             { return new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext()); }
+"+"             { return new Symbol(LexicalUnit.PLUS, yyline, yycolumn, yytext()); }
+"*"             { return new Symbol(LexicalUnit.TIMES, yyline, yycolumn, yytext()); }
+"/"             { return new Symbol(LexicalUnit.DIVIDE, yyline, yycolumn, yytext()); }
+"{"             { return new Symbol(LexicalUnit.LBRACK, yyline, yycolumn, yytext()); }
+"}"             { return new Symbol(LexicalUnit.RBRACK, yyline, yycolumn, yytext()); }
+"->"            { return new Symbol(LexicalUnit.IMPLIES, yyline, yycolumn, yytext()); }
+"|"             { return new Symbol(LexicalUnit.PIPE, yyline, yycolumn, yytext()); }
+"=="            { return new Symbol(LexicalUnit.EQUAL, yyline, yycolumn, yytext()); }
+"<="            { return new Symbol(LexicalUnit.SMALEQ, yyline, yycolumn, yytext()); }
+"<"             { return new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext()); }
 
 // Regex
-{ProgName} { return new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()); }
+{ProgName}      { return new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()); }
+{VarName}       { return new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext()); }
+{Number}        { return new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()); }
+
 
 // Comments
 <SIMPLE_COMMENT> { 
-	"\n" { yybegin(YYINITIAL); }
-	.    { /* Skip */ }
+	"\n"        { yybegin(YYINITIAL); }
+	.           { /* Skip */ }
  }
 
 <BIG_COMMENT> {
-	"!!" { yybegin(YYINITIAL); }
-	"$"  { throw new Error("Nested comments are not allowed"); }
-	.    { /* Skip */ }
+	"!!"        { yybegin(YYINITIAL); }
+	"$"         { throw new Error("Nested comments are not allowed"); }
+	.           { /* Skip */ }
 }
 
 // Whitespace (ignore)
