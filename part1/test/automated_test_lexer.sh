@@ -15,7 +15,7 @@ NC='\033[0m' # No color
 for input_file in $TEST_DIR/*.gls; do
     # Derive expected output file name
     base_name=$(basename "$input_file" .gls)
-    expected_output="$TEST_DIR/$base_name.expected"
+    expected_output="$TEST_DIR/$base_name.out"
     actual_output="$TEST_DIR/$base_name.actual"
 
     # Run the program and capture the output

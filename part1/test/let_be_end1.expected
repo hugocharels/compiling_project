@@ -1,4 +1,0 @@
-token: LET        	lexical unit: LET
-token: Yo         	lexical unit: PROGNAME
-token: BE         	lexical unit: BE
-token: END        	lexical unit: END

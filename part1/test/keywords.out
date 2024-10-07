@@ -1,0 +1,10 @@
+token: LET             lexical unit: LET
+token: BE              lexical unit: BE
+token: END             lexical unit: END
+token: IF              lexical unit: IF
+token: THEN            lexical unit: THEN
+token: ELSE            lexical unit: ELSE
+token: WHILE           lexical unit: WHILE
+token: REPEAT          lexical unit: REPEAT
+token: OUT             lexical unit: OUTPUT
+token: IN              lexical unit: INPUT
