@@ -18,7 +18,7 @@ compile: $(LEXER_FILE)
 # Generate LexicalAnalyzer.java from LexicalAnalyzer.flex
 $(LEXER_FILE): $(FLEX_FILE)
 	@echo "Running JFlex to generate LexicalAnalyzer.java..."
-	@java -jar jflex*.jar $(FLEX_FILE)
+	@java -jar dist/jflex*.jar $(FLEX_FILE)
 
 # Run the compiled program
 run:
