@@ -1,7 +1,7 @@
 /**
  * Symbol objects represent a terminal or non-terminal symbol in the grammar.
  * 
- * @author Not fully determined but assumed to be among Marie Van Den Bogaard, Léo Exibard, Gilles Geeraerts. Javadoc by Mathieu Sassolas.
+ * @author Not fully determined but assumed to be among Marie Van Den Bogaard, Leo Exibard, Gilles Geeraerts. Javadoc by Mathieu Sassolas.
  */
  
  public class Symbol{
