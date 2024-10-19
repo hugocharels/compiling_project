@@ -5,7 +5,7 @@ JAVA_FILES = $(SRC_DIR)/*.java
 LEXER_FILE = $(SRC_DIR)/LexicalAnalyzer.java
 CLASS_FILES = $(SRC_DIR)/*.class
 MAIN_CLASS = Main
-INPUT_FILE = "more/Euclid.gls"
+INPUT_FILE = "test/Euclid.gls"
 
 # Default target: compile and run
 all: compile run
@@ -28,6 +28,9 @@ run:
 test: compile
 	@./test/automated_test_lexer.sh
 
+jar: compile
+	@echo "Creating jar file..."
+	@jar cvfe dist/part1.jar $(MAIN_CLASS) -C $(SRC_DIR) .
 
 # Clean: remove all compiled class files
 clean:
@@ -35,4 +38,4 @@ clean:
 	@rm -f $(CLASS_FILES) 
 	@rm -f $(LEXER_FILE)*
 
-.PHONY: all compile run test clean 
+.PHONY: all compile run test jar clean 
