@@ -1,0 +1,7 @@
+!! I am a well written file !!
+
+LET Kind_file BE
+  IN(a):
+  a = 
+  OUT(a):
+END
