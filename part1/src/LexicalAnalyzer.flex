@@ -15,7 +15,7 @@ Numeric        = [0-9]
 AlphaNumeric   = {Alpha}|{Numeric}
 
 ProgName       = {AlphaUpperCase}({Alpha}|_)*
-VarName        = {AlphaLowerCase}({Alpha}|{Numeric})*
+VarName        = {AlphaLowerCase}({AlphaNumeric})*
 Number         = {Numeric}+
 
 Whitespace     = [ \t\r\n]+
