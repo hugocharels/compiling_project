@@ -1,0 +1,10 @@
+(
+        IF                              abbb
+
+        THEN
+            x=    3
+        :
+
+        abbbTHENx = 5
+
+        IFabbbTHENx=3
