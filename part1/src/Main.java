@@ -1,13 +1,19 @@
 import java.io.FileReader;
 import java.io.IOException;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Main Class
+ */
 public class Main {
+
+    /**
+     * Analyse a given GILLES file.
+     * @param args the GILLES file that will be analyzed by the lexer (last arg)
+     */
     public static void main(String[] args) {
         try {
             // Open the file or input stream to be analyzed
@@ -22,7 +28,7 @@ public class Main {
                 if (symbol.getType() == LexicalUnit.EOS) {
                     break;
                 }
-                
+
                 // Check if the symbol is a variable
                 if (symbol.getType() == LexicalUnit.VARNAME) { // Replace with actual check for your variable type
                     String variableName = symbol.getValue().toString(); // Assuming getValue() gives the variable name
@@ -43,7 +49,7 @@ public class Main {
 
         } catch (IOException e) {
             System.err.println("Error reading the file: " + e.getMessage());
-        } catch (Exception e) {
+        } catch (Error e) {
             System.err.println("Error during lexical analysis: " + e.getMessage());
         }
     }
