@@ -1,30 +1,28 @@
-%% // Options of the scanner
+%% // Scanner options
+%class LexicalAnalyzer  
+%unicode                
+%line                   
+%column                 
+%type Symbol            
 
-%class LexicalAnalyzer  // Name of the scanner
-%unicode                // Use Unicode encoding
-%line                   // Use line counter (yyline variable)
-%column                 // Use character counter by line (yycolumn variable)
-%type Symbol            // Return type of the scanner is Symbol
+// Comment states
+%xstate SIMPLE_COMMENT BIG_COMMENT
 
-%xstate SIMPLE_COMMENT, BIG_COMMENT
-
+// Definitions
 AlphaUpperCase = [A-Z]
 AlphaLowerCase = [a-z]
 Alpha          = {AlphaUpperCase}|{AlphaLowerCase}
 Numeric        = [0-9]
 AlphaNumeric   = {Alpha}|{Numeric}
 
-ProgName       = {AlphaUpperCase}({Alpha}|_)*
-VarName        = {AlphaLowerCase}({AlphaNumeric})*
-Number         = {Numeric}+
+ProgName       = {AlphaUpperCase}({Alpha}|_)*  // Program name starts with uppercase
+VarName        = {AlphaLowerCase}({AlphaNumeric})*  // Variable name starts with lowercase
+Number         = {Numeric}+  // Number is a sequence of digits
+Whitespace     = [ \t\r\n]+  // Whitespace characters
 
-Whitespace     = [ \t\r\n]+
+%% // Lexical rules
 
-
-
-%%// Lexical rules to match tokens
-
-// Enter comment
+// Entering comment states
 "$"             { yybegin(SIMPLE_COMMENT); }
 "!!"            { yybegin(BIG_COMMENT); }
 
@@ -40,7 +38,7 @@ Whitespace     = [ \t\r\n]+
 "OUT"           { return new Symbol(LexicalUnit.OUTPUT, yyline, yycolumn, yytext()); }
 "IN"            { return new Symbol(LexicalUnit.INPUT, yyline, yycolumn, yytext()); }
 
-// Operators and Punctuation
+// Operators and punctuation
 ":"             { return new Symbol(LexicalUnit.COLUMN, yyline, yycolumn, yytext()); }
 "="             { return new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, yytext()); }
 "("             { return new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext()); }
@@ -57,31 +55,27 @@ Whitespace     = [ \t\r\n]+
 "<="            { return new Symbol(LexicalUnit.SMALEQ, yyline, yycolumn, yytext()); }
 "<"             { return new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext()); }
 
-// Regex
+// Regular expressions for program and variable names, numbers
 {ProgName}      { return new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()); }
 {VarName}       { return new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext()); }
 {Number}        { return new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()); }
 
-
-// Comments
-<SIMPLE_COMMENT> { 
-	"\n"            { yybegin(YYINITIAL); }
-	.               { /* Skip */ }
-	" "             { /* Skip */ }
-	"\t"            { /* Skip */ }
-	"\r"            { /* Skip */ }
- }
-
-<BIG_COMMENT> {
-	"!!"            { yybegin(YYINITIAL); }
-	.               { /* Skip */ }
-	{Whitespace}    { /* Skip whitespace */ }
-	<<EOF>>         { throw new Error("Unclosed big comment"); } 
+// Comment states
+<SIMPLE_COMMENT> {
+    "\n"        { yybegin(YYINITIAL); }  // End of simple comment
+    .           { /* Skip */ }           // Skip characters within the comment
+	[ \t\r]     { /* Skip */ }
 }
 
-// Whitespace (ignore)
-{Whitespace}    { /* Skip whitespace */ }
+<BIG_COMMENT> {
+    "!!"         { yybegin(YYINITIAL); }  // End of big comment
+    .            { /* Skip */ }
+    {Whitespace} { /* Skip whitespace */ }
+    <<EOF>>      { throw new Error("Unclosed big comment"); } 
+}
 
+// Ignore whitespace
+{Whitespace}    { /* Skip whitespace */ }
 
 // End of file
 <<EOF>>         { return new Symbol(LexicalUnit.EOS, yyline, yycolumn); }
