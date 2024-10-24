@@ -65,14 +65,18 @@ Whitespace     = [ \t\r\n]+
 
 // Comments
 <SIMPLE_COMMENT> { 
-	"\n"        { yybegin(YYINITIAL); }
-	.           { /* Skip */ }
+	"\n"            { yybegin(YYINITIAL); }
+	.               { /* Skip */ }
+	" "             { /* Skip */ }
+	"\t"            { /* Skip */ }
+	"\r"            { /* Skip */ }
  }
 
 <BIG_COMMENT> {
-	"!!"        { yybegin(YYINITIAL); }
-	"$"         { throw new Error("Nested comments are not allowed"); }
-	.           { /* Skip */ }
+	"!!"            { yybegin(YYINITIAL); }
+	.               { /* Skip */ }
+	{Whitespace}    { /* Skip whitespace */ }
+	<<EOF>>         { throw new Error("Unclosed big comment"); } 
 }
 
 // Whitespace (ignore)
