@@ -6,9 +6,10 @@ LEXER_FILE = $(SRC_DIR)/LexicalAnalyzer.java
 CLASS_FILES = $(SRC_DIR)/*.class
 MAIN_CLASS = Main
 INPUT_FILE = "test/Euclid.gls"
+JFLEX_JAR_PATH = "dist/jflex-full-1.9.1.jar"
 
 # Default target: compile and run
-all: compile run
+all: compile test jar
 
 # Compile step: first generate the LexicalAnalyzer.java from the .flex file, then compile all Java files
 compile: $(LEXER_FILE)
@@ -18,7 +19,7 @@ compile: $(LEXER_FILE)
 # Generate LexicalAnalyzer.java from LexicalAnalyzer.flex
 $(LEXER_FILE): $(FLEX_FILE)
 	@echo "Running JFlex to generate LexicalAnalyzer.java..."
-	@java -jar dist/jflex*.jar $(FLEX_FILE)
+	@java -jar $(JFLEX_JAR_PATH) $(FLEX_FILE)
 
 # Run the compiled program
 run:
@@ -37,5 +38,6 @@ clean:
 	@echo "Cleaning up..."
 	@rm -f $(CLASS_FILES) 
 	@rm -f $(LEXER_FILE)*
+	@rm -f **/*.class
 
 .PHONY: all compile run test jar clean 
