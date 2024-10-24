@@ -1,0 +1,19 @@
+token: (                lexical unit: LPAREN
+token: IF               lexical unit: IF
+token: abbb             lexical unit: VARNAME
+token: THEN             lexical unit: THEN
+token: x                lexical unit: VARNAME
+token: =                lexical unit: ASSIGN
+token: 3                lexical unit: NUMBER
+token: :                lexical unit: COLUMN
+token: abbbTHENx        lexical unit: VARNAME
+token: =                lexical unit: ASSIGN
+token: 5                lexical unit: NUMBER
+token: IFabbbTHENx      lexical unit: PROGNAME
+token: =                lexical unit: ASSIGN
+token: 3                lexical unit: NUMBER
+
+Variables
+abbb    2
+abbbTHENx       8
+x       5

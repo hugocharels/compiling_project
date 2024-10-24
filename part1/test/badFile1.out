@@ -1,0 +1,10 @@
+token: LET              lexical unit: LET
+token: Kind_file        lexical unit: PROGNAME
+token: BE               lexical unit: BE
+token: IN               lexical unit: INPUT
+token: (                lexical unit: LPAREN
+token: a                lexical unit: VARNAME
+token: )                lexical unit: RPAREN
+token: :                lexical unit: COLUMN
+token: a                lexical unit: VARNAME
+token: =                lexical unit: ASSIGN
