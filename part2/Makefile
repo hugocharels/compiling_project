@@ -26,9 +26,6 @@ run: jar
 	@echo "Running the program..."
 	@java -jar dist/part2.jar $(INPUT_FILE)
 
-test: compile
-	@./test/automated_test_lexer.sh
-
 jar: compile
 	@echo "Creating jar file..."
 	@jar cvfe dist/part2.jar $(MAIN_CLASS) -C $(SRC_DIR) .
@@ -36,8 +33,7 @@ jar: compile
 # Clean: remove all compiled class files
 clean:
 	@echo "Cleaning up..."
-	@rm -f $(CLASS_FILES) 
-	@rm -f $(LEXER_FILE)*
+	@rm -f $(CLASS_FILES)
 	@rm -f **/*.class
 
 .PHONY: all compile run test jar clean 

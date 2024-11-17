@@ -1,55 +1,62 @@
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Main Class
  */
 public class Main {
 
-    /**
-     * Analyse a given GILLES file.
-     * @param args the GILLES file that will be analyzed by the lexer (last arg)
-     */
-    public static void main(String[] args) {
-        try {
-            // Open the file or input stream to be analyzed
-            FileReader reader = new FileReader(args[args.length - 1]); // replace with your input file path
+	/**
+	 * Analyze a given GILLES file.
+	 *
+	 * @param args command-line arguments
+	 */
+	public static void main(String[] args) {
+		if (args.length < 1) {
+			System.err.println("Usage: java -jar part2.jar sourceFile.gls OR java -jar part2.jar -wt sourceFile.tex sourceFile.gls");
+			return;
+		}
 
-            // Initialize the LexicalAnalyzer with the input
-            LexicalAnalyzer lexer = new LexicalAnalyzer(reader);
-            Map<String, Integer> variables = new HashMap<>();
-            Symbol symbol;
+		boolean writeToFile = false;
+		String outputFile = "";
+		String inputFile = "";
 
-            while ((symbol = lexer.nextToken()) != null) {
-                if (symbol.getType() == LexicalUnit.EOS) {
-                    break;
-                }
+		if (args[0].equals("-wt")) {
+			if (args.length != 3) {
+				System.err.println("Invalid usage for -wt. Expected: java -jar part2.jar -wt sourceFile.tex sourceFile.gls");
+				return;
+			}
+			writeToFile = true;
+			outputFile = args[1];
+			inputFile = args[2];
+		} else {
+			inputFile = args[0];
+		}
 
-                // Check if the symbol is a variable
-                if (symbol.getType() == LexicalUnit.VARNAME) { // Replace with actual check for your variable type
-                    String variableName = symbol.getValue().toString(); // Assuming getValue() gives the variable name
-                    // Store the variable if it's the first occurrence
-                    variables.putIfAbsent(variableName, symbol.getLine());
-                }
-                System.out.println(symbol.toString());
-            }
+		try (FileReader reader = new FileReader(inputFile)) {
+			// Initialize the lexer with the input
+			LexicalAnalyzer lexer = new LexicalAnalyzer(reader);
+			Parser parser = new Parser(lexer); // Ensure a Parser class exists that accepts the lexer
 
-            if (variables.isEmpty()) { return; }
+			// Parse the input and build the parse tree
+			ParseTree parseTree = parser.parseTree(); // Ensure parseTree() returns a ParseTree object
 
-            // Sort the variables alphabetically and print
-            Map<String, Integer> sortedVariables = new TreeMap<>(variables);
-            System.out.println("\nVariables");
-            for (Map.Entry<String, Integer> entry : sortedVariables.entrySet()) {
-                System.out.println(entry.getKey() + "\t" + entry.getValue());
-            }
+			// Print the leftmost derivation to stdout
+			String leftmostDerivation = parser.getLeftmostDerivation(); // Ensure this method returns a string representation
+			System.out.println(leftmostDerivation);
 
-        } catch (IOException e) {
-            System.err.println("Error reading the file: " + e.getMessage());
-        } catch (Error e) {
-            System.err.println("Error during lexical analysis: " + e.getMessage());
-        }
-    }
+			// Write the parse tree to the LaTeX file if -wt is specified
+			if (writeToFile) {
+				try (FileWriter writer = new FileWriter(outputFile)) {
+					writer.write(parseTree.toLaTeX()); // Write the LaTeX representation to the output file
+				}
+				System.out.println("Parse tree written to: " + outputFile);
+			}
+		} catch (IOException e) {
+			System.err.println("Error reading the file: " + e.getMessage());
+		} catch (Error e) {
+			System.err.println("Error during lexical or syntactic analysis: " + e.getMessage());
+		}
+	}
 }
