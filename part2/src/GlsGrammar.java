@@ -3,10 +3,11 @@ import java.util.*;
 
 public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal> {
 
-	private static final Map<GlsVariable, List<List<GlsToken>>> productionRules = new HashMap<>();
-	private static final Map<Pair<GlsVariable, GlsTerminal>, List<GlsToken>> actionTable = new HashMap<>();
+	private final Map<GlsVariable, List<List<GlsToken>>> productionRules = new HashMap<>();
+	private final Map<Pair<GlsVariable, GlsTerminal>, List<GlsToken>> actionTable = new HashMap<>();
 
-	static {
+	public GlsGrammar() {
+		// Production rules
 		productionRules.put(GlsVariable.PROGRAM, List.of(
 				List.of(GlsTerminal.LET, GlsTerminal.PROGNAME, GlsTerminal.BE, GlsVariable.CODE, GlsTerminal.END)));
 		productionRules.put(GlsVariable.CODE, List.of(
@@ -60,6 +61,21 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 				List.of(GlsTerminal.OUT, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
 		productionRules.put(GlsVariable.INPUT, List.of(
 				List.of(GlsTerminal.IN, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
+
+		// Action table
+		for (GlsVariable variable : GlsVariable.values()) {
+			for (List<GlsToken> production : productionRules.get(variable)) {
+				if (!production.isEmpty()) {
+					for (GlsTerminal terminal : this.getFirst((GlsVariable) production.get(0))) {
+						actionTable.put(new Pair<>(variable, terminal), production);
+					}
+				} else {
+					// TODO
+				}
+
+			}
+
+		}
 	}
 
 	@Override
@@ -74,7 +90,7 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 
 	@Override
 	public Map<GlsVariable, List<List<GlsToken>>> getProductionRules() {
-		return GlsGrammar.productionRules;
+		return productionRules;
 	}
 
 	@Override
@@ -86,7 +102,7 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 	@Override
 	public Set<GlsTerminal> getFirst(GlsVariable variable) {
 		Set<GlsTerminal> first = new HashSet<>();
-		for (List<GlsToken> production : GlsGrammar.productionRules.get(variable)) {
+		for (List<GlsToken> production : productionRules.get(variable)) {
 			if (production.isEmpty()) {
 				continue;
 			}
@@ -128,9 +144,6 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 
 	@Override
 	public Map<Pair<GlsVariable, GlsTerminal>, List<GlsToken>> getActionTable() {
-		if (GlsGrammar.actionTable == null) {
-			// TODO: Implement the action table
-		}
-		return GlsGrammar.actionTable;
+		return actionTable;
 	}
 }
