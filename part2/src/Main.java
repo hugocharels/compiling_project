@@ -13,6 +13,19 @@ public class Main {
 	 * @param args command-line arguments
 	 */
 	public static void main(String[] args) {
+
+		GlsGrammar grammar = new GlsGrammar();
+
+		System.out.println("First sets:");
+		for (GlsVariable variable : grammar.getVariables()) {
+			System.out.println(variable + ": " + grammar.getFirst(variable));
+		}
+		System.out.println("\nFollow sets:");
+		for (GlsVariable variable : grammar.getVariables()) {
+			System.out.println(variable + ": " + grammar.getFollow(variable));
+		}
+		System.exit(0);
+
 		if (args.length < 1) {
 			System.err.println("Usage: java -jar part2.jar sourceFile.gls OR java -jar part2.jar -wt sourceFile.tex sourceFile.gls");
 			return;
@@ -37,10 +50,10 @@ public class Main {
 		try (FileReader reader = new FileReader(inputFile)) {
 			// Initialize the lexer with the input
 			LexicalAnalyzer lexer = new LexicalAnalyzer(reader);
-			Parser parser = new Parser(lexer); // Ensure a Parser class exists that accepts the lexer
+			Parser parser = new Parser(lexer);
 
 			// Parse the input and build the parse tree
-			ParseTree parseTree = parser.parseTree(); // Ensure parseTree() returns a ParseTree object
+			ParseTree parseTree = parser.getParseTree(); // Ensure parseTree() returns a ParseTree object
 
 			// Print the leftmost derivation to stdout
 			String leftmostDerivation = parser.getLeftmostDerivation(); // Ensure this method returns a string representation

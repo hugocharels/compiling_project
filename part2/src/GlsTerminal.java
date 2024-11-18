@@ -1,4 +1,4 @@
-public enum GILLESTerminal implements GILLESToken {
+public enum GlsTerminal implements GlsToken {
 	LET,
 	PROGNAME,
 	BE,
@@ -25,4 +25,7 @@ public enum GILLESTerminal implements GILLESToken {
 	REPEAT,
 	OUT,
 	IN,
+
+
+	EOS,
 }

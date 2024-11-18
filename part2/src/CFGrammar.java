@@ -33,6 +33,24 @@ public interface CFGrammar<Token, Variable, Terminal> {
 	 */
 	Variable getStartSymbol();
 
+
+	Set<Terminal> getFirst(Variable variable);
+
+	/**
+	 * Returns the first set of a variable.
+	 *
+	 * @param variable the variable whose first set is to be retrieved
+	 * @return the first set of the variable
+	 */
+	Set<Terminal> getFollow(Variable variable);
+
+	/**
+	 * Returns the action table of the grammar.
+	 *
+	 * @return the action table
+	 */
+	Map<Pair<Variable, Terminal>, List<Token>> getActionTable();
+
 	/**
 	 * Returns the list of right-hand side productions for a given variable.
 	 *

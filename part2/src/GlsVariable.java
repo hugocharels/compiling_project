@@ -1,4 +1,4 @@
-public enum GILLESVariable implements GILLESToken {
+public enum GlsVariable implements GlsToken {
 	PROGRAM,
 	CODE,
 	INSTRUCTION,
