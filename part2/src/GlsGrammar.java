@@ -1,16 +1,30 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
-public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal> {
+public class GlsGrammar{
 
 	private final Map<GlsVariable, List<List<GlsToken>>> productionRules = new HashMap<>();
-	private final Map<Pair<GlsVariable, GlsTerminal>, List<GlsToken>> actionTable;
+	private final Map<Pair<GlsVariable, GlsTerminal>, List<GlsToken>> actionTable = new HashMap<>();
 
 	public GlsGrammar() {
-		// Production rules
+		this.buildProductionRules();
+		this.buildActionTable();
+
+		System.out.println("First sets:");
+		for (GlsVariable variable : this.getVariables()) {
+			System.out.println(variable + ": " + this.getFirst(variable));
+		}
+		System.out.println("\nFollow sets:");
+		for (GlsVariable variable : this.getVariables()) {
+			System.out.println(variable + ": " + this.getFollow(variable));
+		}
+
+		System.out.println("\nAction Table:");
+		System.out.println(actionTable);
+
+	}
+
+	private void buildProductionRules() {
 		productionRules.put(GlsVariable.PROGRAM, List.of(
 				List.of(GlsTerminal.LET, GlsTerminal.PROGNAME, GlsTerminal.BE, GlsVariable.CODE, GlsTerminal.END)));
 		productionRules.put(GlsVariable.CODE, List.of(
@@ -42,7 +56,7 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 				List.of(GlsTerminal.LPAREN, GlsVariable.EXPR_ARITH, GlsTerminal.RPAREN),
 				List.of(GlsTerminal.MINUS, GlsVariable.ATOM)));
 		productionRules.put(GlsVariable.IF, List.of(
-				List.of(GlsTerminal.IF, GlsVariable.COND, GlsTerminal.THEN, GlsVariable.CODE, GlsVariable.IFSEQ)));
+				List.of(GlsTerminal.IF, GlsTerminal.LBRACK, GlsVariable.COND, GlsTerminal.RBRACK, GlsTerminal.THEN, GlsVariable.CODE, GlsVariable.IFSEQ)));
 		productionRules.put(GlsVariable.IFSEQ, List.of(
 				List.of(GlsTerminal.END),
 				List.of(GlsTerminal.ELSE, GlsVariable.CODE, GlsTerminal.END)));
@@ -59,37 +73,116 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 				List.of(GlsTerminal.GEQUAL),
 				List.of(GlsTerminal.GREATER)));
 		productionRules.put(GlsVariable.WHILE, List.of(
-				List.of(GlsTerminal.WHILE, GlsVariable.COND, GlsTerminal.REPEAT, GlsVariable.CODE, GlsTerminal.END)));
+				List.of(GlsTerminal.WHILE, GlsTerminal.LBRACK, GlsVariable.COND, GlsTerminal.RBRACK, GlsTerminal.REPEAT, GlsVariable.CODE, GlsTerminal.END)));
 		productionRules.put(GlsVariable.OUTPUT, List.of(
 				List.of(GlsTerminal.OUT, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
 		productionRules.put(GlsVariable.INPUT, List.of(
 				List.of(GlsTerminal.IN, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
-
-		this.actionTable = this.buildActionTable();
 	}
 
-	@Override
+	private void buildActionTable() {
+		// For each rule variable -> production
+		for (GlsVariable variable : this.getVariables()) {
+			Set<GlsTerminal> first = getFirst(variable);
+			for (List<GlsToken> production : this.getProductionRule(variable)) {
+				// Case 1: Production is epsilon
+				if (production.isEmpty()) {
+					for (GlsTerminal terminal : this.getFollow(variable)) {
+						actionTable.put(new Pair<>(variable, terminal), production);
+					}
+				} // Case 2: Production starts with a terminal
+				else if (production.getFirst() instanceof GlsTerminal) {
+					actionTable.put(new Pair<>(variable, (GlsTerminal) production.getFirst()), production);
+				} // Case 3: Production starts with a variable
+				else {
+					GlsVariable otherVariable = (GlsVariable) production.getFirst();
+					// for machin in f(firstToken) -> if something then terminal = this one;
+					// actionTable.put(new Pair<>(variable, otherVariable), production);
+				}
+			}
+		}
+	}
+
 	public Set<GlsVariable> getVariables() {
 		return Set.of(GlsVariable.values());
 	}
 
-	@Override
 	public Set<GlsTerminal> getTerminals() {
 		return Set.of(GlsTerminal.values());
 	}
 
-	@Override
-	public Map<GlsVariable, List<List<GlsToken>>> getProductionRules() {
-		return productionRules;
-	}
-
-	@Override
 	public GlsVariable getStartSymbol() {
 		return null;
 	}
 
-	@Override
-	public Map<Pair<GlsVariable, GlsTerminal>, List<GlsToken>> getActionTable() {
-		return actionTable;
+	public Map<GlsVariable, List<List<GlsToken>>> getProductionRules() {
+		return productionRules;
+	}
+
+	public List<List<GlsToken>> getProductionRule(GlsVariable variable) {
+		return this.productionRules.get(variable);
+	}
+
+
+	/**
+	 * Returns the first set of a variable.
+	 *
+	 * @param variable the variable whose first set is to be retrieved
+	 * @return the first set of the variable
+	 */
+	public Set<GlsTerminal> getFirst(GlsVariable variable) {
+		Set<GlsTerminal> first = new HashSet<>();
+		for (List<GlsToken> production : this.getProductionRule(variable)) {
+			if (production.isEmpty()) {
+				continue;
+			}
+			GlsToken firstToken = production.getFirst();
+			if (firstToken instanceof GlsTerminal) {
+				first.add((GlsTerminal) firstToken);
+			} else {
+				first.addAll(getFirst((GlsVariable) firstToken));
+			}
+		}
+		return first;
+	}
+
+	/**
+	 * Returns the follow set of a variable.
+	 *
+	 * @param variable the variable whose follow set is to be retrieved
+	 * @return the follow set of the variable
+	 */
+	public Set<GlsTerminal> getFollow(GlsVariable variable) {
+		Set<GlsTerminal> follow = new HashSet<>();
+
+		for (GlsVariable v : getVariables()) {
+			for (List<GlsToken> production : this.getProductionRule(v)) {
+				for (int i = 0; i < production.size(); i++) {
+					if (production.get(i) == variable) {
+						// Case 1: Variable is at the end of the production
+						if (i == production.size() - 1) {
+							if (v != variable) { // Avoid self-referential recursion
+								follow.addAll(getFollow(v));
+							}
+						}
+						// Case 2: Variable is followed by other symbols
+						else {
+							GlsToken nextToken = production.get(i + 1);
+							if (nextToken instanceof GlsTerminal) {
+								follow.add((GlsTerminal) nextToken);
+							} else {
+								// Add FIRST(nextToken)
+								follow.addAll(getFirst((GlsVariable) nextToken));
+								// If epsilon (empty list) is in FIRST(nextToken), include FOLLOW(v)
+								if (this.getProductionRule((GlsVariable) nextToken).contains(List.of())) {
+									follow.addAll(getFollow((GlsVariable) nextToken));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return follow;
 	}
 }

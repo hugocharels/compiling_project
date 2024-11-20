@@ -15,22 +15,6 @@ public class Main {
 	public static void main(String[] args) {
 
 		GlsGrammar grammar = new GlsGrammar();
-
-		System.out.println("First sets:");
-		for (GlsVariable variable : grammar.getVariables()) {
-			System.out.println(variable + ": " + grammar.getFirst(variable));
-		}
-		System.out.println("\nFollow sets:");
-		for (GlsVariable variable : grammar.getVariables()) {
-			System.out.println(variable + ": " + grammar.getFollow(variable));
-		}
-
-		System.out.println("\nAction table:");
-		for (GlsVariable variable : grammar.getVariables()) {
-			for (GlsTerminal terminal : grammar.getTerminals()) {
-				System.out.println(variable + ", " + terminal + ": " + grammar.getActionTable().get(new Pair<>(variable, terminal)));
-			}
-		}
 		System.exit(0);
 
 		if (args.length < 1) {

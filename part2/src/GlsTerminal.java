@@ -13,6 +13,8 @@ public enum GlsTerminal implements GlsToken {
 	VARNAME,
 	LPAREN,
 	RPAREN,
+	LBRACK,
+	RBRACK,
 	IF,
 	THEN,
 	ELSE,
