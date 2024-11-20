@@ -4,7 +4,7 @@ import java.util.Stack;
 public class GlsParser {
 	private final LexicalAnalyzer lexer;
 	private final GlsGrammar grammar;
-	private ParseTree parseTree = null;
+	private final ParseTree parseTree = null;
 	private String leftmostDerivation = "";
 
 	public GlsParser(LexicalAnalyzer lexer, GlsGrammar grammar) {
@@ -20,7 +20,6 @@ public class GlsParser {
 		return this.leftmostDerivation;
 	}
 
-
 	public void parse() throws IOException {
 		Stack<Symbol> stack = new Stack<>();
 		stack.push(grammar.getStartSymbol());
@@ -30,7 +29,7 @@ public class GlsParser {
 			Symbol x = stack.peek();
 			GlsVariable v = x instanceof GlsVariable ? (GlsVariable) x : null;
 			if (v != null && grammar.getProduction(v, terminal) != null) {
-				ProductionRule productionRule= grammar.getProduction(v, terminal);
+				ProductionRule productionRule = grammar.getProduction(v, terminal);
 				stack.pop();
 				for (int i = productionRule.getProduction().size() - 1; i >= 0; i--) {
 					stack.push(productionRule.getProduction().get(i));

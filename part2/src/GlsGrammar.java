@@ -1,9 +1,9 @@
 import java.util.*;
 
 
-public class GlsGrammar{
+public class GlsGrammar {
 
-//	private final Map<GlsVariable, List<List<Symbol>>> productionRules = new HashMap<>();
+	//	private final Map<GlsVariable, List<List<Symbol>>> productionRules = new HashMap<>();
 	private final Map<Pair<GlsVariable, LexicalUnit>, ProductionRule> actionTable = new HashMap<>();
 	private final List<ProductionRule> productionRules = new ArrayList<>(35);
 
@@ -11,17 +11,17 @@ public class GlsGrammar{
 		this.buildProductionRules();
 		this.buildActionTable();
 
-//		System.out.println("First sets:");
-//		for (GlsVariable variable : this.getVariables()) {
-//			System.out.println(variable + ": " + this.getFirst(variable));
-//		}
-//		System.out.println("\nFollow sets:");
-//		for (GlsVariable variable : this.getVariables()) {
-//			System.out.println(variable + ": " + this.getFollow(variable));
-//		}
-//
-//		System.out.println("\nAction Table:");
-//		System.out.println(actionTable);
+		System.out.println("First sets:");
+		for (GlsVariable variable : this.getVariables()) {
+			System.out.println(variable + ": " + this.getFirst(variable));
+		}
+		System.out.println("\nFollow sets:");
+		for (GlsVariable variable : this.getVariables()) {
+			System.out.println(variable + ": " + this.getFollow(variable));
+		}
+
+		System.out.println("\nAction Table:");
+		System.out.println(actionTable);
 
 	}
 
@@ -125,11 +125,11 @@ public class GlsGrammar{
 			if (productionRule.getProduction().isEmpty()) {
 				continue;
 			}
-			Symbol firstToken = productionRule.getProduction().getFirst();
-			if (firstToken instanceof LexicalUnit) {
-				first.add((LexicalUnit) firstToken);
+			Symbol firstSymbol = productionRule.getProduction().getFirst();
+			if (firstSymbol instanceof LexicalUnit) {
+				first.add((LexicalUnit) firstSymbol);
 			} else {
-				first.addAll(getFirst((GlsVariable) firstToken));
+				first.addAll(getFirst((GlsVariable) firstSymbol));
 			}
 		}
 		return first;
@@ -164,15 +164,15 @@ public class GlsGrammar{
 						}
 						// Case 2: Variable is followed by other symbols
 						else {
-							Symbol nextToken = productionRule.getProduction().get(i + 1);
-							if (nextToken instanceof LexicalUnit) {
-								follow.add((LexicalUnit) nextToken);
+							Symbol nextSymbol = productionRule.getProduction().get(i + 1);
+							if (nextSymbol instanceof LexicalUnit) {
+								follow.add((LexicalUnit) nextSymbol);
 							} else {
-								// Add FIRST(nextToken)
-								follow.addAll(this.getFirst((GlsVariable) nextToken));
-								// If epsilon (empty list) is in FIRST(nextToken), include FOLLOW(v)
-								if (this.getProductionRules((GlsVariable) nextToken).contains(List.of())) {
-									follow.addAll(this.getFollow((GlsVariable) nextToken));
+								// Add FIRST(nextSymbol)
+								follow.addAll(this.getFirst((GlsVariable) nextSymbol));
+								// If epsilon (empty list in production of productionRUle) is in FIRST(nextSymbol), include FOLLOW(v)
+								if (this.hasEmptyProduction((GlsVariable) nextSymbol)) {
+									follow.addAll(this.getFollow((GlsVariable) nextSymbol));
 								}
 							}
 						}
@@ -181,5 +181,14 @@ public class GlsGrammar{
 			}
 		}
 		return follow;
+	}
+
+	private boolean hasEmptyProduction(GlsVariable nextSymbol) {
+		for (ProductionRule productionRule : this.getProductionRules(nextSymbol)) {
+			if (productionRule.getProduction().isEmpty()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
