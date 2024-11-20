@@ -5,6 +5,8 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 
 	private final Map<GlsVariable, List<List<GlsToken>>> productionRules = new HashMap<>();
 	private final Map<Pair<GlsVariable, GlsTerminal>, List<GlsToken>> actionTable = new HashMap<>();
+	private final Map<GlsVariable, Set<GlsTerminal>> firstCache = new HashMap<>();
+	private final Map<GlsVariable, Set<GlsTerminal>> followCache = new HashMap<>();
 
 	public GlsGrammar() {
 		// Production rules
@@ -37,7 +39,7 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 				List.of(GlsTerminal.NUMBER),
 				List.of(GlsTerminal.VARNAME),
 				List.of(GlsTerminal.LPAREN, GlsVariable.EXPR_ARITH, GlsTerminal.RPAREN),
-				List.of(GlsTerminal.MINUS, GlsVariable.EXPR_ARITH)));
+				List.of(GlsTerminal.MINUS, GlsVariable.ATOM)));
 		productionRules.put(GlsVariable.IF, List.of(
 				List.of(GlsTerminal.IF, GlsVariable.COND, GlsTerminal.THEN, GlsVariable.CODE, GlsVariable.IFSEQ)));
 		productionRules.put(GlsVariable.IFSEQ, List.of(
@@ -47,7 +49,7 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 				List.of(GlsVariable.COND_SIMPLE, GlsVariable.NEXT_COND)));
 		productionRules.put(GlsVariable.NEXT_COND, List.of(
 				List.of(GlsTerminal.IMPLIES, GlsVariable.COND_SIMPLE, GlsVariable.NEXT_COND),
-				List.of()));
+					List.of()));
 		productionRules.put(GlsVariable.COND_SIMPLE, List.of(
 				List.of(GlsTerminal.PIPE, GlsVariable.COND_SIMPLE, GlsTerminal.PIPE),
 				List.of(GlsVariable.EXPR_ARITH, GlsVariable.COMP, GlsVariable.EXPR_ARITH)));
@@ -63,19 +65,19 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 				List.of(GlsTerminal.IN, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
 
 		// Action table
-		for (GlsVariable variable : GlsVariable.values()) {
-			for (List<GlsToken> production : productionRules.get(variable)) {
-				if (!production.isEmpty()) {
-					for (GlsTerminal terminal : this.getFirst((GlsVariable) production.get(0))) {
-						actionTable.put(new Pair<>(variable, terminal), production);
-					}
-				} else {
-					// TODO
-				}
-
-			}
-
-		}
+//		for (GlsVariable variable : GlsVariable.values()) {
+//			for (List<GlsToken> production : productionRules.get(variable)) {
+//				if (!production.isEmpty()) {
+//					for (GlsTerminal terminal : this.getFirst((GlsVariable) production.get(0))) {
+//						actionTable.put(new Pair<>(variable, terminal), production);
+//					}
+//				} else {
+//					// TODO
+//				}
+//
+//			}
+//
+//		}
 	}
 
 	@Override
@@ -101,6 +103,11 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 
 	@Override
 	public Set<GlsTerminal> getFirst(GlsVariable variable) {
+		// Check if the result is already computed
+		if (firstCache.containsKey(variable)) {
+			return firstCache.get(variable);
+		}
+
 		Set<GlsTerminal> first = new HashSet<>();
 		for (List<GlsToken> production : productionRules.get(variable)) {
 			if (production.isEmpty()) {
@@ -113,32 +120,51 @@ public class GlsGrammar implements CFGrammar<GlsToken, GlsVariable, GlsTerminal>
 				first.addAll(getFirst((GlsVariable) firstToken));
 			}
 		}
+		// Cache the computed result
+		firstCache.put(variable, first);
 		return first;
 	}
 
 	@Override
 	public Set<GlsTerminal> getFollow(GlsVariable variable) {
+		// Check if the result is already computed
+		if (followCache.containsKey(variable)) {
+			return followCache.get(variable);
+		}
+
 		Set<GlsTerminal> follow = new HashSet<>();
+
 		for (GlsVariable v : getVariables()) {
-			if (v == variable) {
-				continue;
-			}
 			for (List<GlsToken> production : this.getProductionRule(v)) {
 				for (int i = 0; i < production.size(); i++) {
 					if (production.get(i) == variable) {
+						// Case 1: Variable is at the end of the production
 						if (i == production.size() - 1) {
-							follow.addAll(getFollow(v));
-						} else {
-							if (production.get(i + 1) instanceof GlsTerminal) {
-								follow.add((GlsTerminal) production.get(i + 1));
+							if (v != variable) { // Avoid self-referential recursion
+								// System.out.println(v + ", " + variable);
+								follow.addAll(getFollow(v));
+							}
+						}
+						// Case 2: Variable is followed by other symbols
+						else {
+							GlsToken nextToken = production.get(i + 1);
+							if (nextToken instanceof GlsTerminal) {
+								follow.add((GlsTerminal) nextToken);
 							} else {
-								follow.addAll(getFirst((GlsVariable) production.get(i + 1)));
+								// Add FIRST(nextToken)
+								follow.addAll(getFirst((GlsVariable) nextToken));
+								// If epsilon (empty list) is in FIRST(nextToken), include FOLLOW(v)
+								if (this.productionRules.get(nextToken).contains(List.of())) {
+									follow.addAll(getFollow((GlsVariable) nextToken));
+								}
 							}
 						}
 					}
 				}
 			}
 		}
+		// Cache the computed result
+		followCache.put(variable, follow);
 		return follow;
 	}
 

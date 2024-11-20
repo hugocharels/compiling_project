@@ -25,6 +25,8 @@ public class Main {
 			System.out.println(variable + ": " + grammar.getFollow(variable));
 		}
 
+		System.exit(0);
+
 		System.out.println("\nAction table:");
 		for (GlsVariable variable : grammar.getVariables()) {
 			for (GlsTerminal terminal : grammar.getTerminals()) {
