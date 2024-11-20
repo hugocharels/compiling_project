@@ -3,8 +3,9 @@ import java.util.*;
 
 public class GlsGrammar{
 
-	private final Map<GlsVariable, List<List<Symbol>>> productionRules = new HashMap<>();
-	private final Map<Pair<GlsVariable, LexicalUnit>, List<Symbol>> actionTable = new HashMap<>();
+//	private final Map<GlsVariable, List<List<Symbol>>> productionRules = new HashMap<>();
+	private final Map<Pair<GlsVariable, LexicalUnit>, ProductionRule> actionTable = new HashMap<>();
+	private final List<ProductionRule> productionRules = new ArrayList<>(35);
 
 	public GlsGrammar() {
 		this.buildProductionRules();
@@ -25,80 +26,61 @@ public class GlsGrammar{
 	}
 
 	private void buildProductionRules() {
-		productionRules.put(GlsVariable.PROGRAM, List.of(
-				List.of(LexicalUnit.LET, LexicalUnit.PROGNAME, LexicalUnit.BE, GlsVariable.CODE, LexicalUnit.END)));
-		productionRules.put(GlsVariable.CODE, List.of(
-				List.of(GlsVariable.INSTRUCTION, LexicalUnit.COLUMN, GlsVariable.CODE),
-				List.of()));
-		productionRules.put(GlsVariable.INSTRUCTION, List.of(
-				List.of(GlsVariable.ASSIGN),
-				List.of(GlsVariable.IF),
-				List.of(GlsVariable.WHILE),
-				List.of(GlsVariable.OUTPUT),
-				List.of(GlsVariable.INPUT)));
-		productionRules.put(GlsVariable.ASSIGN, List.of(
-				List.of(LexicalUnit.VARNAME, LexicalUnit.ASSIGN, GlsVariable.EXPR_ARITH)));
-		productionRules.put(GlsVariable.EXPR_ARITH, List.of(
-				List.of(GlsVariable.PROD_ARITH, GlsVariable.EXPR_ARITH_PRIME)));
-		productionRules.put(GlsVariable.EXPR_ARITH_PRIME, List.of(
-				List.of(LexicalUnit.PLUS, GlsVariable.PROD_ARITH, GlsVariable.EXPR_ARITH_PRIME),
-				List.of(LexicalUnit.MINUS, GlsVariable.PROD_ARITH, GlsVariable.EXPR_ARITH_PRIME),
-				List.of()));
-		productionRules.put(GlsVariable.PROD_ARITH, List.of(
-				List.of(GlsVariable.ATOM, GlsVariable.PROD_ARITH_PRIME)));
-		productionRules.put(GlsVariable.PROD_ARITH_PRIME, List.of(
-				List.of(LexicalUnit.TIMES, GlsVariable.ATOM, GlsVariable.PROD_ARITH_PRIME),
-				List.of(LexicalUnit.DIVIDE, GlsVariable.ATOM, GlsVariable.PROD_ARITH_PRIME),
-				List.of()));
-		productionRules.put(GlsVariable.ATOM, List.of(
-				List.of(LexicalUnit.NUMBER),
-				List.of(LexicalUnit.VARNAME),
-				List.of(LexicalUnit.LPAREN, GlsVariable.EXPR_ARITH, LexicalUnit.RPAREN),
-				List.of(LexicalUnit.MINUS, GlsVariable.ATOM)));
-		productionRules.put(GlsVariable.IF, List.of(
-				List.of(LexicalUnit.IF, LexicalUnit.LBRACK, GlsVariable.COND, LexicalUnit.RBRACK, LexicalUnit.THEN, GlsVariable.CODE, GlsVariable.IFSEQ)));
-		productionRules.put(GlsVariable.IFSEQ, List.of(
-				List.of(LexicalUnit.END),
-				List.of(LexicalUnit.ELSE, GlsVariable.CODE, LexicalUnit.END)));
-		productionRules.put(GlsVariable.COND, List.of(
-				List.of(GlsVariable.COND_SIMPLE, GlsVariable.NEXT_COND)));
-		productionRules.put(GlsVariable.NEXT_COND, List.of(
-				List.of(LexicalUnit.IMPLIES, GlsVariable.COND_SIMPLE, GlsVariable.NEXT_COND),
-				List.of()));
-		productionRules.put(GlsVariable.COND_SIMPLE, List.of(
-				List.of(LexicalUnit.PIPE, GlsVariable.COND_SIMPLE, LexicalUnit.PIPE),
-				List.of(GlsVariable.EXPR_ARITH, GlsVariable.COMP, GlsVariable.EXPR_ARITH)));
-		productionRules.put(GlsVariable.COMP, List.of(
-				List.of(LexicalUnit.EQUAL),
-				List.of(LexicalUnit.SMALEQ),
-				List.of(LexicalUnit.SMALLER)));
-		productionRules.put(GlsVariable.WHILE, List.of(
-				List.of(LexicalUnit.WHILE, LexicalUnit.LBRACK, GlsVariable.COND, LexicalUnit.RBRACK, LexicalUnit.REPEAT, GlsVariable.CODE, LexicalUnit.END)));
-		productionRules.put(GlsVariable.OUTPUT, List.of(
-				List.of(LexicalUnit.OUTPUT, LexicalUnit.LPAREN, LexicalUnit.VARNAME, LexicalUnit.RPAREN)));
-		productionRules.put(GlsVariable.INPUT, List.of(
-				List.of(LexicalUnit.INPUT, LexicalUnit.LPAREN, LexicalUnit.VARNAME, LexicalUnit.RPAREN)));
+		this.productionRules.add(new ProductionRule(1, GlsVariable.PROGRAM, List.of(LexicalUnit.LET, LexicalUnit.PROGNAME, LexicalUnit.BE, GlsVariable.CODE, LexicalUnit.END)));
+		this.productionRules.add(new ProductionRule(2, GlsVariable.CODE, List.of(GlsVariable.INSTRUCTION, LexicalUnit.COLUMN, GlsVariable.CODE)));
+		this.productionRules.add(new ProductionRule(3, GlsVariable.CODE, List.of()));
+		this.productionRules.add(new ProductionRule(4, GlsVariable.INSTRUCTION, List.of(GlsVariable.ASSIGN)));
+		this.productionRules.add(new ProductionRule(5, GlsVariable.INSTRUCTION, List.of(GlsVariable.IF)));
+		this.productionRules.add(new ProductionRule(6, GlsVariable.INSTRUCTION, List.of(GlsVariable.WHILE)));
+		this.productionRules.add(new ProductionRule(7, GlsVariable.INSTRUCTION, List.of(GlsVariable.OUTPUT)));
+		this.productionRules.add(new ProductionRule(8, GlsVariable.INSTRUCTION, List.of(GlsVariable.INPUT)));
+		this.productionRules.add(new ProductionRule(9, GlsVariable.ASSIGN, List.of(LexicalUnit.VARNAME, LexicalUnit.ASSIGN, GlsVariable.EXPR_ARITH)));
+		this.productionRules.add(new ProductionRule(10, GlsVariable.EXPR_ARITH, List.of(GlsVariable.PROD_ARITH, GlsVariable.EXPR_ARITH_PRIME)));
+		this.productionRules.add(new ProductionRule(11, GlsVariable.EXPR_ARITH_PRIME, List.of(LexicalUnit.PLUS, GlsVariable.PROD_ARITH, GlsVariable.EXPR_ARITH_PRIME)));
+		this.productionRules.add(new ProductionRule(12, GlsVariable.EXPR_ARITH_PRIME, List.of(LexicalUnit.MINUS, GlsVariable.PROD_ARITH, GlsVariable.EXPR_ARITH_PRIME)));
+		this.productionRules.add(new ProductionRule(13, GlsVariable.EXPR_ARITH_PRIME, List.of()));
+		this.productionRules.add(new ProductionRule(14, GlsVariable.PROD_ARITH, List.of(GlsVariable.ATOM, GlsVariable.PROD_ARITH_PRIME)));
+		this.productionRules.add(new ProductionRule(15, GlsVariable.PROD_ARITH_PRIME, List.of(LexicalUnit.TIMES, GlsVariable.ATOM, GlsVariable.PROD_ARITH_PRIME)));
+		this.productionRules.add(new ProductionRule(16, GlsVariable.PROD_ARITH_PRIME, List.of(LexicalUnit.DIVIDE, GlsVariable.ATOM, GlsVariable.PROD_ARITH_PRIME)));
+		this.productionRules.add(new ProductionRule(17, GlsVariable.PROD_ARITH_PRIME, List.of()));
+		this.productionRules.add(new ProductionRule(18, GlsVariable.ATOM, List.of(LexicalUnit.NUMBER)));
+		this.productionRules.add(new ProductionRule(19, GlsVariable.ATOM, List.of(LexicalUnit.VARNAME)));
+		this.productionRules.add(new ProductionRule(20, GlsVariable.ATOM, List.of(LexicalUnit.LPAREN, GlsVariable.EXPR_ARITH, LexicalUnit.RPAREN)));
+		this.productionRules.add(new ProductionRule(21, GlsVariable.ATOM, List.of(LexicalUnit.MINUS, GlsVariable.ATOM)));
+		this.productionRules.add(new ProductionRule(22, GlsVariable.IF, List.of(LexicalUnit.IF, LexicalUnit.LBRACK, GlsVariable.COND, LexicalUnit.RBRACK, LexicalUnit.THEN, GlsVariable.CODE, GlsVariable.IFSEQ)));
+		this.productionRules.add(new ProductionRule(23, GlsVariable.IFSEQ, List.of(LexicalUnit.END)));
+		this.productionRules.add(new ProductionRule(24, GlsVariable.IFSEQ, List.of(LexicalUnit.ELSE, GlsVariable.CODE, LexicalUnit.END)));
+		this.productionRules.add(new ProductionRule(25, GlsVariable.COND, List.of(GlsVariable.COND_SIMPLE, GlsVariable.NEXT_COND)));
+		this.productionRules.add(new ProductionRule(26, GlsVariable.NEXT_COND, List.of(LexicalUnit.IMPLIES, GlsVariable.COND_SIMPLE, GlsVariable.NEXT_COND)));
+		this.productionRules.add(new ProductionRule(27, GlsVariable.NEXT_COND, List.of()));
+		this.productionRules.add(new ProductionRule(28, GlsVariable.COND_SIMPLE, List.of(LexicalUnit.PIPE, GlsVariable.COND_SIMPLE, LexicalUnit.PIPE)));
+		this.productionRules.add(new ProductionRule(29, GlsVariable.COND_SIMPLE, List.of(GlsVariable.EXPR_ARITH, GlsVariable.COMP, GlsVariable.EXPR_ARITH)));
+		this.productionRules.add(new ProductionRule(30, GlsVariable.COMP, List.of(LexicalUnit.EQUAL)));
+		this.productionRules.add(new ProductionRule(31, GlsVariable.COMP, List.of(LexicalUnit.SMALEQ)));
+		this.productionRules.add(new ProductionRule(32, GlsVariable.COMP, List.of(LexicalUnit.SMALLER)));
+		this.productionRules.add(new ProductionRule(33, GlsVariable.WHILE, List.of(LexicalUnit.WHILE, LexicalUnit.LBRACK, GlsVariable.COND, LexicalUnit.RBRACK, LexicalUnit.REPEAT, GlsVariable.CODE, LexicalUnit.END)));
+		this.productionRules.add(new ProductionRule(34, GlsVariable.OUTPUT, List.of(LexicalUnit.OUTPUT, LexicalUnit.LPAREN, LexicalUnit.VARNAME, LexicalUnit.RPAREN)));
+		this.productionRules.add(new ProductionRule(35, GlsVariable.INPUT, List.of(LexicalUnit.INPUT, LexicalUnit.LPAREN, LexicalUnit.VARNAME, LexicalUnit.RPAREN)));
 	}
 
 	private void buildActionTable() {
 		// For each rule variable -> production
 		for (GlsVariable variable : this.getVariables()) {
-			Set<LexicalUnit> first = getFirst(variable);
-			for (List<Symbol> production : this.getProductionRule(variable)) {
+			for (ProductionRule productionRule : this.getProductionRules(variable)) {
 				// Case 1: Production is epsilon
-				if (production.isEmpty()) {
+				if (productionRule.getProduction().isEmpty()) {
 					for (LexicalUnit terminal : this.getFollow(variable)) {
-						actionTable.put(new Pair<>(variable, terminal), production);
+						actionTable.put(new Pair<>(variable, terminal), productionRule);
 					}
 				} // Case 2: Production starts with a terminal
-				else if (production.getFirst() instanceof LexicalUnit) {
-					actionTable.put(new Pair<>(variable, (LexicalUnit) production.getFirst()), production);
+				else if (productionRule.getProduction().getFirst() instanceof LexicalUnit) {
+					actionTable.put(new Pair<>(variable, (LexicalUnit) productionRule.getProduction().getFirst()), productionRule);
 				} // Case 3: Production starts with a variable
 				else {
-					GlsVariable otherVariable = (GlsVariable) production.getFirst();
+					GlsVariable otherVariable = (GlsVariable) productionRule.getProduction().getFirst();
 					Set<LexicalUnit> firstOther = getFirst(otherVariable);
 					for (LexicalUnit terminal : firstOther) {
-						actionTable.put(new Pair<>(variable, terminal), production);
+						actionTable.put(new Pair<>(variable, terminal), productionRule);
 					}
 				}
 			}
@@ -117,18 +99,19 @@ public class GlsGrammar{
 		return GlsVariable.PROGRAM;
 	}
 
-	public Map<GlsVariable, List<List<Symbol>>> getProductionRules() {
-		return productionRules;
+	public List<ProductionRule> getProductionRules(GlsVariable variable) {
+		List<ProductionRule> rules = new ArrayList<>();
+		for (ProductionRule rule : this.productionRules) {
+			if (rule.getVariable() == variable) {
+				rules.add(rule);
+			}
+		}
+		return rules;
 	}
 
-	public List<List<Symbol>> getProductionRule(GlsVariable variable) {
-		return this.productionRules.get(variable);
-	}
-
-	public List<Symbol> getProduction(GlsVariable variable, LexicalUnit terminal) {
+	public ProductionRule getProduction(GlsVariable variable, LexicalUnit terminal) {
 		return this.actionTable.get(new Pair<>(variable, terminal));
 	}
-
 
 	/**
 	 * Returns the first set of a variable.
@@ -138,11 +121,11 @@ public class GlsGrammar{
 	 */
 	public Set<LexicalUnit> getFirst(GlsVariable variable) {
 		Set<LexicalUnit> first = new HashSet<>();
-		for (List<Symbol> production : this.getProductionRule(variable)) {
-			if (production.isEmpty()) {
+		for (ProductionRule productionRule : this.getProductionRules(variable)) {
+			if (productionRule.getProduction().isEmpty()) {
 				continue;
 			}
-			Symbol firstToken = production.getFirst();
+			Symbol firstToken = productionRule.getProduction().getFirst();
 			if (firstToken instanceof LexicalUnit) {
 				first.add((LexicalUnit) firstToken);
 			} else {
@@ -166,11 +149,11 @@ public class GlsGrammar{
 		}
 
 		for (GlsVariable v : getVariables()) {
-			for (List<Symbol> production : this.getProductionRule(v)) {
-				for (int i = 0; i < production.size(); i++) {
-					if (production.get(i) == variable) {
+			for (ProductionRule productionRule : this.getProductionRules(v)) {
+				for (int i = 0; i < productionRule.getProduction().size(); i++) {
+					if (productionRule.getProduction().get(i) == variable) {
 						// Case 1: Variable is at the end of the production
-						if (i == production.size() - 1) {
+						if (i == productionRule.getProduction().size() - 1) {
 							if (v != variable) {
 								follow.addAll(this.getFollow(v));
 							}
@@ -181,14 +164,14 @@ public class GlsGrammar{
 						}
 						// Case 2: Variable is followed by other symbols
 						else {
-							Symbol nextToken = production.get(i + 1);
+							Symbol nextToken = productionRule.getProduction().get(i + 1);
 							if (nextToken instanceof LexicalUnit) {
 								follow.add((LexicalUnit) nextToken);
 							} else {
 								// Add FIRST(nextToken)
 								follow.addAll(this.getFirst((GlsVariable) nextToken));
 								// If epsilon (empty list) is in FIRST(nextToken), include FOLLOW(v)
-								if (this.getProductionRule((GlsVariable) nextToken).contains(List.of())) {
+								if (this.getProductionRules((GlsVariable) nextToken).contains(List.of())) {
 									follow.addAll(this.getFollow((GlsVariable) nextToken));
 								}
 							}

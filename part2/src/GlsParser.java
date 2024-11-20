@@ -1,11 +1,11 @@
 import java.io.IOException;
-import java.util.List;
 import java.util.Stack;
 
 public class GlsParser {
 	private final LexicalAnalyzer lexer;
 	private final GlsGrammar grammar;
-
+	private ParseTree parseTree = null;
+	private String leftmostDerivation = "";
 
 	public GlsParser(LexicalAnalyzer lexer, GlsGrammar grammar) {
 		this.lexer = lexer;
@@ -13,11 +13,11 @@ public class GlsParser {
 	}
 
 	public ParseTree getParseTree() {
-		return null;
+		return this.parseTree;
 	}
 
 	public String getLeftmostDerivation() {
-		return null;
+		return this.leftmostDerivation;
 	}
 
 
@@ -30,12 +30,12 @@ public class GlsParser {
 			Symbol x = stack.peek();
 			GlsVariable v = x instanceof GlsVariable ? (GlsVariable) x : null;
 			if (v != null && grammar.getProduction(v, terminal) != null) {
-				List<Symbol> production = grammar.getProduction(v, terminal);
+				ProductionRule productionRule= grammar.getProduction(v, terminal);
 				stack.pop();
-				for (int i = production.size() - 1; i >= 0; i--) {
-					stack.push(production.get(i));
+				for (int i = productionRule.getProduction().size() - 1; i >= 0; i--) {
+					stack.push(productionRule.getProduction().get(i));
 				}
-				// TODO: Print the number of the production rule
+				this.leftmostDerivation += productionRule.getId() + " ";
 			} else if (v == null && x == terminal) {
 				stack.pop();
 				lexicalSymbol = lexer.nextToken();
