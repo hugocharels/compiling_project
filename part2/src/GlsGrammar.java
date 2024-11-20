@@ -10,17 +10,17 @@ public class GlsGrammar{
 		this.buildProductionRules();
 		this.buildActionTable();
 
-		System.out.println("First sets:");
-		for (GlsVariable variable : this.getVariables()) {
-			System.out.println(variable + ": " + this.getFirst(variable));
-		}
-		System.out.println("\nFollow sets:");
-		for (GlsVariable variable : this.getVariables()) {
-			System.out.println(variable + ": " + this.getFollow(variable));
-		}
-
-		System.out.println("\nAction Table:");
-		System.out.println(actionTable);
+//		System.out.println("First sets:");
+//		for (GlsVariable variable : this.getVariables()) {
+//			System.out.println(variable + ": " + this.getFirst(variable));
+//		}
+//		System.out.println("\nFollow sets:");
+//		for (GlsVariable variable : this.getVariables()) {
+//			System.out.println(variable + ": " + this.getFollow(variable));
+//		}
+//
+//		System.out.println("\nAction Table:");
+//		System.out.println(actionTable);
 
 	}
 
@@ -70,8 +70,8 @@ public class GlsGrammar{
 				List.of(GlsVariable.EXPR_ARITH, GlsVariable.COMP, GlsVariable.EXPR_ARITH)));
 		productionRules.put(GlsVariable.COMP, List.of(
 				List.of(GlsTerminal.EQUAL),
-				List.of(GlsTerminal.GEQUAL),
-				List.of(GlsTerminal.GREATER)));
+				List.of(GlsTerminal.SEQUAL),
+				List.of(GlsTerminal.SMALLER)));
 		productionRules.put(GlsVariable.WHILE, List.of(
 				List.of(GlsTerminal.WHILE, GlsTerminal.LBRACK, GlsVariable.COND, GlsTerminal.RBRACK, GlsTerminal.REPEAT, GlsVariable.CODE, GlsTerminal.END)));
 		productionRules.put(GlsVariable.OUTPUT, List.of(
@@ -125,6 +125,10 @@ public class GlsGrammar{
 		return this.productionRules.get(variable);
 	}
 
+	public List<GlsToken> getProduction(GlsVariable variable, GlsTerminal terminal) {
+		return this.actionTable.get(new Pair<>(variable, terminal));
+	}
+
 
 	/**
 	 * Returns the first set of a variable.
@@ -169,9 +173,11 @@ public class GlsGrammar{
 						if (i == production.size() - 1) {
 							if (v != variable) {
 								follow.addAll(this.getFollow(v));
-							} else {
-								follow.addAll(this.getFirst(v));
 							}
+							// TODO: Check if thing just under is correct
+							//	else {
+							//	    follow.addAll(this.getFirst(v));
+							//	}
 						}
 						// Case 2: Variable is followed by other symbols
 						else {

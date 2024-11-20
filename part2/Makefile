@@ -6,6 +6,7 @@ LEXER_FILE = $(SRC_DIR)/LexicalAnalyzer.java
 CLASS_FILES = $(SRC_DIR)/*.class
 MAIN_CLASS = Main
 INPUT_FILE = "test/Euclid.gls"
+OUTPUT_FILE = "test/Euclid.tex"
 JFLEX_JAR_PATH = "dist/jflex-full-1.9.1.jar"
 
 # Default target: compile and run
@@ -24,7 +25,7 @@ $(LEXER_FILE): $(FLEX_FILE)
 # Run the compiled program
 run: jar
 	@echo "Running the program..."
-	@java -jar dist/part2.jar $(INPUT_FILE)
+	@java -jar dist/part2.jar -wt $(OUTPUT_FILE) $(INPUT_FILE)
 
 jar: compile
 	@echo "Creating jar file..."

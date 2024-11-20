@@ -13,35 +13,36 @@ public class Main {
 	 * @param args command-line arguments
 	 */
 	public static void main(String[] args) {
-
-		GlsGrammar grammar = new GlsGrammar();
-		System.exit(0);
-
-		if (args.length < 1) {
-			System.err.println("Usage: java -jar part2.jar sourceFile.gls OR java -jar part2.jar -wt sourceFile.tex sourceFile.gls");
-			return;
-		}
-
-		boolean writeToFile = false;
+		String inputFile;
 		String outputFile = "";
-		String inputFile = "";
 
-		if (args[0].equals("-wt")) {
-			if (args.length != 3) {
-				System.err.println("Invalid usage for -wt. Expected: java -jar part2.jar -wt sourceFile.tex sourceFile.gls");
+		switch (args.length) {
+			case 0:
+				System.err.println("Usage:\n\tjava -jar part2.jar sourceFile.gls\n\tjava -jar part2.jar -wt sourceFile.tex sourceFile.gls");
 				return;
-			}
-			writeToFile = true;
-			outputFile = args[1];
-			inputFile = args[2];
-		} else {
-			inputFile = args[0];
+			case 1:
+				inputFile = args[0];
+				break;
+			case 3:
+				if (!args[0].equals("-wt")) {
+					System.err.println("Invalid usage for -wt. Expected: java -jar part2.jar -wt sourceFile.tex sourceFile.gls");
+					return;
+				}
+				outputFile = args[1];
+				inputFile = args[2];
+				break;
+			default:
+				System.err.println("Invalid number of arguments.");
+				return;
 		}
 
 		try (FileReader reader = new FileReader(inputFile)) {
 			// Initialize the lexer with the input
 			LexicalAnalyzer lexer = new LexicalAnalyzer(reader);
-			Parser parser = new Parser(lexer);
+			GlsGrammar grammar = new GlsGrammar();
+			GlsParser parser = new GlsParser(lexer, grammar);
+
+			parser.parse();
 
 			// Parse the input and build the parse tree
 			ParseTree parseTree = parser.getParseTree(); // Ensure parseTree() returns a ParseTree object
@@ -51,7 +52,7 @@ public class Main {
 			System.out.println(leftmostDerivation);
 
 			// Write the parse tree to the LaTeX file if -wt is specified
-			if (writeToFile) {
+			if (!outputFile.equals("")) {
 				try (FileWriter writer = new FileWriter(outputFile)) {
 					writer.write(parseTree.toLaTeX()); // Write the LaTeX representation to the output file
 				}
