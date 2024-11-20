@@ -96,8 +96,10 @@ public class GlsGrammar{
 				} // Case 3: Production starts with a variable
 				else {
 					GlsVariable otherVariable = (GlsVariable) production.getFirst();
-					// for machin in f(firstToken) -> if something then terminal = this one;
-					// actionTable.put(new Pair<>(variable, otherVariable), production);
+					Set<GlsTerminal> firstOther = getFirst(otherVariable);
+					for (GlsTerminal terminal : firstOther) {
+						actionTable.put(new Pair<>(variable, terminal), production);
+					}
 				}
 			}
 		}
@@ -112,7 +114,7 @@ public class GlsGrammar{
 	}
 
 	public GlsVariable getStartSymbol() {
-		return null;
+		return GlsVariable.PROGRAM;
 	}
 
 	public Map<GlsVariable, List<List<GlsToken>>> getProductionRules() {
@@ -155,14 +157,20 @@ public class GlsGrammar{
 	public Set<GlsTerminal> getFollow(GlsVariable variable) {
 		Set<GlsTerminal> follow = new HashSet<>();
 
+		if (variable == this.getStartSymbol()) {
+			follow.add(GlsTerminal.EOS);
+		}
+
 		for (GlsVariable v : getVariables()) {
 			for (List<GlsToken> production : this.getProductionRule(v)) {
 				for (int i = 0; i < production.size(); i++) {
 					if (production.get(i) == variable) {
 						// Case 1: Variable is at the end of the production
 						if (i == production.size() - 1) {
-							if (v != variable) { // Avoid self-referential recursion
-								follow.addAll(getFollow(v));
+							if (v != variable) {
+								follow.addAll(this.getFollow(v));
+							} else {
+								follow.addAll(this.getFirst(v));
 							}
 						}
 						// Case 2: Variable is followed by other symbols
@@ -172,10 +180,10 @@ public class GlsGrammar{
 								follow.add((GlsTerminal) nextToken);
 							} else {
 								// Add FIRST(nextToken)
-								follow.addAll(getFirst((GlsVariable) nextToken));
+								follow.addAll(this.getFirst((GlsVariable) nextToken));
 								// If epsilon (empty list) is in FIRST(nextToken), include FOLLOW(v)
 								if (this.getProductionRule((GlsVariable) nextToken).contains(List.of())) {
-									follow.addAll(getFollow((GlsVariable) nextToken));
+									follow.addAll(this.getFollow((GlsVariable) nextToken));
 								}
 							}
 						}
