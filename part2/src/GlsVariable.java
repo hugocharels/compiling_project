@@ -1,4 +1,4 @@
-public enum GlsVariable implements GlsToken {
+public enum GlsVariable implements Symbol {
 	PROGRAM,
 	CODE,
 	INSTRUCTION,
