@@ -1,7 +1,7 @@
 /**
  * A terminal symbol, a.k.a. a letter in the grammar.
  */
-public enum LexicalUnit {
+public enum LexicalUnit implements Symbol {
 	/**
 	 * [ProgName]
 	 */

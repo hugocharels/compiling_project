@@ -1,11 +1,11 @@
 import java.io.IOException;
-import java.util.List;
 import java.util.Stack;
 
 public class GlsParser {
 	private final LexicalAnalyzer lexer;
 	private final GlsGrammar grammar;
-
+	private final ParseTree parseTree = null;
+	private String leftmostDerivation = "";
 
 	public GlsParser(LexicalAnalyzer lexer, GlsGrammar grammar) {
 		this.lexer = lexer;
@@ -13,33 +13,32 @@ public class GlsParser {
 	}
 
 	public ParseTree getParseTree() {
-		return null;
+		return this.parseTree;
 	}
 
 	public String getLeftmostDerivation() {
-		return null;
+		return this.leftmostDerivation;
 	}
 
-
 	public void parse() throws IOException {
-		Stack<GlsToken> stack = new Stack<>();
+		Stack<Symbol> stack = new Stack<>();
 		stack.push(grammar.getStartSymbol());
-		Symbol symbol = lexer.nextToken();
-		GlsTerminal terminal = GlsTerminal.fromLexicalUnit(symbol.getType());
+		LexicalSymbol lexicalSymbol = lexer.nextToken();
+		LexicalUnit terminal = lexicalSymbol.getType();
 		while (!stack.isEmpty()) {
-			GlsToken x = stack.peek();
+			Symbol x = stack.peek();
 			GlsVariable v = x instanceof GlsVariable ? (GlsVariable) x : null;
 			if (v != null && grammar.getProduction(v, terminal) != null) {
-				List<GlsToken> production = grammar.getProduction(v, terminal);
+				ProductionRule productionRule = grammar.getProduction(v, terminal);
 				stack.pop();
-				for (int i = production.size() - 1; i >= 0; i--) {
-					stack.push(production.get(i));
+				for (int i = productionRule.getProduction().size() - 1; i >= 0; i--) {
+					stack.push(productionRule.getProduction().get(i));
 				}
-				// TODO: Print the number of the production rule
-			} else if (v== null && (GlsTerminal) x == terminal) {
+				this.leftmostDerivation += productionRule.getId() + " ";
+			} else if (v == null && x == terminal) {
 				stack.pop();
-				symbol = lexer.nextToken();
-				terminal = GlsTerminal.fromLexicalUnit(symbol.getType());
+				lexicalSymbol = lexer.nextToken();
+				terminal = lexicalSymbol.getType();
 			} else {
 				throw new IOException("Syntax error");
 			}
