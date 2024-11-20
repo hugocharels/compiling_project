@@ -29,6 +29,7 @@ run: jar
 jar: compile
 	@echo "Creating jar file..."
 	@jar cvfe dist/part2.jar $(MAIN_CLASS) -C $(SRC_DIR) .
+	@make clean
 
 # Clean: remove all compiled class files
 clean:
