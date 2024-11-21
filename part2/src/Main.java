@@ -56,8 +56,8 @@ public class Main {
 			// Write the parse tree to the LaTeX file if -wt is specified
 			if (!outputFile.equals("")) {
 				try (FileWriter writer = new FileWriter(outputFile)) {
-					writer.write(parseTree.toLaTeX()); // Write the LaTeX representation to the output file
-					// writer.write(parseTree.toTikZPicture()); // Write the TikZ representation to the output file
+					// writer.write(parseTree.toLaTeX()); // Write the LaTeX representation to the output file
+					writer.write(parseTree.toTikZPicture()); // Write the TikZ representation to the output file
 				}
 				System.out.println("Parse tree written to: " + outputFile);
 			}

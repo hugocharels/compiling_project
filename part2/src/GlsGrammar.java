@@ -178,10 +178,9 @@ public class GlsGrammar {
 		return false;
 	}
 
-
 	public String toLatex() {
-		List<LexicalUnit> sortedTerminals = List.of(LexicalUnit.LET, LexicalUnit.PROGNAME, LexicalUnit.BE, LexicalUnit.END, LexicalUnit.ELSE, LexicalUnit.IF, LexicalUnit.THEN, LexicalUnit.WHILE, LexicalUnit.REPEAT, LexicalUnit.OUTPUT, LexicalUnit.INPUT, LexicalUnit.VARNAME, LexicalUnit.NUMBER, LexicalUnit.LPAREN, LexicalUnit.RPAREN, LexicalUnit.COLUMN, LexicalUnit.LBRACK, LexicalUnit.RBRACK,LexicalUnit.ASSIGN,LexicalUnit.PLUS,LexicalUnit.MINUS,LexicalUnit.TIMES,LexicalUnit.DIVIDE,LexicalUnit.EQUAL,LexicalUnit.SMALEQ,LexicalUnit.SMALLER, LexicalUnit.IMPLIES,LexicalUnit.PIPE,LexicalUnit.EOS);
-		List<GlsVariable> sortedVariables = List.of(GlsVariable.PROGRAM,GlsVariable.CODE,GlsVariable.INSTRUCTION,GlsVariable.ASSIGN,GlsVariable.EXPR_ARITH,GlsVariable.EXPR_ARITH_PRIME,GlsVariable.PROD_ARITH,GlsVariable.PROD_ARITH_PRIME,GlsVariable.ATOM,GlsVariable.IF,GlsVariable.IFSEQ, GlsVariable.COND, GlsVariable.NEXT_COND, GlsVariable.COND_SIMPLE, GlsVariable.COMP,GlsVariable.WHILE,GlsVariable.OUTPUT,GlsVariable.INPUT);
+		List<LexicalUnit> sortedTerminals = List.of(LexicalUnit.LET, LexicalUnit.PROGNAME, LexicalUnit.BE, LexicalUnit.END, LexicalUnit.ELSE, LexicalUnit.IF, LexicalUnit.THEN, LexicalUnit.WHILE, LexicalUnit.REPEAT, LexicalUnit.OUTPUT, LexicalUnit.INPUT, LexicalUnit.VARNAME, LexicalUnit.NUMBER, LexicalUnit.LPAREN, LexicalUnit.RPAREN, LexicalUnit.COLUMN, LexicalUnit.LBRACK, LexicalUnit.RBRACK, LexicalUnit.ASSIGN, LexicalUnit.PLUS, LexicalUnit.MINUS, LexicalUnit.TIMES, LexicalUnit.DIVIDE, LexicalUnit.EQUAL, LexicalUnit.SMALEQ, LexicalUnit.SMALLER, LexicalUnit.IMPLIES, LexicalUnit.PIPE, LexicalUnit.EOS);
+		List<GlsVariable> sortedVariables = List.of(GlsVariable.PROGRAM, GlsVariable.CODE, GlsVariable.INSTRUCTION, GlsVariable.ASSIGN, GlsVariable.EXPR_ARITH, GlsVariable.EXPR_ARITH_PRIME, GlsVariable.PROD_ARITH, GlsVariable.PROD_ARITH_PRIME, GlsVariable.ATOM, GlsVariable.IF, GlsVariable.IFSEQ, GlsVariable.COND, GlsVariable.NEXT_COND, GlsVariable.COND_SIMPLE, GlsVariable.COMP, GlsVariable.WHILE, GlsVariable.OUTPUT, GlsVariable.INPUT);
 		// Check if sortedTerminals and sortedVariables size is equal to the size of the terminals and variables
 		if (sortedTerminals.size() != this.getTerminals().size() || sortedVariables.size() != this.getVariables().size()) {
 			throw new IllegalStateException("The sorted terminals and variables lists are not complete.");
