@@ -42,6 +42,8 @@ public class Main {
 			GlsGrammar grammar = new GlsGrammar();
 			GlsParser parser = new GlsParser(lexer, grammar);
 
+			System.out.println(grammar.toLatex());
+
 			parser.parse();
 
 			// Parse the input and build the parse tree
@@ -55,6 +57,7 @@ public class Main {
 			if (!outputFile.equals("")) {
 				try (FileWriter writer = new FileWriter(outputFile)) {
 					writer.write(parseTree.toLaTeX()); // Write the LaTeX representation to the output file
+					// writer.write(parseTree.toTikZPicture()); // Write the TikZ representation to the output file
 				}
 				System.out.println("Parse tree written to: " + outputFile);
 			}

@@ -26,8 +26,8 @@ $(LEXER_FILE): $(FLEX_FILE)
 run: jar
 	@clear
 	@echo "Running the program..."
-	@java -jar dist/part2.jar $(INPUT_FILE)
-# @java -jar dist/part2.jar -wt $(OUTPUT_FILE) $(INPUT_FILE)
+# @java -jar dist/part2.jar $(INPUT_FILE)
+	@java -jar dist/part2.jar -wt $(OUTPUT_FILE) $(INPUT_FILE)
 
 jar: compile
 	@echo "Creating jar file..."

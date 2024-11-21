@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ParseTree {
 	private final Symbol label; // The label of the root of the tree
-	private final List<ParseTree> children; // Its children, which are trees themselves
+	private List<ParseTree> children; // Its children, which are trees themselves
 
 	/**
 	 * Creates a singleton tree with only a root labeled by lbl.
@@ -24,7 +24,7 @@ public class ParseTree {
 	 */
 	public ParseTree(Symbol lbl) {
 		this.label = lbl;
-		this.children = new ArrayList<ParseTree>(); // This tree has no children
+		this.children = new ArrayList<>(); // This tree has no children
 	}
 
 	/**
@@ -38,13 +38,21 @@ public class ParseTree {
 		this.children = chdn;
 	}
 
+	public void addChild(ParseTree child) {
+		children.add(child);
+	}
+
+	public void reverseChildOrder() {
+		this.children = this.children.reversed();
+	}
+
 	/**
 	 * Writes the tree as LaTeX code
 	 */
 	public String toLaTexTree() {
 		StringBuilder treeTeX = new StringBuilder();
 		treeTeX.append("[");
-		treeTeX.append("{" + label.toString() + "}");
+		treeTeX.append("{$" + label.toLatex() + "$}");
 		treeTeX.append(" ");
 
 		for (ParseTree child : children) {
@@ -60,9 +68,9 @@ public class ParseTree {
 	 */
 	public String toTikZ() {
 		StringBuilder treeTikZ = new StringBuilder();
-		treeTikZ.append("node {");
-		treeTikZ.append(label.toString());  // Implement this yourself in Symbol.java
-		treeTikZ.append("}\n");
+		treeTikZ.append("node {$");
+		treeTikZ.append(label.toLatex());  // Implement this yourself in Symbol.java
+		treeTikZ.append("$}\n");
 		for (ParseTree child : children) {
 			treeTikZ.append("child { ");
 			treeTikZ.append(child.toTikZ());

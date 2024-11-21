@@ -3,26 +3,12 @@ import java.util.*;
 
 public class GlsGrammar {
 
-	//	private final Map<GlsVariable, List<List<Symbol>>> productionRules = new HashMap<>();
 	private final Map<Pair<GlsVariable, LexicalUnit>, ProductionRule> actionTable = new HashMap<>();
 	private final List<ProductionRule> productionRules = new ArrayList<>(35);
 
 	public GlsGrammar() {
 		this.buildProductionRules();
 		this.buildActionTable();
-
-		System.out.println("First sets:");
-		for (GlsVariable variable : this.getVariables()) {
-			System.out.println(variable + ": " + this.getFirst(variable));
-		}
-		System.out.println("\nFollow sets:");
-		for (GlsVariable variable : this.getVariables()) {
-			System.out.println(variable + ": " + this.getFollow(variable));
-		}
-
-		System.out.println("\nAction Table:");
-		System.out.println(actionTable);
-
 	}
 
 	private void buildProductionRules() {
@@ -191,4 +177,77 @@ public class GlsGrammar {
 		}
 		return false;
 	}
+
+
+	public String toLatex() {
+		List<LexicalUnit> sortedTerminals = List.of(LexicalUnit.LET, LexicalUnit.PROGNAME, LexicalUnit.BE, LexicalUnit.END, LexicalUnit.ELSE, LexicalUnit.IF, LexicalUnit.THEN, LexicalUnit.WHILE, LexicalUnit.REPEAT, LexicalUnit.OUTPUT, LexicalUnit.INPUT, LexicalUnit.VARNAME, LexicalUnit.NUMBER, LexicalUnit.LPAREN, LexicalUnit.RPAREN, LexicalUnit.COLUMN, LexicalUnit.LBRACK, LexicalUnit.RBRACK,LexicalUnit.ASSIGN,LexicalUnit.PLUS,LexicalUnit.MINUS,LexicalUnit.TIMES,LexicalUnit.DIVIDE,LexicalUnit.EQUAL,LexicalUnit.SMALEQ,LexicalUnit.SMALLER, LexicalUnit.IMPLIES,LexicalUnit.PIPE,LexicalUnit.EOS);
+		List<GlsVariable> sortedVariables = List.of(GlsVariable.PROGRAM,GlsVariable.CODE,GlsVariable.INSTRUCTION,GlsVariable.ASSIGN,GlsVariable.EXPR_ARITH,GlsVariable.EXPR_ARITH_PRIME,GlsVariable.PROD_ARITH,GlsVariable.PROD_ARITH_PRIME,GlsVariable.ATOM,GlsVariable.IF,GlsVariable.IFSEQ, GlsVariable.COND, GlsVariable.NEXT_COND, GlsVariable.COND_SIMPLE, GlsVariable.COMP,GlsVariable.WHILE,GlsVariable.OUTPUT,GlsVariable.INPUT);
+		// Check if sortedTerminals and sortedVariables size is equal to the size of the terminals and variables
+		if (sortedTerminals.size() != this.getTerminals().size() || sortedVariables.size() != this.getVariables().size()) {
+			throw new IllegalStateException("The sorted terminals and variables lists are not complete.");
+		}
+		StringBuilder latexCode = new StringBuilder();
+
+		// --- Start building First and Follow sets ---
+		latexCode.append("\\begin{align*}\n");
+		for (GlsVariable variable : sortedVariables) {
+			latexCode.append("\t\\\\texttt{FIRST}(" + variable.toLatex() + ") &= \\{");
+			Set<LexicalUnit> first = this.getFirst(variable);
+			for (LexicalUnit terminal : sortedTerminals) {
+				if (first.contains(terminal)) {
+					latexCode.append("$" + terminal.toLatex() + "$, ");
+				}
+			}
+			// Remove the last comma and space
+			if (!first.isEmpty()) {
+				latexCode.deleteCharAt(latexCode.length() - 2);
+			}
+			latexCode.append("\\}\n");
+		}
+		// Remove the last newline
+		latexCode.deleteCharAt(latexCode.length() - 1);
+		latexCode.append("\n\\end{align*}\n\n");
+
+		latexCode.append("\\begin{align*}\n");
+		for (GlsVariable variable : sortedVariables) {
+			latexCode.append("\t\\\\texttt{FOLLOW}(" + variable.toLatex() + ") &= \\{");
+			Set<LexicalUnit> follow = this.getFollow(variable);
+			for (LexicalUnit terminal : sortedTerminals) {
+				if (follow.contains(terminal)) {
+					latexCode.append("$" + terminal.toLatex() + "$, ");
+				}
+			}
+			// Remove the last comma and space
+			if (!follow.isEmpty()) {
+				latexCode.deleteCharAt(latexCode.length() - 2);
+			}
+			latexCode.append("\\}\n");
+		}
+		// Remove the last newline
+		latexCode.deleteCharAt(latexCode.length() - 1);
+		latexCode.append("\n\\end{align*}\n\n");
+
+
+		// --- Start building Action table ---
+		latexCode.append("\\begin{tabular}{|l||")
+				.append("c|".repeat(sortedTerminals.size()))
+				.append("}\n\\hline\n");
+		latexCode.append("Variable");
+		for (LexicalUnit terminal : sortedTerminals) {
+			latexCode.append("&").append("$" + terminal.toLatex() + "$");
+		}
+		latexCode.append(" \\\\\n\\hline\\hline\n");
+		for (GlsVariable variable : sortedVariables) {
+			latexCode.append("$" + variable.toLatex() + "$");
+			for (LexicalUnit terminal : sortedTerminals) {
+				ProductionRule rule = actionTable.getOrDefault(new Pair<>(variable, terminal), null);
+				latexCode.append("&").append(rule != null ? rule.getId() : "");
+			}
+			latexCode.append(" \\\\\n\\hline\n");
+		}
+		latexCode.append("\\end{tabular}");
+
+		return latexCode.toString();
+	}
+
 }

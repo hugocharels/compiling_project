@@ -117,5 +117,41 @@ public enum LexicalUnit implements Symbol {
 	/**
 	 * End Of Stream
 	 */
-	EOS, // End of stream
+	EOS,
+	; // End of stream
+
+	@Override
+	public String toLatex() {
+		return switch (this) {
+			case PROGNAME -> "[\\texttt{ProgName}]";
+			case VARNAME -> "[\\texttt{VarName}]";
+			case NUMBER -> "[\\texttt{Number}]";
+			case LET -> "\\texttt{LET}";
+			case BE -> "\\texttt{BE}";
+			case END -> "\\texttt{END}";
+			case COLUMN -> "\\texttt{:}";
+			case ASSIGN -> "\\texttt{=}";
+			case LPAREN -> "\\texttt{(}";
+			case RPAREN -> "\\texttt{)}";
+			case MINUS -> "\\texttt{-}";
+			case PLUS -> "\\texttt{+}";
+			case TIMES -> "\\texttt{*}";
+			case DIVIDE -> "\\texttt{/}";
+			case IF -> "\\texttt{IF}";
+			case THEN -> "\\texttt{THEN}";
+			case ELSE -> "\\texttt{ELSE}";
+			case LBRACK -> "\\texttt{\\{}";
+			case RBRACK -> "\\texttt{\\}}";
+			case IMPLIES -> "\\texttt{->}";
+			case PIPE -> "\\texttt{|}";
+			case EQUAL -> "\\texttt{==}";
+			case SMALEQ -> "\\texttt{<=}";
+			case SMALLER -> "\\texttt{<}";
+			case WHILE -> "\\texttt{WHILE}";
+			case REPEAT -> "\\texttt{REPEAT}";
+			case OUTPUT -> "\\texttt{OUT}";
+			case INPUT -> "\\texttt{IN}";
+			case EOS -> "\\texttt{EOS}";
+		};
+	}
 }
