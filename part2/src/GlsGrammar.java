@@ -148,10 +148,12 @@ public class GlsGrammar {
 								follow.add((GlsTerminal) nextSymbol);
 							} else {
 								// Add FIRST(nextSymbol)
-								follow.addAll(this.getFirst((GlsVariable) nextSymbol));
-								// If epsilon is in FIRST(nextSymbol), include FOLLOW(v)
-								if (this.hasEmptyProduction((GlsVariable) nextSymbol)) {
-									follow.addAll(this.getFollow((GlsVariable) nextSymbol));
+								for (GlsTerminal terminal : this.getFirst((GlsVariable) nextSymbol)) {
+									if (terminal != GlsTerminal.EPSILON) {
+										follow.add(terminal);
+									} else { // If epsilon is in FIRST(nextSymbol), include FOLLOW(v)
+										follow.addAll(this.getFollow((GlsVariable) nextSymbol));
+									}
 								}
 							}
 						}
@@ -160,15 +162,6 @@ public class GlsGrammar {
 			}
 		}
 		return follow;
-	}
-
-	private boolean hasEmptyProduction(GlsVariable nextSymbol) {
-		for (ProductionRule productionRule : this.getProductionRules(nextSymbol)) {
-			if (productionRule.getProduction().getFirst() == GlsTerminal.EPSILON) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public String toLatex() {
@@ -183,18 +176,18 @@ public class GlsGrammar {
 		// --- Start building First and Follow sets ---
 		latexCode.append("\\begin{align*}\n");
 		for (GlsVariable variable : sortedVariables) {
-			latexCode.append("\t\\\\texttt{FIRST}(" + variable.toLatex() + ") &= \\{");
+			latexCode.append("\t\\texttt{FIRST}(" + variable.toLatex() + ") &= \\{");
 			Set<GlsTerminal> first = this.getFirst(variable);
 			for (GlsTerminal terminal : sortedTerminals) {
 				if (first.contains(terminal)) {
-					latexCode.append("$" + terminal.toLatex() + "$, ");
+					latexCode.append(terminal.toLatex() + ", ");
 				}
 			}
 			// Remove the last comma and space
 			if (!first.isEmpty()) {
 				latexCode.deleteCharAt(latexCode.length() - 2);
 			}
-			latexCode.append("\\}\n");
+			latexCode.append("\\} \\\\ \n");
 		}
 		// Remove the last newline
 		latexCode.deleteCharAt(latexCode.length() - 1);
@@ -202,18 +195,18 @@ public class GlsGrammar {
 
 		latexCode.append("\\begin{align*}\n");
 		for (GlsVariable variable : sortedVariables) {
-			latexCode.append("\t\\\\texttt{FOLLOW}(" + variable.toLatex() + ") &= \\{");
+			latexCode.append("\t\\texttt{FOLLOW}(" + variable.toLatex() + ") &= \\{");
 			Set<GlsTerminal> follow = this.getFollow(variable);
 			for (GlsTerminal terminal : sortedTerminals) {
 				if (follow.contains(terminal)) {
-					latexCode.append("$" + terminal.toLatex() + "$, ");
+					latexCode.append(terminal.toLatex() + ", ");
 				}
 			}
 			// Remove the last comma and space
 			if (!follow.isEmpty()) {
 				latexCode.deleteCharAt(latexCode.length() - 2);
 			}
-			latexCode.append("\\}\n");
+			latexCode.append("\\} \\\\ \n");
 		}
 		// Remove the last newline
 		latexCode.deleteCharAt(latexCode.length() - 1);
