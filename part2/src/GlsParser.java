@@ -1,4 +1,3 @@
-import exceptions.GenericSyntaxException;
 import exceptions.MissingProductionRuleException;
 import exceptions.ParsingException;
 import exceptions.UnexpectedTerminalException;
@@ -93,15 +92,11 @@ public class GlsParser {
 			} else {
 				if (v == null) {
 					throw new UnexpectedTerminalException(
-							"Expected terminal " + x + " but found " + terminal
-					);
-				} else if (grammar.getProduction(v, terminal) == null) {
-					throw new MissingProductionRuleException(
-							"No production rule for variable " + v + " with terminal " + terminal
+							"Expected '" + x.toString() + "' but found '" + lexicalSymbol.getValue() + "' on line " + lexicalSymbol.getLine() + ", column " + lexicalSymbol.getColumn() + "."
 					);
 				} else {
-					throw new GenericSyntaxException(
-							"Syntax error at " + terminal + " while parsing " + v
+					throw new MissingProductionRuleException(
+							"No production rule for variable " + v + " with terminal " + terminal
 					);
 				}
 			}

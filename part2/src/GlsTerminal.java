@@ -167,4 +167,39 @@ public enum GlsTerminal implements Symbol {
 			case EPSILON -> "\\varepsilon";
 		};
 	}
+
+	public String toString() {
+		return switch (this) {
+			case PROGNAME -> "[ProgName]";
+			case VARNAME -> "[VarName]";
+			case NUMBER -> "[Number]";
+			case LET -> "LET";
+			case BE -> "BE";
+			case END -> "END";
+			case COLUMN -> ":";
+			case ASSIGN -> "=";
+			case LPAREN -> "(";
+			case RPAREN -> ")";
+			case MINUS -> "-";
+			case PLUS -> "+";
+			case TIMES -> "*";
+			case DIVIDE -> "/";
+			case IF -> "IF";
+			case THEN -> "THEN";
+			case ELSE -> "ELSE";
+			case LBRACK -> "{";
+			case RBRACK -> "}";
+			case IMPLIES -> "->";
+			case PIPE -> "|";
+			case EQUAL -> "==";
+			case SMALEQ -> "<=";
+			case SMALLER -> "<";
+			case WHILE -> "WHILE";
+			case REPEAT -> "REPEAT";
+			case OUTPUT -> "OUT";
+			case INPUT -> "IN";
+			case EOS -> "EOS";
+			case EPSILON -> "ε";
+		};
+	}
 }
