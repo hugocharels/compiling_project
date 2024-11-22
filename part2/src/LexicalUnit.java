@@ -120,6 +120,11 @@ public enum LexicalUnit {
 	EOS,
 	; // End of stream
 
+	/**
+	 * Converts the LexicalUnit to its corresponding GlsTerminal.
+	 *
+	 * @return the corresponding GlsTerminal
+	 */
 	GlsTerminal toGlsTerminal() {
 		return switch (this) {
 			case PROGNAME -> GlsTerminal.PROGNAME;
@@ -153,5 +158,4 @@ public enum LexicalUnit {
 			case EOS -> GlsTerminal.EOS;
 		};
 	}
-
 }

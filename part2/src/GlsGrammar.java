@@ -1,16 +1,24 @@
 import java.util.*;
 
-
+/**
+ * Represents the grammar for the GILLES language.
+ */
 public class GlsGrammar {
 
 	private final Map<Pair<GlsVariable, GlsTerminal>, ProductionRule> actionTable = new HashMap<>();
 	private final List<ProductionRule> productionRules = new ArrayList<>(35);
 
+	/**
+	 * Constructs a new GlsGrammar and initializes the production rules and action table.
+	 */
 	public GlsGrammar() {
 		this.buildProductionRules();
 		this.buildActionTable();
 	}
 
+	/**
+	 * Builds the production rules for the GILLES grammar.
+	 */
 	private void buildProductionRules() {
 		this.productionRules.add(new ProductionRule(1, GlsVariable.PROGRAM, List.of(GlsTerminal.LET, GlsTerminal.PROGNAME, GlsTerminal.BE, GlsVariable.CODE, GlsTerminal.END)));
 		this.productionRules.add(new ProductionRule(2, GlsVariable.CODE, List.of(GlsVariable.INSTRUCTION, GlsTerminal.COLUMN, GlsVariable.CODE)));
@@ -49,6 +57,9 @@ public class GlsGrammar {
 		this.productionRules.add(new ProductionRule(35, GlsVariable.INPUT, List.of(GlsTerminal.INPUT, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
 	}
 
+	/**
+	 * Builds the action table for the GILLES grammar.
+	 */
 	private void buildActionTable() {
 		// For each rule variable -> production
 		for (GlsVariable variable : this.getVariables()) {
@@ -73,18 +84,39 @@ public class GlsGrammar {
 		}
 	}
 
+	/**
+	 * Returns the set of variables in the GILLES grammar.
+	 *
+	 * @return the set of variables
+	 */
 	public Set<GlsVariable> getVariables() {
 		return Set.of(GlsVariable.values());
 	}
 
+	/**
+	 * Returns the set of terminals in the GILLES grammar.
+	 *
+	 * @return the set of terminals
+	 */
 	public Set<GlsTerminal> getTerminals() {
 		return Set.of(GlsTerminal.values());
 	}
 
+	/**
+	 * Returns the start symbol of the GILLES grammar.
+	 *
+	 * @return the start symbol
+	 */
 	public GlsVariable getStartSymbol() {
 		return GlsVariable.PROGRAM;
 	}
 
+	/**
+	 * Returns the production rules for a given variable.
+	 *
+	 * @param variable the variable whose production rules are to be retrieved
+	 * @return the list of production rules for the variable
+	 */
 	public List<ProductionRule> getProductionRules(GlsVariable variable) {
 		List<ProductionRule> rules = new ArrayList<>();
 		for (ProductionRule rule : this.productionRules) {
@@ -95,6 +127,13 @@ public class GlsGrammar {
 		return rules;
 	}
 
+	/**
+	 * Returns the production rule for a given variable and terminal.
+	 *
+	 * @param variable the variable
+	 * @param terminal the terminal
+	 * @return the production rule
+	 */
 	public ProductionRule getProduction(GlsVariable variable, GlsTerminal terminal) {
 		return this.actionTable.get(new Pair<>(variable, terminal));
 	}
@@ -164,6 +203,11 @@ public class GlsGrammar {
 		return follow;
 	}
 
+	/**
+	 * Generates a LaTeX representation of the GILLES grammar.
+	 *
+	 * @return the LaTeX representation of the grammar
+	 */
 	public String toLatex() {
 		List<GlsTerminal> sortedTerminals = List.of(GlsTerminal.LET, GlsTerminal.PROGNAME, GlsTerminal.BE, GlsTerminal.END, GlsTerminal.ELSE, GlsTerminal.IF, GlsTerminal.THEN, GlsTerminal.WHILE, GlsTerminal.REPEAT, GlsTerminal.OUTPUT, GlsTerminal.INPUT, GlsTerminal.VARNAME, GlsTerminal.NUMBER, GlsTerminal.LPAREN, GlsTerminal.RPAREN, GlsTerminal.COLUMN, GlsTerminal.LBRACK, GlsTerminal.RBRACK, GlsTerminal.ASSIGN, GlsTerminal.PLUS, GlsTerminal.MINUS, GlsTerminal.TIMES, GlsTerminal.DIVIDE, GlsTerminal.EQUAL, GlsTerminal.SMALEQ, GlsTerminal.SMALLER, GlsTerminal.IMPLIES, GlsTerminal.PIPE, GlsTerminal.EOS, GlsTerminal.EPSILON);
 		List<GlsVariable> sortedVariables = List.of(GlsVariable.PROGRAM, GlsVariable.CODE, GlsVariable.INSTRUCTION, GlsVariable.ASSIGN, GlsVariable.EXPR_ARITH, GlsVariable.EXPR_ARITH_PRIME, GlsVariable.PROD_ARITH, GlsVariable.PROD_ARITH_PRIME, GlsVariable.ATOM, GlsVariable.IF, GlsVariable.IFSEQ, GlsVariable.COND, GlsVariable.NEXT_COND, GlsVariable.COND_SIMPLE, GlsVariable.COMP, GlsVariable.WHILE, GlsVariable.OUTPUT, GlsVariable.INPUT);
@@ -219,14 +263,18 @@ public class GlsGrammar {
 				.append("}\n\\hline\n");
 		latexCode.append("Variable");
 		for (GlsTerminal terminal : sortedTerminals) {
-			if (terminal == GlsTerminal.EPSILON) { continue; }
+			if (terminal == GlsTerminal.EPSILON) {
+				continue;
+			}
 			latexCode.append("&").append("$" + terminal.toLatex() + "$");
 		}
 		latexCode.append(" \\\\\n\\hline\\hline\n");
 		for (GlsVariable variable : sortedVariables) {
 			latexCode.append("$" + variable.toLatex() + "$");
 			for (GlsTerminal terminal : sortedTerminals) {
-				if (terminal == GlsTerminal.EPSILON) { continue; }
+				if (terminal == GlsTerminal.EPSILON) {
+					continue;
+				}
 				ProductionRule rule = actionTable.getOrDefault(new Pair<>(variable, terminal), null);
 				latexCode.append("&").append(rule != null ? rule.getId() : "");
 			}

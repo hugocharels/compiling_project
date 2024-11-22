@@ -1,7 +1,9 @@
 /**
  * LexicalSymbol objects represent a terminal symbol in the grammar as a state of the lexer.
  *
- * @author Not fully determined but assumed to be among Marie Van Den Bogaard, Léo Exibard, Gilles Geeraerts. Javadoc by Mathieu Sassolas. Modified by Hugo Charels.
+ * @author
+ * Not fully determined but assumed to be among Marie Van Den Bogaard, Léo Exibard, Gilles Geeraerts.
+ * Javadoc by Mathieu Sassolas. Modified by Hugo Charels.
  */
 public class LexicalSymbol {
 	/**

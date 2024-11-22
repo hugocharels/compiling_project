@@ -1,24 +1,86 @@
+/**
+ * Enum representing the variables in the GILLES language.
+ */
 public enum GlsVariable implements Symbol {
+	/**
+	 * The program variable.
+	 */
 	PROGRAM,
+	/**
+	 * The code variable.
+	 */
 	CODE,
+	/**
+	 * The instruction variable.
+	 */
 	INSTRUCTION,
+	/**
+	 * The assign variable.
+	 */
 	ASSIGN,
+	/**
+	 * The arithmetic expression variable.
+	 */
 	EXPR_ARITH,
+	/**
+	 * The prime arithmetic expression variable.
+	 */
 	EXPR_ARITH_PRIME,
+	/**
+	 * The arithmetic product variable.
+	 */
 	PROD_ARITH,
+	/**
+	 * The prime arithmetic product variable.
+	 */
 	PROD_ARITH_PRIME,
+	/**
+	 * The atom variable.
+	 */
 	ATOM,
+	/**
+	 * The if variable.
+	 */
 	IF,
+	/**
+	 * The if sequence variable.
+	 */
 	IFSEQ,
+	/**
+	 * The condition variable.
+	 */
 	COND,
+	/**
+	 * The next condition variable.
+	 */
 	NEXT_COND,
+	/**
+	 * The simple condition variable.
+	 */
 	COND_SIMPLE,
+	/**
+	 * The comparison variable.
+	 */
 	COMP,
+	/**
+	 * The while variable.
+	 */
 	WHILE,
+	/**
+	 * The output variable.
+	 */
 	OUTPUT,
+	/**
+	 * The input variable.
+	 */
 	INPUT,
 	;
 
+	/**
+	 * Returns the string representation of the variable.
+	 *
+	 * @return the string representation of the variable
+	 */
 	@Override
 	public String toString() {
 		return switch (this) {
@@ -43,6 +105,11 @@ public enum GlsVariable implements Symbol {
 		};
 	}
 
+	/**
+	 * Returns the LaTeX representation of the variable.
+	 *
+	 * @return the LaTeX representation of the variable
+	 */
 	@Override
 	public String toLatex() {
 		return switch (this) {
@@ -66,6 +133,4 @@ public enum GlsVariable implements Symbol {
 			case INPUT -> "\\langle \\text{Input} \\rangle";
 		};
 	}
-
-
 }

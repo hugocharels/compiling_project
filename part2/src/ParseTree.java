@@ -12,7 +12,6 @@ import java.util.List;
  *
  * @author Léo Exibard, Sarah Winter
  */
-
 public class ParseTree {
 	private final Symbol label; // The label of the root of the tree
 	private List<ParseTree> children; // Its children, which are trees themselves
@@ -38,16 +37,26 @@ public class ParseTree {
 		this.children = chdn;
 	}
 
+	/**
+	 * Adds a child to the tree.
+	 *
+	 * @param child The child to be added
+	 */
 	public void addChild(ParseTree child) {
 		children.add(child);
 	}
 
-	public void reverseChildOrder() {
+	/**
+	 * Reverses the order of the children.
+	 */
+	public void reverseChildrenOrder() {
 		this.children = this.children.reversed();
 	}
 
 	/**
-	 * Writes the tree as LaTeX code
+	 * Writes the tree as LaTeX code.
+	 *
+	 * @return The LaTeX representation of the tree
 	 */
 	public String toLaTexTree() {
 		StringBuilder treeTeX = new StringBuilder();
@@ -65,11 +74,13 @@ public class ParseTree {
 	/**
 	 * Writes the tree as TikZ code. TikZ is a language to specify drawings in LaTeX
 	 * files.
+	 *
+	 * @return The TikZ representation of the tree
 	 */
 	public String toTikZ() {
 		StringBuilder treeTikZ = new StringBuilder();
 		treeTikZ.append("node {$");
-		treeTikZ.append(label.toLatex());  // Implement this yourself in Symbol.java
+		treeTikZ.append(label.toLatex());
 		treeTikZ.append("$}\n");
 		for (ParseTree child : children) {
 			treeTikZ.append("child { ");
@@ -81,16 +92,19 @@ public class ParseTree {
 
 	/**
 	 * Writes the tree as a TikZ picture. A TikZ picture embeds TikZ code so that
-	 * LaTeX undertands it.
+	 * LaTeX understands it.
+	 *
+	 * @return The TikZ picture representation of the tree
 	 */
 	public String toTikZPicture() {
 		return "\\begin{tikzpicture}[tree layout]\n\\" + toTikZ() + ";\n\\end{tikzpicture}";
 	}
 
-
 	/**
-	 * Writes the tree as a forest picture. Returns the tree in forest enviroment
-	 * using the latex code of the tree
+	 * Writes the tree as a forest picture. Returns the tree in forest environment
+	 * using the LaTeX code of the tree.
+	 *
+	 * @return The forest picture representation of the tree
 	 */
 	public String toForestPicture() {
 		return "\\begin{forest}for tree={rectangle, draw, l sep=20pt}" + toLaTexTree() + ";\n\\end{forest}";
@@ -105,6 +119,8 @@ public class ParseTree {
 	 * <pre>
 	 * pdflatex some-file.tex
 	 * </pre>
+	 *
+	 * @return The LaTeX document representation of the tree
 	 */
 	public String toLaTeX() {
 		return "\\documentclass[border=5pt]{standalone}\n\n\\usepackage{tikz}\n\\usepackage{forest}\n\n\\begin{document}\n\n"

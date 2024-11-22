@@ -1,3 +1,6 @@
+/**
+ * Enum representing the terminals in the GILLES language.
+ */
 public enum GlsTerminal implements Symbol {
 
 	/**
@@ -117,10 +120,18 @@ public enum GlsTerminal implements Symbol {
 	 */
 	EOS,
 
+	/**
+	 * Epsilon (empty string)
+	 */
 	EPSILON,
 
 	; // End of stream
 
+	/**
+	 * Converts the terminal to its LaTeX representation.
+	 *
+	 * @return the LaTeX representation of the terminal
+	 */
 	@Override
 	public String toLatex() {
 		return switch (this) {

@@ -42,16 +42,15 @@ public class Main {
 			GlsGrammar grammar = new GlsGrammar();
 			GlsParser parser = new GlsParser(lexer, grammar);
 
-			System.out.println(grammar.toLatex());
+			// System.out.println(grammar.toLatex());
 
+			// Parse the input file
 			parser.parse();
 
-			// Parse the input and build the parse tree
-			ParseTree parseTree = parser.getParseTree(); // Ensure parseTree() returns a ParseTree object
-
 			// Print the leftmost derivation to stdout
-			String leftmostDerivation = parser.getLeftmostDerivation(); // Ensure this method returns a string representation
-			System.out.println(leftmostDerivation);
+			System.out.println(parser.getLeftmostDerivation());
+
+			ParseTree parseTree = parser.getParseTree();
 
 			// Write the parse tree to the LaTeX file if -wt is specified
 			if (!outputFile.equals("")) {
@@ -59,7 +58,6 @@ public class Main {
 					writer.write(parseTree.toLaTeX()); // Write the LaTeX representation to the output file
 					// writer.write(parseTree.toTikZPicture()); // Write the TikZ representation to the output file
 				}
-				System.out.println("Parse tree written to: " + outputFile);
 			}
 		} catch (IOException e) {
 			System.err.println("Error reading the file: " + e.getMessage());
