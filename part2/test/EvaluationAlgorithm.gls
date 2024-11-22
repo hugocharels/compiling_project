@@ -1,0 +1,12 @@
+!! Evaluation algorithm !!
+
+LET Evaluation_algorithm BE
+  IN(grade):
+  WHILE {grade < 20} REPEAT   $ It should not be the case
+    grade = grade + 1:
+  END:
+  IF {grade == 20} THEN
+      grade = 21:             $ It's really impressive, it deserves a bonus
+  END:
+  OUT(grade):
+END

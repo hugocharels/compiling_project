@@ -123,7 +123,7 @@ public class ParseTree {
 	 * @return The LaTeX document representation of the tree
 	 */
 	public String toLaTeX() {
-		return "\\documentclass[border=5pt]{standalone}\n\n\\usepackage{tikz}\n\\usepackage{forest}\n\n\\begin{document}\n\n"
+		return "\\documentclass[border=5pt]{standalone}\n\n\\usepackage{tikz}\n\\usepackage{forest}\n\\usepackage{amsmath}\n\n\\begin{document}\n\n"
 				+ toForestPicture() + "\n\n\\end{document}\n%% Local Variables:\n%% TeX-engine: pdflatex\n%% End:";
 	}
 }
