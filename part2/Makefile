@@ -15,9 +15,8 @@ all: compile test jar
 # Compile step: first generate the LexicalAnalyzer.java from the .flex file, then compile all Java files
 compile: $(LEXER_FILE)
 	@echo "Compiling Java files..."
-	@javac $(JAVA_FILES)
+	@cd $(SRC_DIR) && javac $(MAIN_CLASS).java
 
-# Generate LexicalAnalyzer.java from LexicalAnalyzer.flex
 $(LEXER_FILE): $(FLEX_FILE)
 	@echo "Running JFlex to generate LexicalAnalyzer.java..."
 	@java -jar $(JFLEX_JAR_PATH) $(FLEX_FILE)
@@ -26,7 +25,6 @@ $(LEXER_FILE): $(FLEX_FILE)
 run: jar
 	@clear
 	@echo "Running the program..."
-# @java -jar dist/part2.jar $(INPUT_FILE)
 	@java -jar dist/part2.jar -wt $(OUTPUT_FILE) $(INPUT_FILE)
 
 jar: compile
@@ -34,10 +32,10 @@ jar: compile
 	@jar cvfe dist/part2.jar $(MAIN_CLASS) -C $(SRC_DIR) .
 	@make clean
 
-# Clean: remove all compiled class files
 clean:
 	@echo "Cleaning up..."
 	@rm -f $(CLASS_FILES)
-	@rm -f **/*.class
+	@rm -f */*.class
+	@rm -f */*/*.class
 
 .PHONY: all compile run test jar clean 

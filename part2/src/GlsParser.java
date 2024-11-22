@@ -1,3 +1,8 @@
+import exceptions.GenericSyntaxException;
+import exceptions.MissingProductionRuleException;
+import exceptions.ParsingException;
+import exceptions.UnexpectedTerminalException;
+
 import java.io.IOException;
 import java.util.Stack;
 
@@ -42,9 +47,10 @@ public class GlsParser {
 	/**
 	 * Parses the input tokens and generates the parse tree and leftmost derivation.
 	 *
-	 * @throws IOException if a syntax error occurs
+	 * @throws ParsingException if an error occurs
+	 * @throws IOException      if an I/O error occurs
 	 */
-	public void parse() throws IOException {
+	public void parse() throws ParsingException, IOException {
 		Stack<Symbol> stack = new Stack<>(); // Stack to keep track of the grammar symbols
 		stack.push(grammar.getStartSymbol()); // Push the start symbol to the stack
 
@@ -85,7 +91,19 @@ public class GlsParser {
 				lexicalSymbol = lexer.nextToken(); // Get the next token
 				terminal = lexicalSymbol.getType().toGlsTerminal(); // Get the LexicalUnit of the next token
 			} else {
-				throw new IOException("Syntax error");
+				if (v == null) {
+					throw new UnexpectedTerminalException(
+							"Expected terminal " + x + " but found " + terminal
+					);
+				} else if (grammar.getProduction(v, terminal) == null) {
+					throw new MissingProductionRuleException(
+							"No production rule for variable " + v + " with terminal " + terminal
+					);
+				} else {
+					throw new GenericSyntaxException(
+							"Syntax error at " + terminal + " while parsing " + v
+					);
+				}
 			}
 		}
 	}

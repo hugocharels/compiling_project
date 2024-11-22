@@ -1,3 +1,4 @@
+import exceptions.ParsingException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -61,6 +62,8 @@ public class Main {
 			}
 		} catch (IOException e) {
 			System.err.println("Error reading the file: " + e.getMessage());
+		} catch (ParsingException e) {
+			System.err.println("Error during parsing: " + e.getMessage());
 		} catch (Error e) {
 			System.err.println("Error during lexical or syntactic analysis: " + e.getMessage());
 		}
