@@ -30,13 +30,19 @@ public class GlsParser {
 		treeStack.push(this.parseTree); // Push the root to the stack
 
 		LexicalSymbol lexicalSymbol = lexer.nextToken();
-		LexicalUnit terminal = lexicalSymbol.getType();
+		GlsTerminal terminal = lexicalSymbol.getType().toGlsTerminal();
 
 		while (!stack.isEmpty()) {
 
 			Symbol x = stack.peek();
 			ParseTree currentNode = treeStack.peek();
 			GlsVariable v = x instanceof GlsVariable ? (GlsVariable) x : null;
+
+			if (x == GlsTerminal.EPSILON) {
+				stack.pop();
+				treeStack.pop();
+				continue;
+			}
 
 			if (v != null && grammar.getProduction(v, terminal) != null) {
 				ProductionRule productionRule = grammar.getProduction(v, terminal);
@@ -55,7 +61,7 @@ public class GlsParser {
 				stack.pop(); // Pop the terminal from the stack
 				treeStack.pop(); // Pop the terminal from the tree stack
 				lexicalSymbol = lexer.nextToken(); // Get the next token
-				terminal = lexicalSymbol.getType(); // Get the LexicalUnit of the next token
+				terminal = lexicalSymbol.getType().toGlsTerminal(); // Get the LexicalUnit of the next token
 			} else {
 				throw new IOException("Syntax error");
 			}

@@ -1,7 +1,7 @@
 /**
  * A terminal symbol, a.k.a. a letter in the grammar.
  */
-public enum LexicalUnit implements Symbol {
+public enum LexicalUnit {
 	/**
 	 * [ProgName]
 	 */
@@ -120,38 +120,38 @@ public enum LexicalUnit implements Symbol {
 	EOS,
 	; // End of stream
 
-	@Override
-	public String toLatex() {
+	GlsTerminal toGlsTerminal() {
 		return switch (this) {
-			case PROGNAME -> "[\\texttt{ProgName}]";
-			case VARNAME -> "[\\texttt{VarName}]";
-			case NUMBER -> "[\\texttt{Number}]";
-			case LET -> "\\texttt{LET}";
-			case BE -> "\\texttt{BE}";
-			case END -> "\\texttt{END}";
-			case COLUMN -> "\\texttt{:}";
-			case ASSIGN -> "\\texttt{=}";
-			case LPAREN -> "\\texttt{(}";
-			case RPAREN -> "\\texttt{)}";
-			case MINUS -> "\\texttt{-}";
-			case PLUS -> "\\texttt{+}";
-			case TIMES -> "\\texttt{*}";
-			case DIVIDE -> "\\texttt{/}";
-			case IF -> "\\texttt{IF}";
-			case THEN -> "\\texttt{THEN}";
-			case ELSE -> "\\texttt{ELSE}";
-			case LBRACK -> "\\texttt{\\{}";
-			case RBRACK -> "\\texttt{\\}}";
-			case IMPLIES -> "\\texttt{->}";
-			case PIPE -> "\\texttt{|}";
-			case EQUAL -> "\\texttt{==}";
-			case SMALEQ -> "\\texttt{<=}";
-			case SMALLER -> "\\texttt{<}";
-			case WHILE -> "\\texttt{WHILE}";
-			case REPEAT -> "\\texttt{REPEAT}";
-			case OUTPUT -> "\\texttt{OUT}";
-			case INPUT -> "\\texttt{IN}";
-			case EOS -> "\\texttt{EOS}";
+			case PROGNAME -> GlsTerminal.PROGNAME;
+			case VARNAME -> GlsTerminal.VARNAME;
+			case NUMBER -> GlsTerminal.NUMBER;
+			case LET -> GlsTerminal.LET;
+			case BE -> GlsTerminal.BE;
+			case END -> GlsTerminal.END;
+			case COLUMN -> GlsTerminal.COLUMN;
+			case ASSIGN -> GlsTerminal.ASSIGN;
+			case LPAREN -> GlsTerminal.LPAREN;
+			case RPAREN -> GlsTerminal.RPAREN;
+			case MINUS -> GlsTerminal.MINUS;
+			case PLUS -> GlsTerminal.PLUS;
+			case TIMES -> GlsTerminal.TIMES;
+			case DIVIDE -> GlsTerminal.DIVIDE;
+			case IF -> GlsTerminal.IF;
+			case THEN -> GlsTerminal.THEN;
+			case ELSE -> GlsTerminal.ELSE;
+			case LBRACK -> GlsTerminal.LBRACK;
+			case RBRACK -> GlsTerminal.RBRACK;
+			case IMPLIES -> GlsTerminal.IMPLIES;
+			case PIPE -> GlsTerminal.PIPE;
+			case EQUAL -> GlsTerminal.EQUAL;
+			case SMALEQ -> GlsTerminal.SMALEQ;
+			case SMALLER -> GlsTerminal.SMALLER;
+			case WHILE -> GlsTerminal.WHILE;
+			case REPEAT -> GlsTerminal.REPEAT;
+			case OUTPUT -> GlsTerminal.OUTPUT;
+			case INPUT -> GlsTerminal.INPUT;
+			case EOS -> GlsTerminal.EOS;
 		};
 	}
+
 }

@@ -26,7 +26,6 @@ public class ProductionRule {
 	@Override
 	public String toString() {
 		return this.getId() + "";
-		// return variable + " -> " + production;
 	}
 }
 
