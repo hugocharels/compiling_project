@@ -6,21 +6,21 @@ import java.io.IOException;
 import java.util.Stack;
 
 /**
- * The GlsParser class is responsible for parsing the input tokens using the GLS grammar.
+ * The Parser class is responsible for parsing the input tokens using the GLS grammar.
  */
-public class GlsParser {
+public class Parser {
 	private final LexicalAnalyzer lexer;
 	private final GlsGrammar grammar;
 	private ParseTree parseTree = null;
 	private String leftmostDerivation = "";
 
 	/**
-	 * Constructs a GlsParser with the specified lexical analyzer and grammar.
+	 * Constructs a Parser with the specified lexical analyzer and grammar.
 	 *
 	 * @param lexer   the lexical analyzer
 	 * @param grammar the GLS grammar
 	 */
-	public GlsParser(LexicalAnalyzer lexer, GlsGrammar grammar) {
+	public Parser(LexicalAnalyzer lexer, GlsGrammar grammar) {
 		this.lexer = lexer;
 		this.grammar = grammar;
 	}

@@ -41,7 +41,7 @@ public class Main {
 			// Initialize the lexer with the input
 			LexicalAnalyzer lexer = new LexicalAnalyzer(reader);
 			GlsGrammar grammar = new GlsGrammar();
-			GlsParser parser = new GlsParser(lexer, grammar);
+			Parser parser = new Parser(lexer, grammar);
 
 			// System.out.println(grammar.toLatex());
 
