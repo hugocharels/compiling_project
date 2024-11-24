@@ -1,4 +1,4 @@
-LET Oh_non BE
+LET Oh_no BE
   x = IF
-  $ zut
+  $ error because IF is not assignable
 END

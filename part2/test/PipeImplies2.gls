@@ -1,0 +1,5 @@
+LET Implies BE
+  IF {|1+1 < 5 -> 3 < 5| -> |1<2 -> 2<3|} THEN
+    x=3:
+  END:
+END
