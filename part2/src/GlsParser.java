@@ -92,11 +92,13 @@ public class GlsParser {
 			} else {
 				if (v == null) {
 					throw new UnexpectedTerminalException(
-							"Expected '" + x.toString() + "' but found '" + lexicalSymbol.getValue() + "' on line " + lexicalSymbol.getLine() + ", column " + lexicalSymbol.getColumn() + "."
+							"Expected '" + x.toString() + "' but found '" + lexicalSymbol.getValue()
+									+ "' on line " + lexicalSymbol.getLine() + ", column " + lexicalSymbol.getColumn() + "."
 					);
 				} else {
 					throw new MissingProductionRuleException(
-							"No production rule for variable " + v + " with terminal " + terminal
+							v.toConceptString() + " should not be followed by '" + terminal
+									+ "' on line " + lexicalSymbol.getLine() + ", column " + lexicalSymbol.getColumn() + "."
 					);
 				}
 			}
