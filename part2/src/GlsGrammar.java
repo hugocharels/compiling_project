@@ -47,7 +47,7 @@ public class GlsGrammar {
 		this.productionRules.add(new ProductionRule(25, GlsVariable.COND, List.of(GlsVariable.COND_SIMPLE, GlsVariable.NEXT_COND)));
 		this.productionRules.add(new ProductionRule(26, GlsVariable.NEXT_COND, List.of(GlsTerminal.IMPLIES, GlsVariable.COND_SIMPLE, GlsVariable.NEXT_COND)));
 		this.productionRules.add(new ProductionRule(27, GlsVariable.NEXT_COND, List.of(GlsTerminal.EPSILON)));
-		this.productionRules.add(new ProductionRule(28, GlsVariable.COND_SIMPLE, List.of(GlsTerminal.PIPE, GlsVariable.COND_SIMPLE, GlsTerminal.PIPE)));
+		this.productionRules.add(new ProductionRule(28, GlsVariable.COND_SIMPLE, List.of(GlsTerminal.PIPE, GlsVariable.COND, GlsTerminal.PIPE)));
 		this.productionRules.add(new ProductionRule(29, GlsVariable.COND_SIMPLE, List.of(GlsVariable.EXPR_ARITH, GlsVariable.COMP, GlsVariable.EXPR_ARITH)));
 		this.productionRules.add(new ProductionRule(30, GlsVariable.COMP, List.of(GlsTerminal.EQUAL)));
 		this.productionRules.add(new ProductionRule(31, GlsVariable.COMP, List.of(GlsTerminal.SMALEQ)));

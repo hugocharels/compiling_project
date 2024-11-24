@@ -1,0 +1,17 @@
+!! Conditional Check Algorithm !!
+
+LET ConditionalCheck_algorithm BE
+  IN(x):
+  IN(y):
+  IN(z):
+  IF {||x < 10| -> y < 0| -> z == 2} THEN
+      x = x + 1:  $ Increment x if all conditions are true
+      y = y - 1:  $ Decrement y for balance
+      z = z * 2:  $ Double z as a reward
+  ELSE
+      x = x - 1:  $ Decrement x if any condition fails
+  END:
+  OUT(x):
+  OUT(y):
+  OUT(z):
+END
