@@ -12,7 +12,6 @@ public class Parser {
 	private final LexicalAnalyzer lexer;
 	private final GlsGrammar grammar;
 	private ParseTree parseTree = null;
-	private String leftmostDerivation = "";
 
 	/**
 	 * Constructs a Parser with the specified lexical analyzer and grammar.
@@ -32,15 +31,6 @@ public class Parser {
 	 */
 	public ParseTree getParseTree() {
 		return this.parseTree;
-	}
-
-	/**
-	 * Returns the leftmost derivation of the input.
-	 *
-	 * @return the leftmost derivation
-	 */
-	public String getLeftmostDerivation() {
-		return this.leftmostDerivation;
 	}
 
 	/**
@@ -82,7 +72,6 @@ public class Parser {
 					treeStack.push(child);
 				}
 				currentNode.reverseChildrenOrder();
-				this.leftmostDerivation += productionRule.getId() + " ";
 
 			} else if (v == null && x == terminal) {
 				stack.pop(); // Pop the terminal from the stack

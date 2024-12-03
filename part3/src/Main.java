@@ -1,6 +1,6 @@
 import exceptions.ParsingException;
+
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -37,10 +37,12 @@ public class Main {
 			// Parse the input file
 			parser.parse();
 
-			// TODO: Generate the LLVM code
+			// Generate the LLVM code
+			LLVMCodeGenerator codeGenerator = new LLVMCodeGenerator(parser.getParseTree());
+			codeGenerator.generateCode();
 
-
-			// TODO: Write the LLVM code to stdout
+			// Write the LLVM code to standard output
+			System.out.println(codeGenerator.getLLVMCode());
 
 		} catch (IOException e) {
 			System.err.println("Error reading the file: " + e.getMessage());
