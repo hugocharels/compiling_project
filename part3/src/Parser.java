@@ -72,7 +72,6 @@ public class Parser {
 					treeStack.push(child);
 				}
 				currentNode.reverseChildrenOrder();
-
 			} else if (v == null && x == terminal) {
 				stack.pop(); // Pop the terminal from the stack
 				treeStack.pop(); // Pop the terminal from the tree stack
