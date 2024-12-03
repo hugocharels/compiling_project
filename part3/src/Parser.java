@@ -54,6 +54,7 @@ public class Parser {
 			Symbol x = stack.peek();
 			ParseTree currentNode = treeStack.peek();
 			GlsVariable v = x instanceof GlsVariable ? (GlsVariable) x : null;
+			currentNode.setLexicalSymbol(lexicalSymbol); // Set the LexicalUnit of the current node
 
 			if (x == GlsTerminal.EPSILON) {
 				stack.pop();

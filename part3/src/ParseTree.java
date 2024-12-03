@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class ParseTree {
 	private final Symbol label; // The label of the root of the tree
+	private LexicalSymbol lexicalSymbol; // The lexical symbol of the root of the tree
 	private List<ParseTree> children; // Its children, which are trees themselves
 
 	/**
@@ -23,18 +24,8 @@ public class ParseTree {
 	 */
 	public ParseTree(Symbol lbl) {
 		this.label = lbl;
+		this.lexicalSymbol = null;
 		this.children = new ArrayList<>(); // This tree has no children
-	}
-
-	/**
-	 * Creates a tree with root labeled by lbl and children chdn.
-	 *
-	 * @param lbl  The label of the root
-	 * @param chdn Its children
-	 */
-	public ParseTree(Symbol lbl, List<ParseTree> chdn) {
-		this.label = lbl;
-		this.children = chdn;
 	}
 
 	/**
@@ -51,6 +42,18 @@ public class ParseTree {
 	 */
 	public void reverseChildrenOrder() {
 		this.children = this.children.reversed();
+	}
+
+	public Symbol getLabel() {
+		return label;
+	}
+
+	public LexicalSymbol getLexicalSymbol() {
+		return lexicalSymbol;
+	}
+
+	public void setLexicalSymbol(LexicalSymbol lexicalSymbol) {
+		this.lexicalSymbol = lexicalSymbol;
 	}
 
 	/**
@@ -125,5 +128,9 @@ public class ParseTree {
 	public String toLaTeX() {
 		return "\\documentclass[border=5pt]{standalone}\n\n\\usepackage{tikz}\n\\usepackage{forest}\n\\usepackage{amsmath}\n\n\\begin{document}\n\n"
 				+ toForestPicture() + "\n\n\\end{document}\n%% Local Variables:\n%% TeX-engine: pdflatex\n%% End:";
+	}
+
+	public List<ParseTree> getChildren() {
+		return this.children;
 	}
 }

@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class LLVMCodeGenerator {
 	final ParseTree parseTree;
 	final StringBuilder llvmCode = new StringBuilder();
@@ -62,7 +64,23 @@ public class LLVMCodeGenerator {
 						"""
 		);
 
-		// TODO: Implement the code generation
+		// Depth-first traversal of the parse tree
+		Stack<ParseTree> stack = new Stack<>();
+		stack.push(this.parseTree);
+		while (!stack.isEmpty()) {
+			// Pop the top of the stack
+			ParseTree node = stack.pop();
+
+			if (node.getChildren().size() > 0) {
+				// Add all children (in the right order) to the stack
+				for (int i = node.getChildren().size() - 1; i >= 0; i--) {
+					stack.push(node.getChildren().get(i));
+				}
+			} else {
+				// TODO: Implement the code generation for the parse tree nodes
+				System.out.println("label: " + node.getLabel() + " symbol: " + node.getLexicalSymbol().getValue());
+			}
+		}
 
 		// Add the return statement
 		this.llvmCode.append(
