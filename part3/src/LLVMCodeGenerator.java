@@ -11,7 +11,6 @@ public class LLVMCodeGenerator {
 	 */
 	public LLVMCodeGenerator(ParseTree parseTree) {
 		this.parseTree = parseTree;
-		this.addPreamble();
 	}
 
 
@@ -56,6 +55,12 @@ public class LLVMCodeGenerator {
 	 * Generates the LLVM code from the parse tree.
 	 */
 	public void generateCode() {
+		// reset the LLVM code
+		this.llvmCode.setLength(0);
+
+		// Add the LLVM code preamble
+		this.addPreamble();
+
 		// Add declarations main function
 		this.llvmCode.append(
 				"""
