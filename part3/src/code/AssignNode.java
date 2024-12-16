@@ -1,9 +1,11 @@
 package code;
 
-public class ParentExprNode implements ExprComponent {
+public class AssignNode implements CodeComponent {
+	private final String varName;
 	private final ExprComponent expr;
 
-	public ParentExprNode(ExprComponent expr) {
+	public AssignNode(String varName, ExprComponent expr) {
+		this.varName = varName;
 		this.expr = expr;
 	}
 
