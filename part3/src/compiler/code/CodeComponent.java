@@ -5,8 +5,6 @@ import compiler.ParseTree;
 
 // The common interface for all nodes
 interface CodeComponent {
-	void generateLLVM(StringBuilder llvmCode);
-
 	static CodeComponent fromParseTree(ParseTree parseTree) {
 		// TODO: Implement this
 		return switch (parseTree.getLabel()) {
@@ -19,4 +17,6 @@ interface CodeComponent {
 			default -> null;
 		};
 	}
+
+	void generateLLVM(StringBuilder llvmCode);
 }

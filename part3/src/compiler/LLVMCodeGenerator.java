@@ -74,23 +74,23 @@ public class LLVMCodeGenerator {
 		CodeBlockNode.fromParseTree(this.parseTree.getChildren().get(3)).generateLLVM(this.llvmCode);
 
 		/**
-		// Depth-first traversal of the parse tree
-		Stack<ParseTree> stack = new Stack<>();
-		stack.push(this.parseTree);
-		while (!stack.isEmpty()) {
-			// Pop the top of the stack
-			ParseTree node = stack.pop();
+		 // Depth-first traversal of the parse tree
+		 Stack<ParseTree> stack = new Stack<>();
+		 stack.push(this.parseTree);
+		 while (!stack.isEmpty()) {
+		 // Pop the top of the stack
+		 ParseTree node = stack.pop();
 
-			if (node.getChildren().size() > 0) {
-				// Add all children (in the right order) to the stack
-				for (int i = node.getChildren().size() - 1; i >= 0; i--) {
-					stack.push(node.getChildren().get(i));
-				}
-			} else {
-				// TODO: Implement the code generation for the parse tree nodes
-				System.out.println("label: " + node.getLabel() + " symbol: " + node.getLexicalSymbol().getValue());
-			}
-		}
+		 if (node.getChildren().size() > 0) {
+		 // Add all children (in the right order) to the stack
+		 for (int i = node.getChildren().size() - 1; i >= 0; i--) {
+		 stack.push(node.getChildren().get(i));
+		 }
+		 } else {
+		 // TODO: Implement the code generation for the parse tree nodes
+		 System.out.println("label: " + node.getLabel() + " symbol: " + node.getLexicalSymbol().getValue());
+		 }
+		 }
 		 **/
 
 		// Add the return statement

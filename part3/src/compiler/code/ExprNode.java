@@ -9,13 +9,13 @@ public class ExprNode implements ExprComponent {
 		this.value = value;
 	}
 
-	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
-		llvmCode.append(value);
-	}
-
 	public static ExprNode fromParseTree(ParseTree parseTree) {
 		// TODO: Implement this
 		return null;
+	}
+
+	@Override
+	public void generateLLVM(StringBuilder llvmCode) {
+		llvmCode.append(value);
 	}
 }

@@ -11,13 +11,13 @@ public class WhileNode implements CodeComponent {
 		this.body = body;
 	}
 
-	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
-		// TODO: Implement this
-	}
-
 	public static WhileNode fromParseTree(ParseTree parseTree) {
 		// TODO: Implement this
 		return null;
+	}
+
+	@Override
+	public void generateLLVM(StringBuilder llvmCode) {
+		// TODO: Implement this
 	}
 }

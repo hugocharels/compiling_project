@@ -10,13 +10,12 @@ public class InputNode implements CodeComponent {
 		this.variableName = variableName;
 	}
 
+	public static InputNode fromParseTree(ParseTree parseTree) {
+		return new InputNode(parseTree.getChild(2).getLexicalSymbol().getValue().toString());
+	}
+
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: Implement this
-	}
-
-	public static InputNode fromParseTree(ParseTree parseTree) {
-		// TODO: Implement this
-		return null;
 	}
 }

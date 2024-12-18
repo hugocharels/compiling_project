@@ -11,13 +11,13 @@ public class AssignNode implements CodeComponent {
 		this.expr = expr;
 	}
 
+	public static AssignNode fromParseTree(ParseTree parseTree) {
+		// TODO: Implement this
+		return new AssignNode(parseTree.getChildren().get(0).getLexicalSymbol().getValue().toString(), ExprComponent.fromParseTree(parseTree.getChildren().get(2)));
+	}
+
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: assign the value given by the expression to the variable
-	}
-
-	public static AssignNode fromParseTree(ParseTree parseTree) {
-		// TODO: Implement this
-		return new AssignNode(parseTree.getChildren().get(0).getLabel().toString(), ExprComponent.fromParseTree(parseTree.getChildren().get(2)));
 	}
 }

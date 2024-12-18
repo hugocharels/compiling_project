@@ -1,5 +1,6 @@
 package compiler.code;
 
+import compiler.GlsTerminal;
 import compiler.ParseTree;
 
 public class IfNode implements CodeComponent {
@@ -14,13 +15,16 @@ public class IfNode implements CodeComponent {
 		this.elseBlock = elseBlock;
 	}
 
+	public static IfNode fromParseTree(ParseTree parseTree) {
+		return new IfNode(
+				ConditionComponent.fromParseTree(parseTree.getChild(2)),
+				CodeBlockNode.fromParseTree(parseTree.getChild(5)),
+				parseTree.getChild(6).getChild(0).getLexicalSymbol().equals(GlsTerminal.END) ? CodeBlockNode.fromParseTree(parseTree.getChild(6).getChild(0)) : null
+		);
+	}
+
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: Implement this
-	}
-
-	public static IfNode fromParseTree(ParseTree parseTree) {
-		// TODO: Implement this
-		return null;
 	}
 }

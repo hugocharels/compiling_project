@@ -9,13 +9,12 @@ public class OutputNode implements CodeComponent {
 		this.variableName = variableName;
 	}
 
+	public static OutputNode fromParseTree(ParseTree parseTree) {
+		return new OutputNode(parseTree.getChild(2).getLexicalSymbol().getValue().toString());
+	}
+
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: Implement this
-	}
-
-	public static OutputNode fromParseTree(ParseTree parseTree) {
-		// TODO: Implement this
-		return null;
 	}
 }

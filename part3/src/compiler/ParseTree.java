@@ -132,6 +132,10 @@ public class ParseTree {
 				+ toForestPicture() + "\n\n\\end{document}\n%% Local Variables:\n%% TeX-engine: pdflatex\n%% End:";
 	}
 
+	public ParseTree getChild(int index) {
+		return this.children.get(index);
+	}
+
 	public List<ParseTree> getChildren() {
 		return this.children;
 	}

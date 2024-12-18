@@ -119,9 +119,9 @@ public enum GlsVariable implements Symbol {
 			case INSTRUCTION -> "An instruction";
 			case ASSIGN -> "An assignation";
 			case EXPR_ARITH, ATOM, EXPR_ARITH_PRIME, PROD_ARITH, PROD_ARITH_PRIME -> "This arithmetic expression";
-            case IF, IFSEQ -> "An if statement";
-            case COND, NEXT_COND, COND_SIMPLE -> "This condition";
-            case COMP -> "A comparison operator";
+			case IF, IFSEQ -> "An if statement";
+			case COND, NEXT_COND, COND_SIMPLE -> "This condition";
+			case COMP -> "A comparison operator";
 			case WHILE -> "A while statement";
 			case OUTPUT -> "An output";
 			case INPUT -> "An input";
