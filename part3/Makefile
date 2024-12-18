@@ -38,5 +38,6 @@ clean:
 	@rm -f $(CLASS_FILES)
 	@rm -f */*.class
 	@rm -f */*/*.class
+	@rm -f */*/*/*.class
 
 .PHONY: all compile run test jar clean 

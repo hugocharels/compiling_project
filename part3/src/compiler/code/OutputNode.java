@@ -1,5 +1,7 @@
 package compiler.code;
 
+import compiler.ParseTree;
+
 public class OutputNode implements CodeComponent {
 	private final String variableName;
 
@@ -10,5 +12,10 @@ public class OutputNode implements CodeComponent {
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: Implement this
+	}
+
+	public static OutputNode fromParseTree(ParseTree parseTree) {
+		// TODO: Implement this
+		return null;
 	}
 }

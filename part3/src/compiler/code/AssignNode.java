@@ -1,5 +1,7 @@
 package compiler.code;
 
+import compiler.ParseTree;
+
 public class AssignNode implements CodeComponent {
 	private final String varName;
 	private final ExprComponent expr;
@@ -12,5 +14,10 @@ public class AssignNode implements CodeComponent {
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: assign the value given by the expression to the variable
+	}
+
+	public static AssignNode fromParseTree(ParseTree parseTree) {
+		// TODO: Implement this
+		return new AssignNode(parseTree.getChildren().get(0).getLabel().toString(), ExprComponent.fromParseTree(parseTree.getChildren().get(2)));
 	}
 }

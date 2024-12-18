@@ -1,5 +1,7 @@
 package compiler.code;
 
+import compiler.ParseTree;
+
 public class IfNode implements CodeComponent {
 
 	private final ConditionComponent condition;
@@ -15,5 +17,10 @@ public class IfNode implements CodeComponent {
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: Implement this
+	}
+
+	public static IfNode fromParseTree(ParseTree parseTree) {
+		// TODO: Implement this
+		return null;
 	}
 }
