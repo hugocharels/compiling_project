@@ -12,8 +12,10 @@ public class WhileNode implements CodeComponent {
 	}
 
 	public static WhileNode fromParseTree(ParseTree parseTree) {
-		// TODO: Implement this
-		return null;
+		return new WhileNode(
+				ConditionComponent.fromParseTree(parseTree.getChild(2)),
+				CodeBlockNode.fromParseTree(parseTree.getChild(4))
+		);
 	}
 
 	@Override

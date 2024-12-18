@@ -12,7 +12,6 @@ public class AssignNode implements CodeComponent {
 	}
 
 	public static AssignNode fromParseTree(ParseTree parseTree) {
-		// TODO: Implement this
 		return new AssignNode(parseTree.getChildren().get(0).getLexicalSymbol().getValue().toString(), ExprComponent.fromParseTree(parseTree.getChildren().get(2)));
 	}
 
