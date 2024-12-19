@@ -31,6 +31,7 @@ public class CodeBlockNode implements CodeComponent {
 			if (component == null) {
 				continue;
 			}
+			System.out.println("ici " + component);
 			component.generateLLVM(llvmCode);
 		}
 	}

@@ -127,7 +127,7 @@ public enum LexicalUnit {
 	 *
 	 * @return the corresponding GlsTerminal
 	 */
-	GlsTerminal toGlsTerminal() {
+	public GlsTerminal toGlsTerminal() {
 		return switch (this) {
 			case PROGNAME -> GlsTerminal.PROGNAME;
 			case VARNAME -> GlsTerminal.VARNAME;

@@ -5,7 +5,7 @@ JAVA_FILES = $(SRC_DIR)/*.java
 LEXER_FILE = $(SRC_DIR)/LexicalAnalyzer.java
 CLASS_FILES = $(SRC_DIR)/*.class
 MAIN_CLASS = Main
-INPUT_FILE = "test/Euclid.gls"
+INPUT_FILE = "test/Evaluation_algorithm.gls"
 JFLEX_JAR_PATH = "dist/jflex-full-1.9.1.jar"
 
 # Default target: compile and run

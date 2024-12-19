@@ -16,6 +16,9 @@ public class InputNode implements CodeComponent {
 
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
-		// TODO: Implement this
+		System.out.println("aaaaaaaaaaa");
+		llvmCode.append(
+			"\t%%%s = call i32 @readInt()\n".formatted(variableName)
+		);
 	}
 }

@@ -1,0 +1,7 @@
+LET Evaluation_algorithm BE
+  IN(grade):
+  IF {grade < 10} THEN
+    grade = 20:
+  END:
+  OUT(grade):
+END

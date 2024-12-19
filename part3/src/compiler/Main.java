@@ -3,6 +3,7 @@ package compiler;
 import compiler.exceptions.ParsingException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -17,6 +18,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		String inputFile;
+		String outputFile;
 
 		switch (args.length) {
 			case 0:
@@ -24,6 +26,7 @@ public class Main {
 				return;
 			case 1:
 				inputFile = args[0];
+				outputFile = args[0].replace(".gls", ".ll");
 				break;
 			default:
 				System.err.println("Invalid number of arguments.");
@@ -45,6 +48,12 @@ public class Main {
 
 			// Write the LLVM code to standard output
 			System.out.println(codeGenerator.getLLVMCode());
+
+			try (FileWriter writer = new FileWriter(outputFile)) {
+				writer.write(codeGenerator.getLLVMCode());
+			} catch (IOException e) {
+				System.err.println("Error writing the file: " + e.getMessage());
+			}
 
 		} catch (IOException e) {
 			System.err.println("Error reading the file: " + e.getMessage());
