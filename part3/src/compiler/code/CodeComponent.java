@@ -8,16 +8,19 @@ import compiler.Symbol;
 public interface CodeComponent {
 	static CodeComponent fromParseTree(ParseTree parseTree) {
 		// TODO: Implement this
-		Symbol a = parseTree.getLabel();
-		System.out.println(a);
-		return switch (a) {
+		return switch (parseTree.getLabel()) {
 			case GlsVariable.CODE -> CodeBlockNode.fromParseTree(parseTree);
-			case GlsVariable.INSTRUCTION -> null; //todo we only receive code and instruction from here
-			case GlsVariable.ASSIGN -> AssignNode.fromParseTree(parseTree);
-			case GlsVariable.IF -> IfNode.fromParseTree(parseTree);
-			case GlsVariable.WHILE -> WhileNode.fromParseTree(parseTree);
-			case GlsVariable.OUTPUT -> OutputNode.fromParseTree(parseTree);
-			case GlsVariable.INPUT -> InputNode.fromParseTree(parseTree);
+			case GlsVariable.INSTRUCTION -> {
+				ParseTree first = parseTree.getChild(0);
+				yield switch (first.getLabel()) {
+					case GlsVariable.ASSIGN -> AssignNode.fromParseTree(first);
+					case GlsVariable.IF -> IfNode.fromParseTree(first);
+					case GlsVariable.WHILE -> WhileNode.fromParseTree(first);
+					case GlsVariable.OUTPUT -> OutputNode.fromParseTree(first);
+					case GlsVariable.INPUT -> InputNode.fromParseTree(first);
+                    default -> null;
+                };
+			}
 			default -> null;
 		};
 	}

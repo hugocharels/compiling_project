@@ -31,7 +31,12 @@ public class IfNode implements CodeComponent {
 	public void generateLLVM(StringBuilder llvmCode) {
 		llvmCode.append(
         """
-        \t%cond = icmp
+        \t%cond = icmp HERE
+        \tbr i1 %cond HERE, label %true, label %false
+        \ttrue:
+        \t HERE
+        \tfalse:
+        \t HERE
         """
 		);
 	}

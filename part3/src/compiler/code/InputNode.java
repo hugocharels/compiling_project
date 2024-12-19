@@ -11,12 +11,13 @@ public class InputNode implements CodeComponent {
 	}
 
 	public static InputNode fromParseTree(ParseTree parseTree) {
+		// IN([VarName])
+		// 0 1    2    3
 		return new InputNode(parseTree.getChild(2).getLexicalSymbol().getValue().toString());
 	}
 
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
-		System.out.println("aaaaaaaaaaa");
 		llvmCode.append(
 			"\t%%%s = call i32 @readInt()\n".formatted(variableName)
 		);
