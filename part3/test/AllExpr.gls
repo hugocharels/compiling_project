@@ -1,0 +1,6 @@
+LET All_expr BE
+	a = 1:
+	b = a:
+	c = -(a*b+5/10) * 2:
+	OUT(c):
+END

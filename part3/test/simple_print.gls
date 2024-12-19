@@ -1,0 +1,4 @@
+LET Yo BE
+	var = 10:
+	OUT(var):
+END
