@@ -18,5 +18,8 @@ public class AssignNode implements CodeComponent {
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: assign the value given by the expression to the variable
+		llvmCode.append("\t").append(this.varName).append(" = ");
+		expr.generateLLVM(llvmCode);
+		llvmCode.append("\n");
 	}
 }

@@ -10,5 +10,8 @@ public class MinusExprNode implements ExprComponent {
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: Implement this
+		llvmCode.append("- ");
+		expr.generateLLVM(llvmCode);
+//		llvmCode.append("\n");
 	}
 }

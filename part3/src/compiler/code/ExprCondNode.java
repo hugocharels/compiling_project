@@ -15,5 +15,11 @@ public class ExprCondNode implements ConditionComponent {
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: Implement this
+		left.generateLLVM(llvmCode);
+		llvmCode.append(" ");
+		llvmCode.append(op);
+		llvmCode.append(" ");
+		right.generateLLVM(llvmCode);
+//		llvmCode.append("\n");
 	}
 }

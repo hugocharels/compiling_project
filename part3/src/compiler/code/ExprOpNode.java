@@ -14,10 +14,9 @@ public class ExprOpNode implements ExprComponent {
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
 		// TODO: Implement this
-		llvmCode.append(" New Expr");
 		left.generateLLVM(llvmCode);
 		llvmCode.append(op);
 		right.generateLLVM(llvmCode);
-		llvmCode.append(" \n");
+//		llvmCode.append(" \n");
 	}
 }

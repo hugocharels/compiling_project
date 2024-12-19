@@ -15,6 +15,6 @@ public class OutputNode implements CodeComponent {
 
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
-		// TODO: Implement this
+		llvmCode.append("\tcall void @println(i32 %%%s)\n".formatted(variableName));
 	}
 }
