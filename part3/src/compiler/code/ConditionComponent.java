@@ -35,7 +35,7 @@ public interface ConditionComponent extends CodeComponent {
 			// 0   1    2
 			return new PipeCondNode(ConditionComponent.fromParseTree(parseTree.getChild(1)));
 
-		// CondSimple -> <Expr> <Comp> <Expr>
+			// CondSimple -> <Expr> <Comp> <Expr>
 		} else {
 			// <Expr> <Comp> <Expr>
 			//   0      1      2
