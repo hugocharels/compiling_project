@@ -2,25 +2,18 @@ package compiler.code;
 
 import compiler.GlsVariable;
 import compiler.ParseTree;
-import compiler.Symbol;
 
 // The common interface for all nodes
 public interface CodeComponent {
 	static CodeComponent fromParseTree(ParseTree parseTree) {
-		// TODO: Implement this
 		return switch (parseTree.getLabel()) {
 			case GlsVariable.CODE -> CodeBlockNode.fromParseTree(parseTree);
-			case GlsVariable.INSTRUCTION -> {
-				ParseTree first = parseTree.getChild(0);
-				yield switch (first.getLabel()) {
-					case GlsVariable.ASSIGN -> AssignNode.fromParseTree(first);
-					case GlsVariable.IF -> IfNode.fromParseTree(first);
-					case GlsVariable.WHILE -> WhileNode.fromParseTree(first);
-					case GlsVariable.OUTPUT -> OutputNode.fromParseTree(first);
-					case GlsVariable.INPUT -> InputNode.fromParseTree(first);
-                    default -> null;
-                };
-			}
+			case GlsVariable.INSTRUCTION -> throw new UnsupportedOperationException("should not be there");
+			case GlsVariable.ASSIGN -> AssignNode.fromParseTree(parseTree);
+			case GlsVariable.IF -> IfNode.fromParseTree(parseTree);
+			case GlsVariable.WHILE -> WhileNode.fromParseTree(parseTree);
+			case GlsVariable.OUTPUT -> OutputNode.fromParseTree(parseTree);
+			case GlsVariable.INPUT -> InputNode.fromParseTree(parseTree);
 			default -> null;
 		};
 	}

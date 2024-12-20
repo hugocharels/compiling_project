@@ -3,36 +3,31 @@ package compiler.code;
 import compiler.GlsTerminal;
 import compiler.ParseTree;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // Composite node: Represents a block of code
 public class CodeBlockNode implements CodeComponent {
-	private final List<CodeComponent> components = new ArrayList<>();
+	private final CodeComponent first;
+	private final CodeBlockNode next;
 
-	public static CodeBlockNode fromParseTree(ParseTree parseTree) {
-		CodeBlockNode block = new CodeBlockNode();
-		for (ParseTree child : parseTree.getChildren()) {
-			if (child.getLabel().equals(GlsTerminal.COLUMN)) {
-				continue;
-			}
-			block.addComponent(CodeComponent.fromParseTree(child));
-		}
-		return block;
+
+	public CodeBlockNode(CodeComponent first, CodeBlockNode next) {
+		this.first = first;
+		this.next = next;
 	}
 
-	public void addComponent(CodeComponent component) {
-		components.add(component);
+	public static CodeBlockNode fromParseTree(ParseTree parseTree) {
+		CodeComponent first = CodeComponent.fromParseTree(parseTree.getChild(0).getChild(0));
+		if (parseTree.getChild(2).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {
+			return new CodeBlockNode(first, null);
+		} else {
+			return new CodeBlockNode(first, fromParseTree(parseTree.getChild(2)));
+		}
 	}
 
 	@Override
 	public void generateLLVM(StringBuilder llvmCode) {
-		for (CodeComponent component : components) {
-			if (component == null) {
-				continue;
-			}
-			System.out.println("ici " + component);
-			component.generateLLVM(llvmCode);
+		first.generateLLVM(llvmCode);
+		if (next != null) {
+			next.generateLLVM(llvmCode);
 		}
 	}
 }

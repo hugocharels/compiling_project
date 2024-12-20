@@ -1,4 +1,6 @@
 LET All_cond BE
+	a = 1:
 	IF { |(5-2) < 3| -> -(3+2) < 3+3 } THEN
+		OUT(a):
 	END:
 END
