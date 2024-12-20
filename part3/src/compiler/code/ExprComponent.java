@@ -63,7 +63,7 @@ public interface ExprComponent extends CodeComponent {
 		assert !parseTree.getChild(0).getLabel().equals(GlsTerminal.EPSILON) : "Expected <ProdArith'> with things but got " + parseTree.getChild(0).getLabel();
 
 		if (parseTree.getChild(2).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {
-			return new ExprNode(parseTree.getChild(1).getLexicalSymbol().getValue().toString());
+			return new AtomNode(parseTree.getChild(1).getLexicalSymbol().getValue().toString());
 		}
 		return new ExprOpNode(
 				fromAtomParseTree(parseTree.getChild(1)),
@@ -81,7 +81,7 @@ public interface ExprComponent extends CodeComponent {
 		assert !parseTree.getChild(0).getLabel().equals(GlsTerminal.EPSILON) : "Expected <ExprArith'> with things but got " + parseTree.getChild(0).getLabel();
 
 		if (parseTree.getChild(2).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {
-			return new ExprNode(parseTree.getChild(1).getLexicalSymbol().getValue().toString());
+			return new AtomNode(parseTree.getChild(1).getLexicalSymbol().getValue().toString());
 		}
 		return new ExprOpNode(fromProdArithParseTree(
 				parseTree.getChild(1)),
@@ -100,7 +100,7 @@ public interface ExprComponent extends CodeComponent {
 
 		// Case: <Atom> -> [Number] or [VarName]
 		if (parseTree.getChild(0).getLabel().equals(GlsTerminal.NUMBER) || parseTree.getChild(0).getLabel().equals(GlsTerminal.VARNAME)) {
-			return new ExprNode(parseTree.getChild(0).getLexicalSymbol().getValue().toString());
+			return new AtomNode(parseTree.getChild(0).getLexicalSymbol().getValue().toString());
 		}
 		// Case: <Atom> -> - <Atom>
 		else if (parseTree.getChild(0).getLabel().equals(GlsTerminal.MINUS)) {
@@ -112,5 +112,15 @@ public interface ExprComponent extends CodeComponent {
 		}
 		assert false : "Invalid <Atom> parse tree";
 		return null;
+	}
+
+	default String getLLVMOperator(String op) {
+		return switch (op) {
+			case "+" -> "add";
+			case "-" -> "sub";
+			case "*" -> "mul";
+			case "/" -> "sdiv";
+			default -> "";
+		};
 	}
 }

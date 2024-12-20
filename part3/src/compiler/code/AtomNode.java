@@ -2,16 +2,11 @@ package compiler.code;
 
 import compiler.ParseTree;
 
-public class ExprNode implements ExprComponent {
+public class AtomNode implements ExprComponent {
 	private final String value; // Can be a variable name, a number
 
-	public ExprNode(String value) {
+	public AtomNode(String value) {
 		this.value = value;
-	}
-
-	public static ExprNode fromParseTree(ParseTree parseTree) {
-		// TODO: Implement this
-		return null;
 	}
 
 	@Override
@@ -19,7 +14,8 @@ public class ExprNode implements ExprComponent {
 		if (! value.chars().allMatch(Character::isDigit)){
 			llvmCode.append("%");
 			llvmCode.append(value);
-			llvmCode.append("_val");
+			//llvmCode.append("_val");
+			//llvmCode.append("i");
 		}
 		else llvmCode.append(value);
 	}

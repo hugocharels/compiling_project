@@ -63,7 +63,7 @@ public interface ConditionComponent extends CodeComponent {
 		return fromParseTree(newParseTree);
 	}
 
-	default String getLLVMOperator(String op){
+	default String getLLVMLogicalOperator(String op) {
 		return switch (op){
 			case "<" -> "slt";
 			case "<=" -> "sle";
@@ -71,10 +71,4 @@ public interface ConditionComponent extends CodeComponent {
             default -> "";
         };
 	}
-
-	/*default loadLLVMvar(StringBuilder llvmCode){
-		llvmCode.append("ERROR");
-	}*/
-
-	void generateLLVM(StringBuilderWrapper llvmCode, String varName);
 }

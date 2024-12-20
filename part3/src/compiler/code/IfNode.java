@@ -37,7 +37,7 @@ public class IfNode implements CodeComponent {
 	}
 
 	private void generateIfEnd(StringBuilderWrapper llvmCode) {
-		llvmCode.append("%cond = icmp ");
+		//llvmCode.append("%cond = icmp ");
 		this.condition.generateLLVM(llvmCode);
 		llvmCode.appendln("br i1 %cond, label %true, label %endif");
 		llvmCode.appendln("true:");
@@ -49,7 +49,7 @@ public class IfNode implements CodeComponent {
 	}
 
 	private void generateIfElse(StringBuilderWrapper llvmCode) {
-		llvmCode.append("%cond = icmp ");
+		//llvmCode.append("%cond = icmp ");
 		this.condition.generateLLVM(llvmCode);
 		llvmCode.appendln("br i1 %cond, label %true, label %false");
 		llvmCode.appendln("true:");

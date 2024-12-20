@@ -25,12 +25,12 @@ public class WhileNode implements CodeComponent {
 		llvmCode.appendln("br label %while");
 		llvmCode.appendln("while:");
 		llvmCode.incrementIndentLevel();
-		llvmCode.appendln("%%i = load i32, i32* %%%s, align 4".formatted("VAAR"));
-		llvmCode.append("%w_cond = icmp ");
+		//llvmCode.appendln("%%i = load i32, i32* %%%s, align 4".formatted("VAAR"));
+		//llvmCode.append("%w_cond = icmp ");
+		// condition.setVarName("i");
 		condition.generateLLVM(llvmCode);
-		condition.generateLLVM(llvmCode, "i");
-		llvmCode.appendln();
-		llvmCode.appendln("br i1 %w_cond, label %do, label %end");
+		//llvmCode.appendln();
+		llvmCode.appendln("br i1 %cond, label %do, label %end");
 		llvmCode.decrementIndentLevel();
 		llvmCode.appendln("do:");
 		llvmCode.incrementIndentLevel();

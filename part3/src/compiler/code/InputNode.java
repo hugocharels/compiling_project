@@ -22,6 +22,9 @@ public class InputNode implements CodeComponent {
 		llvmCode.appendln("%%%s = call i32 @readInt()".formatted(variableName + "_val"));
 		llvmCode.append("store i32 %%%s".formatted(variableName + "_val"));
 		llvmCode.appendln(", i32* %%%s, align 4".formatted(variableName));
+
+		VariableManager.getInstance().declare(variableName);
+		VariableManager.getInstance().declare(variableName + "_val");
 	}
 
 	@Override
