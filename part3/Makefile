@@ -26,7 +26,7 @@ run: compile
 	@clear
 	@echo "Running the program..."
 	@#java -jar dist/part3.jar $(INPUT_FILE)
-	@java -cp src/ compiler.Main $(INPUT_FILE)
+	@java -ea -cp src/ compiler.Main $(INPUT_FILE)
 	@make clean
 	@llvm-as $(BASENAME).ll -o=code-source.bc
 	@lli code-source.bc
