@@ -24,10 +24,10 @@ public class AssignNode implements CodeComponent {
 		expr.generateLLVM(llvmCode);
 		llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
 
-		if (!VariableManager.getInstance().isDeclared(this.varName)) {
+		/*if (!VariableManager.getInstance().isDeclared(this.varName)) {
 			llvmCode.append("%%%s = load i32".formatted(varName + "_val"));
 			llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
-		}
+		}*/
 	}
 
 	@Override
