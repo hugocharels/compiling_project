@@ -20,4 +20,11 @@ public class PipeCondNode implements ConditionComponent {
 	public void generateLLVM(StringBuilderWrapper llvmCode, String varName) {
 
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		pseudoCode.append("(");
+		conditionNode.generatePseudoCode(pseudoCode);
+		pseudoCode.append(")");
+	}
 }

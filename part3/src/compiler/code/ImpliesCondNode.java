@@ -23,4 +23,11 @@ public class ImpliesCondNode implements ConditionComponent {
 	public void generateLLVM(StringBuilderWrapper llvmCode, String varName) {
 
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		left.generatePseudoCode(pseudoCode);
+		pseudoCode.append(" -> ");
+		right.generatePseudoCode(pseudoCode);
+	}
 }

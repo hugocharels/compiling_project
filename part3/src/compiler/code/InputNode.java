@@ -23,4 +23,9 @@ public class InputNode implements CodeComponent {
 		llvmCode.append("store i32 %%%s".formatted(variableName + "_val"));
 		llvmCode.appendln(", i32* %%%s, align 4".formatted(variableName));
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		pseudoCode.appendln("%s = input()".formatted(variableName));
+	}
 }

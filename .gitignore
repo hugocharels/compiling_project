@@ -25,3 +25,7 @@ hs_err_pid*
 replay_pid*
 
 .idea/
+
+*.ll
+*.tex
+*code-source.bc

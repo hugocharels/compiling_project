@@ -19,4 +19,6 @@ public interface CodeComponent {
 	}
 
 	void generateLLVM(StringBuilderWrapper llvmCode);
+
+	void generatePseudoCode(StringBuilderWrapper pseudoCode);
 }

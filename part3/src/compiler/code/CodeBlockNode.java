@@ -30,4 +30,12 @@ public class CodeBlockNode implements CodeComponent {
 			next.generateLLVM(llvmCode);
 		}
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		first.generatePseudoCode(pseudoCode);
+		if (next != null) {
+			next.generatePseudoCode(pseudoCode);
+		}
+	}
 }

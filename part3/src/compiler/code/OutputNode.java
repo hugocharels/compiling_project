@@ -19,4 +19,9 @@ public class OutputNode implements CodeComponent {
 		llvmCode.appendln(", i32* %%%s, align 4".formatted(variableName));
 		llvmCode.appendln("call void @println(i32 %%%s)".formatted(variableName + "_final"));
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		pseudoCode.appendln("output(%s)".formatted(variableName));
+	}
 }

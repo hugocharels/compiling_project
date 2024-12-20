@@ -65,11 +65,17 @@ public class LLVMCodeGenerator {
 		this.addPreamble();
 
 		// Add declarations main function
-		this.llvmCode.append("define i32 @main() {");
+		this.llvmCode.appendln("define i32 @main() {");
 		this.llvmCode.incrementIndentLevel();
 		this.llvmCode.appendln("entry:");
 
-		CodeBlockNode.fromParseTree(this.parseTree.getChildren().get(3)).generateLLVM(this.llvmCode); // ⟨Code⟩ is the third argument (others are useless)
+		CodeBlockNode codeBlockNode = CodeBlockNode.fromParseTree(this.parseTree.getChildren().get(3));
+
+		StringBuilderWrapper pseudoCode = new StringBuilderWrapper();
+		codeBlockNode.generatePseudoCode(pseudoCode);
+		System.out.println(pseudoCode);
+
+		codeBlockNode.generateLLVM(this.llvmCode); // ⟨Code⟩ is the third argument (others are useless)
 
 		// Add the return statement
 		this.llvmCode.appendln("ret i32 0");

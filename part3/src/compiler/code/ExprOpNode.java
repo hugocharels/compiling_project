@@ -19,4 +19,13 @@ public class ExprOpNode implements ExprComponent {
 		right.generateLLVM(llvmCode);
 //		llvmCode.append(" \n");
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		left.generatePseudoCode(pseudoCode);
+		pseudoCode.append(" ");
+		pseudoCode.append(op);
+		pseudoCode.append(" ");
+		right.generatePseudoCode(pseudoCode);
+	}
 }

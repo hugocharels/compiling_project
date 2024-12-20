@@ -39,4 +39,15 @@ public class WhileNode implements CodeComponent {
 		llvmCode.decrementIndentLevel();
 		llvmCode.appendln("end:");
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		pseudoCode.append("while (");
+		condition.generatePseudoCode(pseudoCode);
+		pseudoCode.appendln(") {");
+		pseudoCode.incrementIndentLevel();
+		body.generatePseudoCode(pseudoCode);
+		pseudoCode.decrementIndentLevel();
+		pseudoCode.appendln("}");
+	}
 }

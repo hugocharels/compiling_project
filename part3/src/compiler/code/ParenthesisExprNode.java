@@ -14,4 +14,11 @@ public class ParenthesisExprNode implements ExprComponent {
 		expr.generateLLVM(llvmCode);
 		llvmCode.append(")");
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		pseudoCode.append("(");
+		expr.generatePseudoCode(pseudoCode);
+		pseudoCode.append(")");
+	}
 }

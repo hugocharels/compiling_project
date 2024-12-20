@@ -1,3 +1,4 @@
 LET Priority BE
   x = 1+2*3:
+  OUT(x):
 END

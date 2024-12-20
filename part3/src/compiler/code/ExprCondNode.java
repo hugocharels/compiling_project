@@ -24,6 +24,15 @@ public class ExprCondNode implements ConditionComponent {
 
 	@Override
 	public void generateLLVM(StringBuilderWrapper llvmCode, String varName) {
+		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		left.generatePseudoCode(pseudoCode);
+		pseudoCode.append(" ");
+		pseudoCode.append(op);
+		pseudoCode.append(" ");
+		right.generatePseudoCode(pseudoCode);
 	}
 }

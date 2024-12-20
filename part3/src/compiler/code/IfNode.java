@@ -38,15 +38,13 @@ public class IfNode implements CodeComponent {
 
 	private void generateIfEnd(StringBuilderWrapper llvmCode) {
 		llvmCode.append("%cond = icmp ");
-		llvmCode.incrementIndentLevel();
 		this.condition.generateLLVM(llvmCode);
 		llvmCode.appendln("br i1 %cond, label %true, label %endif");
-		llvmCode.decrementIndentLevel();
 		llvmCode.appendln("true:");
 		llvmCode.incrementIndentLevel();
 		this.thenBlock.generateLLVM(llvmCode);
-		llvmCode.decrementIndentLevel();
 		llvmCode.appendln("br label %endif");
+		llvmCode.decrementIndentLevel();
 		llvmCode.appendln("endif:");
 	}
 
@@ -55,11 +53,32 @@ public class IfNode implements CodeComponent {
 		this.condition.generateLLVM(llvmCode);
 		llvmCode.appendln("br i1 %cond, label %true, label %false");
 		llvmCode.appendln("true:");
+		llvmCode.incrementIndentLevel();
 		this.thenBlock.generateLLVM(llvmCode);
 		llvmCode.appendln("br label %endif");
+		llvmCode.decrementIndentLevel();
 		llvmCode.appendln("false:");
+		llvmCode.incrementIndentLevel();
 		this.elseBlock.generateLLVM(llvmCode);
 		llvmCode.append("br label %endif");
+		llvmCode.decrementIndentLevel();
 		llvmCode.appendln("endif:");
+	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		pseudoCode.append("if (");
+		this.condition.generatePseudoCode(pseudoCode);
+		pseudoCode.appendln(") {");
+		pseudoCode.incrementIndentLevel();
+		this.thenBlock.generatePseudoCode(pseudoCode);
+		pseudoCode.decrementIndentLevel();
+		if (this.elseBlock != null) {
+			pseudoCode.appendln("} else {");
+			pseudoCode.incrementIndentLevel();
+			this.elseBlock.generatePseudoCode(pseudoCode);
+			pseudoCode.decrementIndentLevel();
+		}
+		pseudoCode.appendln("}");
 	}
 }

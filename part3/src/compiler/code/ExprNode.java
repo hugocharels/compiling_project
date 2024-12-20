@@ -23,4 +23,9 @@ public class ExprNode implements ExprComponent {
 		}
 		else llvmCode.append(value);
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		pseudoCode.append(value);
+	}
 }

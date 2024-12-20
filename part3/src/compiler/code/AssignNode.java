@@ -25,4 +25,11 @@ public class AssignNode implements CodeComponent {
 		llvmCode.append("%%%s = load i32".formatted(varName + "_val"));
 		llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
 	}
+
+	@Override
+	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
+		pseudoCode.append("%s = ".formatted(varName));
+		expr.generatePseudoCode(pseudoCode);
+		pseudoCode.appendln();
+	}
 }
