@@ -62,4 +62,13 @@ public interface ConditionComponent extends CodeComponent {
 		newParseTree.addChild(parseTree.getChild(2));
 		return fromParseTree(newParseTree);
 	}
+
+	default String getLLVMOperator(String op){
+		return switch (op){
+			case "<" -> "slt";
+			case "<=" -> "sle";
+			case "==" -> "eq";
+            default -> "";
+        };
+	}
 }

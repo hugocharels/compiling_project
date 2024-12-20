@@ -6,6 +6,7 @@ LEXER_FILE = $(SRC_DIR)/LexicalAnalyzer.java
 CLASS_FILES = $(SRC_DIR)/*.class
 MAIN_CLASS = Main
 INPUT_FILE = "test/Evaluation_algorithm.gls"
+BASENAME = $(basename $(INPUT_FILE))
 JFLEX_JAR_PATH = "dist/jflex-full-1.9.1.jar"
 
 # Default target: compile and run
@@ -27,6 +28,8 @@ run: compile
 	@#java -jar dist/part3.jar $(INPUT_FILE)
 	@java -cp src/ compiler.Main $(INPUT_FILE)
 	@make clean
+	@llvm-as $(BASENAME).ll -o=code-source.bc
+	@lli code-source.bc
 
 jar: compile
 	@echo "Creating jar file..."
