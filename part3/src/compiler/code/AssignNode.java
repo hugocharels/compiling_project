@@ -16,13 +16,13 @@ public class AssignNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
-		llvmCode.append("\t%%%s = alloca i32, align 4\n".formatted(varName)); //TODO if not already declared
-		llvmCode.append("\tstore i32 ");
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
+		llvmCode.appendln("%%%s = alloca i32, align 4".formatted(varName));
+		llvmCode.append("store i32 ");
 		expr.generateLLVM(llvmCode);
-		llvmCode.append(", i32* %%%s, align 4\n".formatted(varName));
+		llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
 		//TODO if not declared
-		llvmCode.append("\t%%%s = load i32".formatted(varName+"_val"));
-		llvmCode.append(", i32* %%%s, align 4\n".formatted(varName));
+		llvmCode.append("%%%s = load i32".formatted(varName + "_val"));
+		llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
 	}
 }

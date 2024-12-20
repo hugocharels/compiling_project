@@ -15,7 +15,7 @@ public class ExprNode implements ExprComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
 		if (! value.chars().allMatch(Character::isDigit)){
 			llvmCode.append("%");
 			llvmCode.append(value);

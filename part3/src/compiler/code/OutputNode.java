@@ -14,9 +14,9 @@ public class OutputNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
-		llvmCode.append("\t%%%s = load i32".formatted(variableName+"_final"));
-		llvmCode.append(", i32* %%%s, align 4\n".formatted(variableName));
-		llvmCode.append("\tcall void @println(i32 %%%s)\n".formatted(variableName+"_final"));
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
+		llvmCode.append("%%%s = load i32".formatted(variableName + "_final"));
+		llvmCode.appendln(", i32* %%%s, align 4".formatted(variableName));
+		llvmCode.appendln("call void @println(i32 %%%s)".formatted(variableName + "_final"));
 	}
 }

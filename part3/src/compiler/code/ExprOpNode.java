@@ -12,7 +12,7 @@ public class ExprOpNode implements ExprComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
 		// TODO: Implement this
 		left.generateLLVM(llvmCode);
 		llvmCode.append(op);

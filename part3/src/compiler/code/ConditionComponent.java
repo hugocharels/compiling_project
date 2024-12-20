@@ -71,4 +71,10 @@ public interface ConditionComponent extends CodeComponent {
             default -> "";
         };
 	}
+
+	/*default loadLLVMvar(StringBuilder llvmCode){
+		llvmCode.append("ERROR");
+	}*/
+
+	void generateLLVM(StringBuilderWrapper llvmCode, String varName);
 }

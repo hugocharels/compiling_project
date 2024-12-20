@@ -21,12 +21,22 @@ public class WhileNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
-		// TODO: Implement this
-		llvmCode.append("while ");
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
+		llvmCode.appendln("br label %while");
+		llvmCode.appendln("while:");
+		llvmCode.incrementIndentLevel();
+		llvmCode.appendln("%%i = load i32, i32* %%%s, align 4".formatted("VAAR"));
+		llvmCode.append("%w_cond = icmp ");
 		condition.generateLLVM(llvmCode);
-		llvmCode.append(" do\n");
+		condition.generateLLVM(llvmCode, "i");
+		llvmCode.appendln();
+		llvmCode.appendln("br i1 %w_cond, label %do, label %end");
+		llvmCode.decrementIndentLevel();
+		llvmCode.appendln("do:");
+		llvmCode.incrementIndentLevel();
 		body.generateLLVM(llvmCode);
-		llvmCode.append("end\n");
+		llvmCode.appendln("br label %while");
+		llvmCode.decrementIndentLevel();
+		llvmCode.appendln("end:");
 	}
 }

@@ -18,5 +18,5 @@ public interface CodeComponent {
 		};
 	}
 
-	void generateLLVM(StringBuilder llvmCode);
+	void generateLLVM(StringBuilderWrapper llvmCode);
 }

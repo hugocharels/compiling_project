@@ -13,13 +13,17 @@ public class ExprCondNode implements ConditionComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
 		llvmCode.append(getLLVMOperator(op));
 		llvmCode.append(" i32 ");
 		left.generateLLVM(llvmCode);
 		llvmCode.append(", ");
 		right.generateLLVM(llvmCode);
-		llvmCode.append("\n");
+		llvmCode.appendln();
 	}
 
+	@Override
+	public void generateLLVM(StringBuilderWrapper llvmCode, String varName) {
+
+	}
 }

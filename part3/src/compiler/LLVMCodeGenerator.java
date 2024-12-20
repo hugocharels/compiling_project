@@ -1,10 +1,11 @@
 package compiler;
 
 import compiler.code.CodeBlockNode;
+import compiler.code.StringBuilderWrapper;
 
 public class LLVMCodeGenerator {
 	final ParseTree parseTree;
-	final StringBuilder llvmCode = new StringBuilder();
+	final StringBuilderWrapper llvmCode = new StringBuilderWrapper();
 
 	/**
 	 * Constructs an LLVMCodeGenerator with the specified parse tree.
@@ -21,7 +22,7 @@ public class LLVMCodeGenerator {
 	 */
 	private void addPreamble() {
 		// Add the readInt function declaration for the IN() function
-		this.llvmCode.append(
+		this.llvmCode.appendParagraph(
 				"""
 						@.strR = private unnamed_addr constant [3 x i8] c"%d\\00", align 1
 						
@@ -36,7 +37,7 @@ public class LLVMCodeGenerator {
 						"""
 		);
 		// Add the println function declaration for the OUT() function
-		this.llvmCode.append(
+		this.llvmCode.appendParagraph(
 				"""
 						@.strP = private unnamed_addr constant [4 x i8] c"%d\\0A\\00", align 1
 						
@@ -58,48 +59,22 @@ public class LLVMCodeGenerator {
 	 */
 	public void generateCode() {
 		// reset the LLVM code
-		this.llvmCode.setLength(0);
+		this.llvmCode.clear();
 
 		// Add the LLVM code preamble
 		this.addPreamble();
 
 		// Add declarations main function
-		this.llvmCode.append(
-				"""
-						define i32 @main() {
-						\tentry:
-						"""
-		);
+		this.llvmCode.append("define i32 @main() {");
+		this.llvmCode.incrementIndentLevel();
+		this.llvmCode.appendln("entry:");
 
 		CodeBlockNode.fromParseTree(this.parseTree.getChildren().get(3)).generateLLVM(this.llvmCode); // ⟨Code⟩ is the third argument (others are useless)
 
-		/**
-		 // Depth-first traversal of the parse tree
-		 Stack<ParseTree> stack = new Stack<>();
-		 stack.push(this.parseTree);
-		 while (!stack.isEmpty()) {
-		 // Pop the top of the stack
-		 ParseTree node = stack.pop();
-
-		 if (node.getChildren().size() > 0) {
-		 // Add all children (in the right order) to the stack
-		 for (int i = node.getChildren().size() - 1; i >= 0; i--) {
-		 stack.push(node.getChildren().get(i));
-		 }
-		 } else {
-		 // TODO: Implement the code generation for the parse tree nodes
-		 System.out.println("label: " + node.getLabel() + " symbol: " + node.getLexicalSymbol().getValue());
-		 }
-		 }
-		 **/
-
 		// Add the return statement
-		this.llvmCode.append(
-				"""
-						\tret i32 0
-						}
-						"""
-		);
+		this.llvmCode.appendln("ret i32 0");
+		this.llvmCode.decrementIndentLevel();
+		this.llvmCode.appendln("}");
 	}
 
 	/**

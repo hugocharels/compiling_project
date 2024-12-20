@@ -8,7 +8,7 @@ public class ParenthesisExprNode implements ExprComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
 		// TODO: Implement this
 		llvmCode.append("(");
 		expr.generateLLVM(llvmCode);

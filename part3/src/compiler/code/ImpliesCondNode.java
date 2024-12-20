@@ -11,11 +11,16 @@ public class ImpliesCondNode implements ConditionComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
 		// TODO: Implement this
 		left.generateLLVM(llvmCode);
 		llvmCode.append(" -> ");
 		right.generateLLVM(llvmCode);
 //		llvmCode.append("\n");
+	}
+
+	@Override
+	public void generateLLVM(StringBuilderWrapper llvmCode, String varName) {
+
 	}
 }

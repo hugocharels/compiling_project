@@ -24,7 +24,7 @@ public class CodeBlockNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
 		first.generateLLVM(llvmCode);
 		if (next != null) {
 			next.generateLLVM(llvmCode);

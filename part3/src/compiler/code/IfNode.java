@@ -28,7 +28,7 @@ public class IfNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilder llvmCode) {
+	public void generateLLVM(StringBuilderWrapper llvmCode) {
 		if (this.elseBlock == null) {
 			this.generateIfEnd(llvmCode);
 		} else {
@@ -36,36 +36,30 @@ public class IfNode implements CodeComponent {
 		}
 	}
 
-	private void generateIfEnd(StringBuilder llvmCode) {
-		llvmCode.append("\t%cond = icmp ");
+	private void generateIfEnd(StringBuilderWrapper llvmCode) {
+		llvmCode.append("%cond = icmp ");
+		llvmCode.incrementIndentLevel();
 		this.condition.generateLLVM(llvmCode);
-		llvmCode.append("""
-				\tbr i1 %cond, label %true, label %endif
-				\ttrue:
-				""");
+		llvmCode.appendln("br i1 %cond, label %true, label %endif");
+		llvmCode.decrementIndentLevel();
+		llvmCode.appendln("true:");
+		llvmCode.incrementIndentLevel();
 		this.thenBlock.generateLLVM(llvmCode);
-		llvmCode.append("""
-				\tbr label %endif
-				\tendif:
-				""");
+		llvmCode.decrementIndentLevel();
+		llvmCode.appendln("br label %endif");
+		llvmCode.appendln("endif:");
 	}
 
-	private void generateIfElse(StringBuilder llvmCode) {
-		llvmCode.append("\t%cond = icmp ");
+	private void generateIfElse(StringBuilderWrapper llvmCode) {
+		llvmCode.append("%cond = icmp ");
 		this.condition.generateLLVM(llvmCode);
-		llvmCode.append("""
-				\tbr i1 %cond, label %true, label %false
-				\ttrue:
-				""");
+		llvmCode.appendln("br i1 %cond, label %true, label %false");
+		llvmCode.appendln("true:");
 		this.thenBlock.generateLLVM(llvmCode);
-		llvmCode.append("""
-				\tbr label %endif
-				false:
-				""");
+		llvmCode.appendln("br label %endif");
+		llvmCode.appendln("false:");
 		this.elseBlock.generateLLVM(llvmCode);
-		llvmCode.append("""
-				\tbr label %endif
-				\tendif:
-				""");
+		llvmCode.append("br label %endif");
+		llvmCode.appendln("endif:");
 	}
 }
