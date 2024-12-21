@@ -8,15 +8,12 @@ public class LabelManager {
 	private static LabelManager instance;
 
 	// Set to store allocated labels
-	private Set<String> allocatedLabels;
+	private final Set<String> allocatedLabels;
 
 	// Counters for generating unique identifiers
 	private int whileCounter;
 	private int ifCounter;
 	private int tempCounter;
-	private int tempGenerated;
-	private boolean lastIsWhile;
-	private final boolean generateTemp = false;
 
 	// Private constructor to prevent instantiation
 	private LabelManager() {
@@ -24,7 +21,6 @@ public class LabelManager {
 		this.whileCounter = 0;
 		this.ifCounter = 0;
 		this.tempCounter = 0;
-		this.tempGenerated = 0;
 	}
 
 	// Method to get the singleton instance
@@ -37,38 +33,32 @@ public class LabelManager {
 
 	// Method to generate a set of labels for a while loop
 	public WhileLabels generateWhileLabels() {
-		this.lastIsWhile = true;
 		int currentId = whileCounter++;
-		String condLabel = "while_" + currentId;
-		String cond = "while_cond_" + currentId;
-		String bodyLabel = "repeat_" + currentId;
-		String endLabel = "while_end_" + currentId;
+		String condLabel = "While_" + currentId;
+		String bodyLabel = "Repeat_" + currentId;
+		String endLabel = "While_end_" + currentId;
 
 		// Allocate all labels
 		allocateLabel(condLabel);
-		allocateLabel(cond);
 		allocateLabel(bodyLabel);
 		allocateLabel(endLabel);
 
-		return new WhileLabels(condLabel, cond, bodyLabel, endLabel);
+		return new WhileLabels(condLabel, bodyLabel, endLabel);
 	}
 
 	// Method to generate a set of labels for an if statement
 	public IfLabels generateIfLabels() {
-		this.lastIsWhile = false;
 		int currentId = ifCounter++;
-		String cond = "if_cond_" + currentId;
-		String bodyLabel = "then_" + currentId;
-		String elseLabel = "else_" + currentId;
-		String endLabel = "end_if_" + currentId;
+		String bodyLabel = "Then_" + currentId;
+		String elseLabel = "Else_" + currentId;
+		String endLabel = "End_if_" + currentId;
 
 		// Allocate all labels
-		allocateLabel(cond);
 		allocateLabel(bodyLabel);
 		allocateLabel(elseLabel);
 		allocateLabel(endLabel);
 
-		return new IfLabels(cond, bodyLabel, elseLabel, endLabel);
+		return new IfLabels(bodyLabel, elseLabel, endLabel);
 	}
 
 	// Method to allocate a label
@@ -76,50 +66,24 @@ public class LabelManager {
 		allocatedLabels.add(label);
 	}
 
-	// Method to check if a label is allocated
-	public boolean isLabelAllocated(String label) {
-		return allocatedLabels.contains(label);
-	}
-
-	// Method to deallocate a label (optional)
-	public void deallocateLabel(String label) {
-		allocatedLabels.remove(label);
-	}
-
-	public String getLastCond() {
-		if (generateTemp) {
-			return "bool_" + (tempCounter++);
-		} else if (lastIsWhile) {
-			return "while_cond_" + (whileCounter-1);
-		} else {
-			return "if_cond_" + (ifCounter-1);
-		}
-	}
-
 	public String createTempCond() {
-		return "bool_" + (tempGenerated++);
+		return "Bool_" + (tempCounter++);
 	}
 
 	// Nested class to hold the labels for a single while loop
 	public static class WhileLabels {
 		private final String condLabel;
-		private final String cond;
 		private final String bodyLabel;
 		private final String endLabel;
 
-		public WhileLabels(String condLabel, String cond, String bodyLabel, String endLabel) {
+		public WhileLabels(String condLabel, String bodyLabel, String endLabel) {
 			this.condLabel = condLabel;
-			this.cond = cond;
 			this.bodyLabel = bodyLabel;
 			this.endLabel = endLabel;
 		}
 
 		public String getCondLabel() {
 			return condLabel;
-		}
-
-		public String getCond() {
-			return cond;
 		}
 
 		public String getBodyLabel() {
@@ -133,20 +97,14 @@ public class LabelManager {
 
 	// Nested class to hold the labels for a single if statement
 	public static class IfLabels {
-		private final String cond;
 		private final String bodyLabel;
 		private final String elseLabel;
 		private final String endLabel;
 
-		public IfLabels(String cond, String bodyLabel, String elseLabel, String endLabel) {
-			this.cond = cond;
+		public IfLabels(String bodyLabel, String elseLabel, String endLabel) {
 			this.bodyLabel = bodyLabel;
 			this.elseLabel = elseLabel;
 			this.endLabel = endLabel;
-		}
-
-		public String getCond() {
-			return cond;
 		}
 
 		public String getBodyLabel() {

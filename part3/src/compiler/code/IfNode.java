@@ -38,7 +38,6 @@ public class IfNode implements CodeComponent {
 	}
 
 	private void generateIfEnd(StringBuilderWrapper llvmCode) {
-		//llvmCode.append("%cond = icmp ");
 		LabelManager.IfLabels ifLabels = LabelManager.getInstance().generateIfLabels();
 		String var = this.condition.generateLLVM(llvmCode);
 		llvmCode.appendln("br i1 %" + var + ", label %" + ifLabels.getBodyLabel() + ", label %" + ifLabels.getEndLabel());
@@ -51,7 +50,6 @@ public class IfNode implements CodeComponent {
 	}
 
 	private void generateIfElse(StringBuilderWrapper llvmCode) {
-		//llvmCode.append("%cond = icmp ");
 		LabelManager.IfLabels ifLabels = LabelManager.getInstance().generateIfLabels();
 		String var = this.condition.generateLLVM(llvmCode);
 		llvmCode.appendln("br i1 %" + var + ", label %" + ifLabels.getBodyLabel() + ", label %" + ifLabels.getElseLabel());

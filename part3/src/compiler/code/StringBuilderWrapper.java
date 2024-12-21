@@ -36,12 +36,12 @@ public class StringBuilderWrapper {
 		return this;
 	}
 
-	public int incrementIndentLevel() {
-		return ++this.indentLevel;
+	public void incrementIndentLevel() {
+		++this.indentLevel;
 	}
 
-	public int decrementIndentLevel() {
-		return --this.indentLevel;
+	public void decrementIndentLevel() {
+		--this.indentLevel;
 	}
 
 	@Override
@@ -56,6 +56,6 @@ public class StringBuilderWrapper {
 	}
 
 	public String createTempVar() {
-		return "%t" + (tempVarCounter++);
+		return "%T" + (tempVarCounter++);
 	}
 }

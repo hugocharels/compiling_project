@@ -1,7 +1,5 @@
 package compiler.code;
 
-import java.util.Objects;
-
 public class ExprOpNode implements ExprComponent {
 	private final ExprComponent left;
 	private final String op;

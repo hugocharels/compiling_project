@@ -1,0 +1,19 @@
+LET Ultimate BE
+    $a = 1:
+    IF { ||(5-2) < 3| -> --(3+2) < 3| -> a < 0 -> (2-3) < 2 } THEN
+        OUT(a):
+        OUT(a):
+        c = a:
+        WHILE {c <= 3} REPEAT
+            OUT(c):
+            c = c+1:
+        END:
+        IN(b):
+        IF { 5 < b } THEN
+            WHILE { 1 < b } REPEAT
+                OUT(b):
+                b = b - c:
+            END:
+        END:
+    END:
+END

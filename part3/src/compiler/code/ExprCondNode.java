@@ -30,7 +30,6 @@ public class ExprCondNode implements ConditionComponent {
 
 		String cond = LabelManager.getInstance().createTempCond();
 		llvmCode.append("%" + cond + " = icmp " + getLLVMLogicalOperator(op) + " i32 ");
-		//left.generateLLVM(llvmCode);
 		llvmCode.appendln(var1 + ", " + var2);
 		return cond;
 	}

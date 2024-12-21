@@ -10,13 +10,9 @@ public class VariableManager {
 	// Map to store variable names and their allocation status
 	private final Map<String, Boolean> variableMap;
 
-	// Counter for generating unique variables
-	private int conditionCounter;
-
 	// Private constructor to prevent instantiation
 	private VariableManager() {
 		this.variableMap = new HashMap<>();
-		this.conditionCounter = 0;
 	}
 
 	// Method to get the singleton instance
@@ -38,15 +34,4 @@ public class VariableManager {
 		variableMap.put(variableName, true);
 	}
 
-	// Method to deallocate a variable
-	public void deallocateVariable(String variableName) {
-		variableMap.put(variableName, false);
-	}
-
-	// Method to get a unique variable for conditions
-	public String getUniqueConditionVariable() {
-		String uniqueVar = "cond_var_" + conditionCounter++;
-		declare(uniqueVar); // Mark it as allocated
-		return uniqueVar;
-	}
 }
