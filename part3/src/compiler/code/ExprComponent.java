@@ -26,6 +26,7 @@ public interface ExprComponent extends CodeComponent {
 
 		assert parseTree.getLabel().equals(GlsVariable.EXPR_ARITH) : "Expected <ExprArith> but got " + parseTree.getLabel();
 
+		// if <ExprArith'> is epsilon
 		if (parseTree.getChild(1).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {
 			return fromProdArithParseTree(parseTree.getChild(0));
 		} else {
