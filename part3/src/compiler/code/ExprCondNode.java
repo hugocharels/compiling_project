@@ -20,7 +20,7 @@ public class ExprCondNode implements ConditionComponent {
 		if (VariableManager.getInstance().isDeclared(var1)){
 			var1 = llvmCode.createTempVar();
 			llvmCode.append(String.format("%s = load i32, i32* ", var1));
-			llvmCode.append(left.generateLLVM(llvmCode) + ", align 4");
+			llvmCode.appendln(left.generateLLVM(llvmCode) + ", align 4");
 		}
 		if (VariableManager.getInstance().isDeclared(var2)){
 			var2 = llvmCode.createTempVar();
@@ -28,11 +28,11 @@ public class ExprCondNode implements ConditionComponent {
 			llvmCode.appendln(right.generateLLVM(llvmCode) + ", align 4");
 		}
 
-		String cond = LabelManager.getInstance().getLastCond();
+		String cond = LabelManager.getInstance().createTempCond();
 		llvmCode.append("%" + cond + " = icmp " + getLLVMLogicalOperator(op) + " i32 ");
 		//left.generateLLVM(llvmCode);
 		llvmCode.appendln(var1 + ", " + var2);
-		return null;
+		return cond;
 	}
 
 	@Override

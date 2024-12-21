@@ -17,28 +17,33 @@ public class AssignNode implements CodeComponent {
 
 	@Override
 	public String generateLLVM(StringBuilderWrapper llvmCode) {
-		boolean a = false;
+		boolean newDirectDeclaration = false;
+		String varRes = expr.generateLLVM(llvmCode);
+		//new variable
+		//llvmCode.append("TGM-0" + varName);
 		if (!VariableManager.getInstance().isDeclared(this.varName)) {
 			llvmCode.appendln("%%%s = alloca i32, align 4".formatted(varName));
 			VariableManager.getInstance().declare(this.varName);
-			if (!VariableManager.getInstance().isDeclared(expr.generateLLVM(llvmCode))) {
-				a = true;
+			//assign a value (not in a variable)
+			//llvmCode.append("TGM0" + varRes);
+			if (!VariableManager.getInstance().isDeclared(varRes)) {
+				newDirectDeclaration = true;
 			}
 		}
+
+		//if it is not a direct value (so an expression)
 		if (!(expr instanceof AtomNode)) {
-			String varRes = expr.generateLLVM(llvmCode);
 			llvmCode.appendln(String.format("store i32 %s, i32* %%%s, align 4", varRes, varName));
 		} else {
-			if (!a && VariableManager.getInstance().isDeclared(this.varName)) {
-				String second = expr.generateLLVM(llvmCode);
+			if (!varRes.chars().allMatch(Character::isDigit)) {
+				//we need to access to a previous variable
 				String var1 = llvmCode.createTempVar();
-				llvmCode.appendln(String.format("%s = load i32, i32* %s, align 4", var1, second));
+				//llvmCode.append("TGM");
+				llvmCode.appendln(String.format("%s = load i32, i32* %s, align 4", var1, varRes));
 				llvmCode.appendln(String.format("store i32 %s, i32* %%%s, align 4", var1, varName));
 				return null;
 			}
-			llvmCode.append("store i32 ");
-			llvmCode.append(expr.generateLLVM(llvmCode));
-			llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
+			llvmCode.appendln(String.format("store i32 %s, i32* %%%s, align 4", varRes, varName));
 		}
 
 		return null;

@@ -1,4 +1,10 @@
 LET Priority BE
-  x = 1+2*3:
-  OUT(x):
+	a = 1:
+	b = 2:
+	IF { 2<1 -> 1==1 -> 2<1 } THEN
+		OUT(a): $ Should print
+	END:
+	IF { |2<1 -> 1==1| -> 2<1} THEN
+		OUT(b): $ Should not print
+	END:
 END

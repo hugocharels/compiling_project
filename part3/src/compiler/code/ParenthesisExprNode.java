@@ -9,12 +9,7 @@ public class ParenthesisExprNode implements ExprComponent {
 
 	@Override
 	public String generateLLVM(StringBuilderWrapper llvmCode) {
-		// TODO: Implement this
 		return expr.generateLLVM(llvmCode);
-		//llvmCode.append("(");
-		//expr.generateLLVM(llvmCode);
-		//llvmCode.append(")");
-		//return null;
 	}
 
 	@Override

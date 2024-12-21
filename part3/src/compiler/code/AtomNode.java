@@ -9,17 +9,7 @@ public class AtomNode implements ExprComponent {
 
 	@Override
 	public String generateLLVM(StringBuilderWrapper llvmCode) {
-		if (! value.chars().allMatch(Character::isDigit)){
-			//llvmCode.append("%");
-			//llvmCode.append(value);
-			//llvmCode.append("_val");
-			//llvmCode.append("i");
-			return "%"+value;
-		}
-		else {
-			//llvmCode.append(value);
-			return value;
-		}
+		return value.chars().allMatch(Character::isDigit) ? value : "%" + value;
 	}
 
 	@Override

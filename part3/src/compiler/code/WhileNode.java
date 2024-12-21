@@ -29,9 +29,9 @@ public class WhileNode implements CodeComponent {
 		//llvmCode.appendln("%%i = load i32, i32* %%%s, align 4".formatted("VAAR"));
 		//llvmCode.append("%w_cond = icmp ");
 		// condition.setVarName("i");
-		condition.generateLLVM(llvmCode);
+		String var = condition.generateLLVM(llvmCode);
 		//llvmCode.appendln();
-		llvmCode.appendln("br i1 %"+ whileLabels.getCond() + ", label %" + whileLabels.getBodyLabel() + ", label %" + whileLabels.getEndLabel());
+		llvmCode.appendln("br i1 %" + var + ", label %" + whileLabels.getBodyLabel() + ", label %" + whileLabels.getEndLabel());
 		llvmCode.decrementIndentLevel();
 		llvmCode.appendln( whileLabels.getBodyLabel() + ":");
 		llvmCode.incrementIndentLevel();

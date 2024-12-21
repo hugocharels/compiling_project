@@ -13,13 +13,18 @@ public class LabelManager {
 	// Counters for generating unique identifiers
 	private int whileCounter;
 	private int ifCounter;
+	private int tempCounter;
+	private int tempGenerated;
 	private boolean lastIsWhile;
+	private final boolean generateTemp = false;
 
 	// Private constructor to prevent instantiation
 	private LabelManager() {
 		this.allocatedLabels = new HashSet<>();
 		this.whileCounter = 0;
 		this.ifCounter = 0;
+		this.tempCounter = 0;
+		this.tempGenerated = 0;
 	}
 
 	// Method to get the singleton instance
@@ -82,11 +87,17 @@ public class LabelManager {
 	}
 
 	public String getLastCond() {
-		if (lastIsWhile) {
+		if (generateTemp) {
+			return "bool_" + (tempCounter++);
+		} else if (lastIsWhile) {
 			return "while_cond_" + (whileCounter-1);
 		} else {
 			return "if_cond_" + (ifCounter-1);
 		}
+	}
+
+	public String createTempCond() {
+		return "bool_" + (tempGenerated++);
 	}
 
 	// Nested class to hold the labels for a single while loop
