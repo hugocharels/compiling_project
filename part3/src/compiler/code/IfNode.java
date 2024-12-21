@@ -39,31 +39,33 @@ public class IfNode implements CodeComponent {
 
 	private void generateIfEnd(StringBuilderWrapper llvmCode) {
 		//llvmCode.append("%cond = icmp ");
+		LabelManager.IfLabels ifLabels = LabelManager.getInstance().generateIfLabels();
 		this.condition.generateLLVM(llvmCode);
-		llvmCode.appendln("br i1 %cond, label %true, label %endif");
-		llvmCode.appendln("true:");
+		llvmCode.appendln("br i1 %" + ifLabels.getCondLabel() + ", label %" + ifLabels.getBodyLabel() + ", label %" + ifLabels.getEndLabel());
+		llvmCode.appendln(ifLabels.getBodyLabel() + ":");
 		llvmCode.incrementIndentLevel();
 		this.thenBlock.generateLLVM(llvmCode);
-		llvmCode.appendln("br label %endif");
+		llvmCode.appendln("br label %" + ifLabels.getEndLabel());
 		llvmCode.decrementIndentLevel();
-		llvmCode.appendln("endif:");
+		llvmCode.appendln(ifLabels.getEndLabel() + ":");
 	}
 
 	private void generateIfElse(StringBuilderWrapper llvmCode) {
 		//llvmCode.append("%cond = icmp ");
+		LabelManager.IfLabels ifLabels = LabelManager.getInstance().generateIfLabels();
 		this.condition.generateLLVM(llvmCode);
-		llvmCode.appendln("br i1 %cond, label %true, label %false");
-		llvmCode.appendln("true:");
+		llvmCode.appendln("br i1 %" + ifLabels.getCondLabel() + ", label %" + ifLabels.getBodyLabel() + ", label %" + ifLabels.getElseLabel());
+		llvmCode.appendln(ifLabels.getBodyLabel() + ":");
 		llvmCode.incrementIndentLevel();
 		this.thenBlock.generateLLVM(llvmCode);
-		llvmCode.appendln("br label %endif");
+		llvmCode.appendln("br label %" + ifLabels.getEndLabel());
 		llvmCode.decrementIndentLevel();
-		llvmCode.appendln("false:");
+		llvmCode.appendln( ifLabels.getElseLabel() + ":");
 		llvmCode.incrementIndentLevel();
 		this.elseBlock.generateLLVM(llvmCode);
-		llvmCode.append("br label %endif");
+		llvmCode.appendln("br label %" + ifLabels.getEndLabel());
 		llvmCode.decrementIndentLevel();
-		llvmCode.appendln("endif:");
+		llvmCode.appendln(ifLabels.getEndLabel() + ":");
 	}
 
 	@Override
