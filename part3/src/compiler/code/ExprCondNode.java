@@ -14,17 +14,24 @@ public class ExprCondNode implements ConditionComponent {
 
 	@Override
 	public String generateLLVM(StringBuilderWrapper llvmCode) {
-		llvmCode.append("%i = load i32, i32* ");
-		llvmCode.append(left.generateLLVM(llvmCode));
-		llvmCode.appendln(", align 4");
-		llvmCode.append("%cond = icmp ");
-		llvmCode.append(getLLVMLogicalOperator(op));
-		llvmCode.append(" i32 ");
+
+		String var1 = left.generateLLVM(llvmCode);
+		String var2 = right.generateLLVM(llvmCode);
+		if (VariableManager.getInstance().isDeclared(var1)){
+			var1 = llvmCode.createTempVar();
+			llvmCode.append(String.format("%s = load i32, i32* ", var1));
+			llvmCode.append(left.generateLLVM(llvmCode) + ", align 4");
+		}
+		if (VariableManager.getInstance().isDeclared(var2)){
+			var2 = llvmCode.createTempVar();
+			llvmCode.append(String.format("%s = load i32, i32* ", var2));
+			llvmCode.appendln(right.generateLLVM(llvmCode) + ", align 4");
+		}
+
+		String cond = LabelManager.getInstance().getLastCond();
+		llvmCode.append("%" + cond + " = icmp " + getLLVMLogicalOperator(op) + " i32 ");
 		//left.generateLLVM(llvmCode);
-		llvmCode.append("%i");
-		llvmCode.append(", ");
-		llvmCode.append(right.generateLLVM(llvmCode));
-		llvmCode.appendln();
+		llvmCode.appendln(var1 + ", " + var2);
 		return null;
 	}
 

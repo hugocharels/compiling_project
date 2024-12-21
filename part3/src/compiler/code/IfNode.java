@@ -41,7 +41,7 @@ public class IfNode implements CodeComponent {
 		//llvmCode.append("%cond = icmp ");
 		LabelManager.IfLabels ifLabels = LabelManager.getInstance().generateIfLabels();
 		this.condition.generateLLVM(llvmCode);
-		llvmCode.appendln("br i1 %" + ifLabels.getCondLabel() + ", label %" + ifLabels.getBodyLabel() + ", label %" + ifLabels.getEndLabel());
+		llvmCode.appendln("br i1 %" + ifLabels.getCond() + ", label %" + ifLabels.getBodyLabel() + ", label %" + ifLabels.getEndLabel());
 		llvmCode.appendln(ifLabels.getBodyLabel() + ":");
 		llvmCode.incrementIndentLevel();
 		this.thenBlock.generateLLVM(llvmCode);
@@ -54,7 +54,7 @@ public class IfNode implements CodeComponent {
 		//llvmCode.append("%cond = icmp ");
 		LabelManager.IfLabels ifLabels = LabelManager.getInstance().generateIfLabels();
 		this.condition.generateLLVM(llvmCode);
-		llvmCode.appendln("br i1 %" + ifLabels.getCondLabel() + ", label %" + ifLabels.getBodyLabel() + ", label %" + ifLabels.getElseLabel());
+		llvmCode.appendln("br i1 %" + ifLabels.getCond() + ", label %" + ifLabels.getBodyLabel() + ", label %" + ifLabels.getElseLabel());
 		llvmCode.appendln(ifLabels.getBodyLabel() + ":");
 		llvmCode.incrementIndentLevel();
 		this.thenBlock.generateLLVM(llvmCode);

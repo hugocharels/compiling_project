@@ -29,7 +29,8 @@ public class VariableManager {
 
 	// Method to check if a variable is allocated
 	public boolean isDeclared(String variableName) {
-		return variableMap.getOrDefault(variableName, false);
+		return variableMap.getOrDefault(variableName, false) ||
+				variableMap.getOrDefault(variableName.replace("%", ""), false);
 	}
 
 	// Method to allocate a variable

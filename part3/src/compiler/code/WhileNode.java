@@ -31,7 +31,7 @@ public class WhileNode implements CodeComponent {
 		// condition.setVarName("i");
 		condition.generateLLVM(llvmCode);
 		//llvmCode.appendln();
-		llvmCode.appendln("br i1 %"+ whileLabels.getCondLabel() + ", label %" + whileLabels.getBodyLabel() + ", label %" + whileLabels.getEndLabel());
+		llvmCode.appendln("br i1 %"+ whileLabels.getCond() + ", label %" + whileLabels.getBodyLabel() + ", label %" + whileLabels.getEndLabel());
 		llvmCode.decrementIndentLevel();
 		llvmCode.appendln( whileLabels.getBodyLabel() + ":");
 		llvmCode.incrementIndentLevel();

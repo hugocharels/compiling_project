@@ -13,6 +13,7 @@ public class LabelManager {
 	// Counters for generating unique identifiers
 	private int whileCounter;
 	private int ifCounter;
+	private boolean lastIsWhile;
 
 	// Private constructor to prevent instantiation
 	private LabelManager() {
@@ -31,34 +32,38 @@ public class LabelManager {
 
 	// Method to generate a set of labels for a while loop
 	public WhileLabels generateWhileLabels() {
+		this.lastIsWhile = true;
 		int currentId = whileCounter++;
-		String condLabel = "while_cond_" + currentId;
-		String bodyLabel = "while_body_" + currentId;
+		String condLabel = "while_" + currentId;
+		String cond = "while_cond_" + currentId;
+		String bodyLabel = "repeat_" + currentId;
 		String endLabel = "while_end_" + currentId;
 
 		// Allocate all labels
 		allocateLabel(condLabel);
+		allocateLabel(cond);
 		allocateLabel(bodyLabel);
 		allocateLabel(endLabel);
 
-		return new WhileLabels(condLabel, bodyLabel, endLabel);
+		return new WhileLabels(condLabel, cond, bodyLabel, endLabel);
 	}
 
 	// Method to generate a set of labels for an if statement
 	public IfLabels generateIfLabels() {
+		this.lastIsWhile = false;
 		int currentId = ifCounter++;
-		String condLabel = "if_cond_" + currentId;
-		String bodyLabel = "if_body_" + currentId;
-		String elseLabel = "if_else_" + currentId;
-		String endLabel = "if_end_" + currentId;
+		String cond = "if_cond_" + currentId;
+		String bodyLabel = "then_" + currentId;
+		String elseLabel = "else_" + currentId;
+		String endLabel = "end_if_" + currentId;
 
 		// Allocate all labels
-		allocateLabel(condLabel);
+		allocateLabel(cond);
 		allocateLabel(bodyLabel);
 		allocateLabel(elseLabel);
 		allocateLabel(endLabel);
 
-		return new IfLabels(condLabel, bodyLabel, elseLabel, endLabel);
+		return new IfLabels(cond, bodyLabel, elseLabel, endLabel);
 	}
 
 	// Method to allocate a label
@@ -76,25 +81,34 @@ public class LabelManager {
 		allocatedLabels.remove(label);
 	}
 
-	// Method to get all allocated labels (for debugging or analysis)
-	public Set<String> getAllLabels() {
-		return new HashSet<>(allocatedLabels); // Return a copy of the set
+	public String getLastCond() {
+		if (lastIsWhile) {
+			return "while_cond_" + (whileCounter-1);
+		} else {
+			return "if_cond_" + (ifCounter-1);
+		}
 	}
 
 	// Nested class to hold the labels for a single while loop
 	public static class WhileLabels {
 		private final String condLabel;
+		private final String cond;
 		private final String bodyLabel;
 		private final String endLabel;
 
-		public WhileLabels(String condLabel, String bodyLabel, String endLabel) {
+		public WhileLabels(String condLabel, String cond, String bodyLabel, String endLabel) {
 			this.condLabel = condLabel;
+			this.cond = cond;
 			this.bodyLabel = bodyLabel;
 			this.endLabel = endLabel;
 		}
 
 		public String getCondLabel() {
 			return condLabel;
+		}
+
+		public String getCond() {
+			return cond;
 		}
 
 		public String getBodyLabel() {
@@ -108,20 +122,20 @@ public class LabelManager {
 
 	// Nested class to hold the labels for a single if statement
 	public static class IfLabels {
-		private final String condLabel;
+		private final String cond;
 		private final String bodyLabel;
 		private final String elseLabel;
 		private final String endLabel;
 
-		public IfLabels(String condLabel, String bodyLabel, String elseLabel, String endLabel) {
-			this.condLabel = condLabel;
+		public IfLabels(String cond, String bodyLabel, String elseLabel, String endLabel) {
+			this.cond = cond;
 			this.bodyLabel = bodyLabel;
 			this.elseLabel = elseLabel;
 			this.endLabel = endLabel;
 		}
 
-		public String getCondLabel() {
-			return condLabel;
+		public String getCond() {
+			return cond;
 		}
 
 		public String getBodyLabel() {
