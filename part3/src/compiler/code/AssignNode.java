@@ -21,7 +21,9 @@ public class AssignNode implements CodeComponent {
 		if (!VariableManager.getInstance().isDeclared(this.varName)) {
 			llvmCode.appendln("%%%s = alloca i32, align 4".formatted(varName));
 			VariableManager.getInstance().declare(this.varName);
-			a = true;
+			if (!VariableManager.getInstance().isDeclared(expr.generateLLVM(llvmCode))) {
+				a = true;
+			}
 		}
 		if (!(expr instanceof AtomNode)) {
 			String varRes = expr.generateLLVM(llvmCode);
@@ -29,15 +31,10 @@ public class AssignNode implements CodeComponent {
 		} else {
 			if (!a && VariableManager.getInstance().isDeclared(this.varName)) {
 				String second = expr.generateLLVM(llvmCode);
-				/*if (VariableManager.getInstance().isDeclared(second)) {
-					llvmCode.appendln("LOAD");
-					return null;
-				} else {*/
-					String var1 = llvmCode.createTempVar();
-					llvmCode.appendln(String.format("%s = load i32, i32* %s, align 4", var1, second));
-					llvmCode.appendln(String.format("store i32 %s, i32* %%%s, align 4", var1, varName));
-					return null;
-				/*}*/
+				String var1 = llvmCode.createTempVar();
+				llvmCode.appendln(String.format("%s = load i32, i32* %s, align 4", var1, second));
+				llvmCode.appendln(String.format("store i32 %s, i32* %%%s, align 4", var1, varName));
+				return null;
 			}
 			llvmCode.append("store i32 ");
 			llvmCode.append(expr.generateLLVM(llvmCode));
