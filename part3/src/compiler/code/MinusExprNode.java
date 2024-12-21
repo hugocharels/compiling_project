@@ -8,11 +8,10 @@ public class MinusExprNode implements ExprComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
-		// TODO: Implement this
-		llvmCode.append("- ");
-		expr.generateLLVM(llvmCode);
-//		llvmCode.append("\n");
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
+		String tempVar = llvmCode.createTempVar();
+		llvmCode.appendln(String.format("%s = sub i32 0, %s", tempVar, expr.generateLLVM(llvmCode)));
+		return tempVar;
 	}
 
 	@Override

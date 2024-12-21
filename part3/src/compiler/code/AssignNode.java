@@ -16,18 +16,25 @@ public class AssignNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		if (!VariableManager.getInstance().isDeclared(this.varName)) {
 			llvmCode.appendln("%%%s = alloca i32, align 4".formatted(varName));
 		}
-		llvmCode.append("store i32 ");
-		expr.generateLLVM(llvmCode);
-		llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
+		if (!(expr instanceof AtomNode)) {
+			String varRes = expr.generateLLVM(llvmCode);
+			llvmCode.appendln(String.format("store i32 %s, i32* %%%s, align 4", varRes, varName));
+		}
+		else {
+			llvmCode.append("store i32 ");
+			llvmCode.append(expr.generateLLVM(llvmCode));
+			llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
+		}
 
 		/*if (!VariableManager.getInstance().isDeclared(this.varName)) {
 			llvmCode.append("%%%s = load i32".formatted(varName + "_val"));
 			llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
 		}*/
+		return null;
 	}
 
 	@Override

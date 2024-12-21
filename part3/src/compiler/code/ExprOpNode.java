@@ -12,12 +12,19 @@ public class ExprOpNode implements ExprComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
-		// TODO: Implement this
-		left.generateLLVM(llvmCode);
-		llvmCode.append(op);
-		right.generateLLVM(llvmCode);
-//		llvmCode.append(" \n");
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
+		if (!(left instanceof MinusExprNode || right instanceof MinusExprNode)) {
+			String tempVar = llvmCode.createTempVar();
+			llvmCode.appendln(String.format("%s = %s i32 %s, %s", tempVar, getLLVMOperator(op), left.generateLLVM(llvmCode), right.generateLLVM(llvmCode)));
+			return tempVar;
+		}
+		else {
+			String l = left.generateLLVM(llvmCode);
+			String r = right.generateLLVM(llvmCode);
+			String tempVar = llvmCode.createTempVar();
+			llvmCode.appendln(String.format("%s = %s i32 %s, %s", tempVar, getLLVMOperator(op), l, r));
+			return tempVar;
+		}
 	}
 
 	@Override

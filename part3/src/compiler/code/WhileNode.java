@@ -21,7 +21,7 @@ public class WhileNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		llvmCode.appendln("br label %while");
 		llvmCode.appendln("while:");
 		llvmCode.incrementIndentLevel();
@@ -38,6 +38,7 @@ public class WhileNode implements CodeComponent {
 		llvmCode.appendln("br label %while");
 		llvmCode.decrementIndentLevel();
 		llvmCode.appendln("end:");
+		return null;
 	}
 
 	@Override

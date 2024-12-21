@@ -13,9 +13,9 @@ public class ExprCondNode implements ConditionComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		llvmCode.append("%i = load i32, i32* ");
-		left.generateLLVM(llvmCode);
+		llvmCode.append(left.generateLLVM(llvmCode));
 		llvmCode.appendln(", align 4");
 		llvmCode.append("%cond = icmp ");
 		llvmCode.append(getLLVMLogicalOperator(op));
@@ -23,8 +23,9 @@ public class ExprCondNode implements ConditionComponent {
 		//left.generateLLVM(llvmCode);
 		llvmCode.append("%i");
 		llvmCode.append(", ");
-		right.generateLLVM(llvmCode);
+		llvmCode.append(right.generateLLVM(llvmCode));
 		llvmCode.appendln();
+		return null;
 	}
 
 	@Override

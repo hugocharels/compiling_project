@@ -1,3 +1,4 @@
 LET All_expr BE
 	a = -(1+2-3*4/5)*2+3/(5-1)*9:
+	OUT(a):
 END

@@ -5,6 +5,7 @@ public class StringBuilderWrapper {
 	private final StringBuilder stringBuilder = new StringBuilder();
 	private int indentLevel = 0;
 	private boolean newLine = true;
+	private int tempVarCounter = 0;
 
 	public StringBuilderWrapper appendParagraph(String preamble) {
 		stringBuilder.append(preamble);
@@ -52,5 +53,9 @@ public class StringBuilderWrapper {
 		this.stringBuilder.setLength(0);
 		this.indentLevel = 0;
 		this.newLine = true;
+	}
+
+	public String createTempVar() {
+		return "%t" + (tempVarCounter++);
 	}
 }

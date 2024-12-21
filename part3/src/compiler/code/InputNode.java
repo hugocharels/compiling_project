@@ -17,7 +17,7 @@ public class InputNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		llvmCode.appendln("%%%s = alloca i32, align 4".formatted(variableName));
 		llvmCode.appendln("%%%s = call i32 @readInt()".formatted(variableName + "_val"));
 		llvmCode.append("store i32 %%%s".formatted(variableName + "_val"));
@@ -25,6 +25,7 @@ public class InputNode implements CodeComponent {
 
 		VariableManager.getInstance().declare(variableName);
 		VariableManager.getInstance().declare(variableName + "_val");
+		return null;
 	}
 
 	@Override

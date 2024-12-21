@@ -1,0 +1,7 @@
+LET While BE
+  IN(grade):
+  WHILE {grade < 10} REPEAT
+    grade = 20:
+  END:
+  OUT(grade):
+END

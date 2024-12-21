@@ -14,10 +14,11 @@ public class OutputNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		llvmCode.append("%%%s = load i32".formatted(variableName + "_final"));
 		llvmCode.appendln(", i32* %%%s, align 4".formatted(variableName));
 		llvmCode.appendln("call void @println(i32 %%%s)".formatted(variableName + "_final"));
+		return null;
 	}
 
 	@Override

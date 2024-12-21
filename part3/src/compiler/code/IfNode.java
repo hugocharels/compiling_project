@@ -28,12 +28,13 @@ public class IfNode implements CodeComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		if (this.elseBlock == null) {
 			this.generateIfEnd(llvmCode);
 		} else {
 			this.generateIfElse(llvmCode);
 		}
+		return null;
 	}
 
 	private void generateIfEnd(StringBuilderWrapper llvmCode) {

@@ -1,7 +1,5 @@
 package compiler.code;
 
-import compiler.ParseTree;
-
 public class AtomNode implements ExprComponent {
 	private final String value; // Can be a variable name, a number
 
@@ -10,14 +8,18 @@ public class AtomNode implements ExprComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		if (! value.chars().allMatch(Character::isDigit)){
-			llvmCode.append("%");
-			llvmCode.append(value);
+			//llvmCode.append("%");
+			//llvmCode.append(value);
 			//llvmCode.append("_val");
 			//llvmCode.append("i");
+			return "%"+value;
 		}
-		else llvmCode.append(value);
+		else {
+			//llvmCode.append(value);
+			return value;
+		}
 	}
 
 	@Override

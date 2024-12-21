@@ -9,11 +9,12 @@ public class PipeCondNode implements ConditionComponent {
 	}
 
 	@Override
-	public void generateLLVM(StringBuilderWrapper llvmCode) {
+	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		// TODO: Implement this
 		llvmCode.append("(");
 		conditionNode.generateLLVM(llvmCode);
 		llvmCode.append(")");
+		return null;
 	}
 
 	@Override
