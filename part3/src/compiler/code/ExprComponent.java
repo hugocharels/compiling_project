@@ -30,7 +30,8 @@ public interface ExprComponent extends CodeComponent {
 		if (parseTree.getChild(1).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {
 			return fromProdArithParseTree(parseTree.getChild(0));
 		} else {
-			return new ExprOpNode(fromProdArithParseTree(parseTree.getChild(0)), parseTree.getChild(1).getLexicalSymbol().getValue().toString(), fromExprArithPrimeParseTree(parseTree.getChild(1)));
+			ExprComponent left = fromProdArithParseTree(parseTree.getChild(0));
+			return fromExprArithPrimeParseTree(parseTree.getChild(1), left);
 		}
 	}
 
@@ -47,12 +48,10 @@ public interface ExprComponent extends CodeComponent {
 		if (parseTree.getChild(1).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {
 			return fromAtomParseTree(parseTree.getChild(0));
 		}
-		return new ExprOpNode(fromAtomParseTree(parseTree.getChild(0)),
-				parseTree.getChild(1).getChild(0).getLexicalSymbol().getValue().toString(),
-				fromProdArithPrimeParseTree(parseTree.getChild(1)));
+		return fromProdArithPrimeParseTree(parseTree.getChild(1), fromAtomParseTree(parseTree.getChild(0)));
 	}
 
-	static ExprComponent fromProdArithPrimeParseTree(ParseTree parseTree) {
+	static ExprComponent fromProdArithPrimeParseTree(ParseTree parseTree, ExprComponent left) {
 		// <ProdArith'> -> * <Atom> <ProdArith'>
 		//              -> / <Atom> <ProdArith'>
 		//              -> ε
@@ -64,16 +63,19 @@ public interface ExprComponent extends CodeComponent {
 		assert !parseTree.getChild(0).getLabel().equals(GlsTerminal.EPSILON) : "Expected <ProdArith'> with things but got " + parseTree.getChild(0).getLabel();
 
 		if (parseTree.getChild(2).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {
-			return new AtomNode(parseTree.getChild(1).getLexicalSymbol().getValue().toString());
+			return new ExprOpNode(left, parseTree.getChild(0).getLexicalSymbol().getValue().toString(), fromAtomParseTree(parseTree.getChild(1)));
+		} else {
+			return fromProdArithPrimeParseTree(parseTree.getChild(2),
+					new ExprOpNode(
+							left,
+							parseTree.getChild(0).getLexicalSymbol().getValue().toString(),
+							fromAtomParseTree(parseTree.getChild(1))
+					)
+			);
 		}
-		return new ExprOpNode(
-				fromAtomParseTree(parseTree.getChild(1)),
-				parseTree.getChild(2).getChild(0).getLexicalSymbol().getValue().toString(),
-				fromProdArithPrimeParseTree(parseTree.getChild(2))
-		);
 	}
 
-	static ExprComponent fromExprArithPrimeParseTree(ParseTree parseTree) {
+	static ExprComponent fromExprArithPrimeParseTree(ParseTree parseTree, ExprComponent left) {
 		// <ExprArith'> -> + <ProdArith> <ExprArith'>
 		//              -> - <ProdArith> <ExprArith'>
 		//              -> ε
@@ -82,12 +84,14 @@ public interface ExprComponent extends CodeComponent {
 		assert !parseTree.getChild(0).getLabel().equals(GlsTerminal.EPSILON) : "Expected <ExprArith'> with things but got " + parseTree.getChild(0).getLabel();
 
 		if (parseTree.getChild(2).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {
-			return new AtomNode(parseTree.getChild(1).getLexicalSymbol().getValue().toString());
+			return new ExprOpNode(left, parseTree.getChild(0).getLexicalSymbol().getValue().toString(), fromProdArithParseTree(parseTree.getChild(1)));
 		}
-		return new ExprOpNode(fromProdArithParseTree(
-				parseTree.getChild(1)),
-				parseTree.getChild(2).getChild(0).getLexicalSymbol().getValue().toString(),
-				fromExprArithPrimeParseTree(parseTree.getChild(2))
+		return fromExprArithPrimeParseTree(parseTree.getChild(2),
+				new ExprOpNode(
+						left,
+						parseTree.getChild(0).getLexicalSymbol().getValue().toString(),
+						fromProdArithParseTree(parseTree.getChild(1))
+				)
 		);
 	}
 
