@@ -17,29 +17,33 @@ public class AssignNode implements CodeComponent {
 
 	@Override
 	public String generateLLVM(StringBuilderWrapper llvmCode) {
+		boolean a = false;
 		if (!VariableManager.getInstance().isDeclared(this.varName)) {
 			llvmCode.appendln("%%%s = alloca i32, align 4".formatted(varName));
 			VariableManager.getInstance().declare(this.varName);
+			a = true;
 		}
 		if (!(expr instanceof AtomNode)) {
 			String varRes = expr.generateLLVM(llvmCode);
 			llvmCode.appendln(String.format("store i32 %s, i32* %%%s, align 4", varRes, varName));
-		}
-		else {
-			if (VariableManager.getInstance().isDeclared(this.varName)) {
-				llvmCode.append("AAAAA");
-				//String var1 = llvmCode.createTempVar();
-				//llvmCode.appendln(String.format("%s = load i32, i32* %%%s, align 4", var1, varName));
+		} else {
+			if (!a && VariableManager.getInstance().isDeclared(this.varName)) {
+				String second = expr.generateLLVM(llvmCode);
+				/*if (VariableManager.getInstance().isDeclared(second)) {
+					llvmCode.appendln("LOAD");
+					return null;
+				} else {*/
+					String var1 = llvmCode.createTempVar();
+					llvmCode.appendln(String.format("%s = load i32, i32* %s, align 4", var1, second));
+					llvmCode.appendln(String.format("store i32 %s, i32* %%%s, align 4", var1, varName));
+					return null;
+				/*}*/
 			}
 			llvmCode.append("store i32 ");
 			llvmCode.append(expr.generateLLVM(llvmCode));
 			llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
 		}
 
-		/*if (!VariableManager.getInstance().isDeclared(this.varName)) {
-			llvmCode.append("%%%s = load i32".formatted(varName + "_val"));
-			llvmCode.appendln(", i32* %%%s, align 4".formatted(varName));
-		}*/
 		return null;
 	}
 

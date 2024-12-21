@@ -27,7 +27,7 @@ public class ExprOpNode implements ExprComponent {
 			}
 			if (VariableManager.getInstance().isDeclared(r)){
 				tempVar3 = llvmCode.createTempVar();
-				llvmCode.appendln(String.format("%s = load i32, i32* %s, align 4", tempVar3, l));
+				llvmCode.appendln(String.format("%s = load i32, i32* %s, align 4", tempVar3, r));
 			}
 			llvmCode.appendln(String.format("%s = %s i32 %s, %s", tempVar, getLLVMOperator(op), tempVar2, tempVar3));
 			return tempVar;
