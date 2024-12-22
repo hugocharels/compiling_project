@@ -2,15 +2,19 @@
 SRC_DIR = src
 BUILD_DIR = build
 FLEX_FILE = $(SRC_DIR)/compiler/LexicalAnalyzer.flex
-JAVA_FILES = $(wildcard $(SRC_DIR)/**/*.java) $(wildcard $(SRC_DIR)/*.java)
 LEXER_FILE = $(SRC_DIR)/compiler/LexicalAnalyzer.java
 MAIN_CLASS = compiler.Main
-INPUT_FILE = "test/Evaluation_algorithm.gls"
+INPUT_FILE = "test/Euclid.gls"
 BASENAME = $(basename $(INPUT_FILE))
 JFLEX_JAR_PATH = "dist/jflex-full-1.9.1.jar"
 
 # Default target: compile and run
-all: jar
+all: run
+
+$(LEXER_FILE): $(FLEX_FILE)
+	@clear
+	@echo "Running JFlex to generate LexicalAnalyzer.java..."
+	@java -jar $(JFLEX_JAR_PATH) $(FLEX_FILE)
 
 # Compile step: first generate the LexicalAnalyzer.java from the .flex file, then compile all Java files
 compile: $(LEXER_FILE)
@@ -18,9 +22,12 @@ compile: $(LEXER_FILE)
 	@mkdir -p $(BUILD_DIR)
 	@javac -d $(BUILD_DIR) $(shell find $(SRC_DIR) -name '*.java')
 
-$(LEXER_FILE): $(FLEX_FILE)
-	@echo "Running JFlex to generate LexicalAnalyzer.java..."
-	@java -jar $(JFLEX_JAR_PATH) $(FLEX_FILE)
+# Create a jar file with the compiled classes
+jar: compile
+	@echo "Creating jar file..."
+	@mkdir -p dist
+	@jar cvfe dist/part3.jar $(MAIN_CLASS) -C $(BUILD_DIR) .
+	@make clean
 
 # Run the compiled program
 run: jar
@@ -28,18 +35,13 @@ run: jar
 	@echo "Running the program..."
 	@java -jar dist/part3.jar $(INPUT_FILE)
 
-jar: compile
-	@echo "Creating jar file..."
-	@mkdir -p dist
-	@jar cvfe dist/part3.jar $(MAIN_CLASS) -C $(BUILD_DIR) .
-	@make clean
-
+# Clean up the build directory
 clean:
 	@echo "Cleaning up..."
 	@rm -rf build
 
-llvm:
-	@llvm-as $(BASENAME).ll -o=code-source.bc
-	@lli code-source.bc
+test: jar
+	@echo "Running the program with test files..."
+	@./test/automated_test.sh
 
-.PHONY: all compile run test jar clean 
+.PHONY: all compile jar run clean test

@@ -1,5 +1,5 @@
 LET Ultimate BE
-    $a = 1:
+    a = 1:
     IF { ||(5-2) < 3| -> --(3+2) < 3| -> a < 0 -> (2-3) < 2 } THEN
         OUT(a):
         OUT(a):

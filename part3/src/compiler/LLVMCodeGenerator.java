@@ -139,7 +139,7 @@ public class LLVMCodeGenerator {
 				// Get the variable name
 				String variableName = node.getChild(2).getLexicalSymbol().getValue().toString();
 				if (declaredVariables.contains(variableName)) {
-					System.out.println("Warning: Variable '" + variableName + "' has been declared multiple times with the 'IN' keyword.");
+					System.out.println(";Warning: Variable '" + variableName + "' has been declared multiple times with the 'IN' keyword.");
 				}
 				declaredVariables.add(variableName);
 			} else if (node.getLabel().equals(GlsVariable.FOR)) {
