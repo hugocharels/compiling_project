@@ -2,11 +2,10 @@ LET Fibo BE
 	IN(n): $ Enter the number of terms
 	a = 0:
 	b = 1:
-	WHILE { 0 < n } REPEAT
+	FOR {i FROM 0 TO n STEP 1 } REPEAT
 		OUT(a):
-		c = a + b: $ error
+		c = a + b:
 		a = b:
 		b = c:
-		n = n - 1:
 	END:
 END

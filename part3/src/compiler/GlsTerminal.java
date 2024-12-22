@@ -110,6 +110,22 @@ public enum GlsTerminal implements Symbol {
 	 */
 	REPEAT,
 	/**
+	 * <code>FOR</code>
+	 */
+	FOR,
+	/**
+	 * <code>FROM</code>
+	 */
+	FROM,
+	/**
+	 * <code>TO</code>
+	 */
+	TO,
+	/**
+	 * <code>STEP</code>
+	 */
+	STEP,
+	/**
 	 * <code>OUT</code>
 	 */
 	OUTPUT,
@@ -164,6 +180,10 @@ public enum GlsTerminal implements Symbol {
 			case SMALLER -> "\\texttt{<}";
 			case WHILE -> "\\texttt{WHILE}";
 			case REPEAT -> "\\texttt{REPEAT}";
+			case FOR -> "\\texttt{FOR}";
+			case FROM -> "\\texttt{FROM}";
+			case TO -> "\\texttt{TO}";
+			case STEP -> "\\texttt{STEP}";
 			case OUTPUT -> "\\texttt{OUT}";
 			case INPUT -> "\\texttt{IN}";
 			case EOS -> "\\texttt{EOS}";
@@ -199,6 +219,10 @@ public enum GlsTerminal implements Symbol {
 			case SMALLER -> "<";
 			case WHILE -> "WHILE";
 			case REPEAT -> "REPEAT";
+			case FOR -> "FOR";
+			case FROM -> "FROM";
+			case TO -> "TO";
+			case STEP -> "STEP";
 			case OUTPUT -> "OUT";
 			case INPUT -> "IN";
 			case EOS -> "EOS";

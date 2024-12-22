@@ -109,6 +109,22 @@ public enum LexicalUnit {
 	 */
 	REPEAT,
 	/**
+	 * <code>FOR</code>
+	 */
+	FOR,
+	/**
+	 * <code>FROM</code>
+	 */
+	FROM,
+	/**
+	 * <code>TO</code>
+	 */
+	TO,
+	/**
+	 * <code>STEP</code>
+	 */
+	STEP,
+	/**
 	 * <code>OUT</code>
 	 */
 	OUTPUT,
@@ -155,6 +171,10 @@ public enum LexicalUnit {
 			case SMALLER -> GlsTerminal.SMALLER;
 			case WHILE -> GlsTerminal.WHILE;
 			case REPEAT -> GlsTerminal.REPEAT;
+			case FOR -> GlsTerminal.FOR;
+			case FROM -> GlsTerminal.FROM;
+			case TO -> GlsTerminal.TO;
+			case STEP -> GlsTerminal.STEP;
 			case OUTPUT -> GlsTerminal.OUTPUT;
 			case INPUT -> GlsTerminal.INPUT;
 			case EOS -> GlsTerminal.EOS;
