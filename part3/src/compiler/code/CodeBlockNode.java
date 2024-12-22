@@ -15,6 +15,8 @@ public class CodeBlockNode implements CodeComponent {
 	}
 
 	public static CodeBlockNode fromParseTree(ParseTree parseTree) {
+		//⟨Code⟩ → ⟨Instruction⟩:⟨Code⟩ | ε
+		//               0      1   2     0
 		CodeComponent first = CodeComponent.fromParseTree(parseTree.getChild(0).getChild(0));
 		if (parseTree.getChild(2).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {
 			return new CodeBlockNode(first, null);

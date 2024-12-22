@@ -42,7 +42,7 @@ public interface ExprComponent extends CodeComponent {
 		assert !parseTree.getChild(0).getLabel().equals(GlsTerminal.EPSILON) : "Expected <ProdArith> with things but got " + parseTree.getChild(0).getLabel();
 
 		// <Atom> <ProdArith'>
-		//  0       1
+		//  0          1
 
 		// Case: <ProdArith'> -> ε
 		if (parseTree.getChild(1).getChild(0).getLabel().equals(GlsTerminal.EPSILON)) {

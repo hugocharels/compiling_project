@@ -6,6 +6,7 @@ JAVA_FILES = $(wildcard $(SRC_DIR)/**/*.java) $(wildcard $(SRC_DIR)/*.java)
 LEXER_FILE = $(SRC_DIR)/compiler/LexicalAnalyzer.java
 MAIN_CLASS = compiler.Main
 INPUT_FILE = "test/Evaluation_algorithm.gls"
+BASENAME = $(basename $(INPUT_FILE))
 JFLEX_JAR_PATH = "dist/jflex-full-1.9.1.jar"
 
 # Default target: compile and run
@@ -36,5 +37,9 @@ jar: compile
 clean:
 	@echo "Cleaning up..."
 	@rm -rf build
+
+llvm:
+	@llvm-as $(BASENAME).ll -o=code-source.bc
+	@lli code-source.bc
 
 .PHONY: all compile run test jar clean 
