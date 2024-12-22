@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
+/**
+ * Represents an LLVM code generator for the GLS language.
+ */
 public class LLVMCodeGenerator {
 	final ParseTree parseTree;
 	final StringBuilderWrapper llvmCode = new StringBuilderWrapper();

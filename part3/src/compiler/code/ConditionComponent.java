@@ -4,6 +4,9 @@ import compiler.GlsTerminal;
 import compiler.GlsVariable;
 import compiler.ParseTree;
 
+/**
+ * Represents a condition in the GLS language.
+ */
 public interface ConditionComponent extends CodeComponent {
 
 	/**
