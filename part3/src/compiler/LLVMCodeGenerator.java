@@ -78,9 +78,9 @@ public class LLVMCodeGenerator {
 		this.verifyVariables();
 
 		CodeBlockNode codeBlockNode = CodeBlockNode.fromParseTree(this.parseTree.getChildren().get(3));
-		// StringBuilderWrapper pseudoCode = new StringBuilderWrapper();
-		// codeBlockNode.generatePseudoCode(pseudoCode);
-		// System.out.println(pseudoCode);
+//		StringBuilderWrapper pseudoCode = new StringBuilderWrapper();
+//		codeBlockNode.generatePseudoCode(pseudoCode);
+//		System.out.println(pseudoCode);
 		codeBlockNode.generateLLVM(this.llvmCode); // ⟨Code⟩ is the third argument (others are useless)
 
 		// Add the return statement

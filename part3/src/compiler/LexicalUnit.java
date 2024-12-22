@@ -113,6 +113,14 @@ public enum LexicalUnit {
 	 */
 	FOR,
 	/**
+	 * <code>INCREASE</code>
+	 */
+	INCREASE,
+	/**
+	 * <code>DECREASE</code>
+	 */
+	DECREASE,
+	/**
 	 * <code>FROM</code>
 	 */
 	FROM,
@@ -172,6 +180,8 @@ public enum LexicalUnit {
 			case WHILE -> GlsTerminal.WHILE;
 			case REPEAT -> GlsTerminal.REPEAT;
 			case FOR -> GlsTerminal.FOR;
+			case INCREASE -> GlsTerminal.INCREASE;
+			case DECREASE -> GlsTerminal.DECREASE;
 			case FROM -> GlsTerminal.FROM;
 			case TO -> GlsTerminal.TO;
 			case STEP -> GlsTerminal.STEP;

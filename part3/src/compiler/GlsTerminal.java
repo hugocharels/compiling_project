@@ -114,6 +114,14 @@ public enum GlsTerminal implements Symbol {
 	 */
 	FOR,
 	/**
+	 * <code>INCREASE</code>
+	 */
+	INCREASE,
+	/**
+	 * <code>DECREASE</code>
+	 */
+	DECREASE,
+	/**
 	 * <code>FROM</code>
 	 */
 	FROM,
@@ -181,6 +189,8 @@ public enum GlsTerminal implements Symbol {
 			case WHILE -> "\\texttt{WHILE}";
 			case REPEAT -> "\\texttt{REPEAT}";
 			case FOR -> "\\texttt{FOR}";
+			case INCREASE -> "\\texttt{INCREASE}";
+			case DECREASE -> "\\texttt{DECREASE}";
 			case FROM -> "\\texttt{FROM}";
 			case TO -> "\\texttt{TO}";
 			case STEP -> "\\texttt{STEP}";
@@ -220,6 +230,8 @@ public enum GlsTerminal implements Symbol {
 			case WHILE -> "WHILE";
 			case REPEAT -> "REPEAT";
 			case FOR -> "FOR";
+			case INCREASE -> "INCREASE";
+			case DECREASE -> "DECREASE";
 			case FROM -> "FROM";
 			case TO -> "TO";
 			case STEP -> "STEP";

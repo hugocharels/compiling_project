@@ -2,7 +2,8 @@ LET Fibo BE
 	IN(n): $ Enter the number of terms
 	a = 0:
 	b = 1:
-	FOR {i FROM 0 TO n STEP 1 } REPEAT
+	$ FOR {DECREASE i FROM n TO 0 STEP -1 } REPEAT
+	FOR {INCREASE i FROM 0 TO n STEP 1 } REPEAT
 		OUT(a):
 		c = a + b:
 		a = b:

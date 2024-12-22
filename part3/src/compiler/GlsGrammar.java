@@ -56,9 +56,11 @@ public class GlsGrammar {
 		this.productionRules.add(new ProductionRule(32, GlsVariable.COMP, List.of(GlsTerminal.SMALEQ)));
 		this.productionRules.add(new ProductionRule(33, GlsVariable.COMP, List.of(GlsTerminal.SMALLER)));
 		this.productionRules.add(new ProductionRule(34, GlsVariable.WHILE, List.of(GlsTerminal.WHILE, GlsTerminal.LBRACK, GlsVariable.COND, GlsTerminal.RBRACK, GlsTerminal.REPEAT, GlsVariable.CODE, GlsTerminal.END)));
-		this.productionRules.add(new ProductionRule(35, GlsVariable.FOR, List.of(GlsTerminal.FOR, GlsTerminal.LBRACK, GlsTerminal.VARNAME, GlsTerminal.FROM, GlsVariable.EXPR_ARITH, GlsTerminal.TO, GlsVariable.EXPR_ARITH, GlsTerminal.STEP, GlsVariable.EXPR_ARITH, GlsTerminal.RBRACK, GlsTerminal.REPEAT, GlsVariable.CODE, GlsTerminal.END)));
-		this.productionRules.add(new ProductionRule(36, GlsVariable.OUTPUT, List.of(GlsTerminal.OUTPUT, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
-		this.productionRules.add(new ProductionRule(37, GlsVariable.INPUT, List.of(GlsTerminal.INPUT, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
+		this.productionRules.add(new ProductionRule(35, GlsVariable.FOR, List.of(GlsTerminal.FOR, GlsTerminal.LBRACK, GlsVariable.ORDER, GlsTerminal.VARNAME, GlsTerminal.FROM, GlsVariable.EXPR_ARITH, GlsTerminal.TO, GlsVariable.EXPR_ARITH, GlsTerminal.STEP, GlsVariable.EXPR_ARITH, GlsTerminal.RBRACK, GlsTerminal.REPEAT, GlsVariable.CODE, GlsTerminal.END)));
+		this.productionRules.add(new ProductionRule(36, GlsVariable.ORDER, List.of(GlsTerminal.INCREASE)));
+		this.productionRules.add(new ProductionRule(37, GlsVariable.ORDER, List.of(GlsTerminal.DECREASE)));
+		this.productionRules.add(new ProductionRule(38, GlsVariable.OUTPUT, List.of(GlsTerminal.OUTPUT, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
+		this.productionRules.add(new ProductionRule(39, GlsVariable.INPUT, List.of(GlsTerminal.INPUT, GlsTerminal.LPAREN, GlsTerminal.VARNAME, GlsTerminal.RPAREN)));
 	}
 
 	/**
