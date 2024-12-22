@@ -108,7 +108,6 @@ public class LLVMCodeGenerator {
 		while (!stack.isEmpty()) {
 			// Pop the top of the stack
 			ParseTree node = stack.pop();
-
 			if (node.getLabel().equals(GlsVariable.ASSIGN)) {
 				// Get the variable name
 				String variableName = node.getChild(0).getLexicalSymbol().getValue().toString();
@@ -120,6 +119,13 @@ public class LLVMCodeGenerator {
 					throw new CompilationException("Variable '" + variableName + "' has already been declared.");
 				}
 				declaredVariables.add(variableName);
+			} else if (node.getLabel().equals(GlsVariable.FOR)) {
+				String variableName = node.getChild(2).getLexicalSymbol().getValue().toString();
+				if (declaredVariables.contains(variableName)) {
+					throw new CompilationException("Variable '" + variableName + "' has already been declared.");
+				}
+				declaredVariables.add(variableName);
+				stack.push(node.getChild(11)); // Add the code block to the stack
 			} else if (node.getChildren().size() > 0) {
 				// Add all children (in the right order) to the stack
 				for (int i = node.getChildren().size() - 1; i >= 0; i--) {
