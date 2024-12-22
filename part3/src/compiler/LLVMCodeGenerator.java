@@ -143,7 +143,7 @@ public class LLVMCodeGenerator {
 				}
 				declaredVariables.add(variableName);
 			} else if (node.getLabel().equals(GlsVariable.FOR)) {
-				String variableName = node.getChild(2).getLexicalSymbol().getValue().toString();
+				String variableName = node.getChild(3).getLexicalSymbol().getValue().toString();
 				if (declaredVariables.contains(variableName)) {
 					throw new CompilationException("Variable '" + variableName + "' has already been declared. Shadowing is not allowed.");
 				}

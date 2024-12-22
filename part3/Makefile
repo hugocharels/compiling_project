@@ -44,4 +44,12 @@ test: jar
 	@echo "Running the program with test files..."
 	@./test/automated_test.sh
 
+# Compile the generated LLVM code and run it
+llvm:
+	@java -jar dist/part3.jar $(INPUT_FILE) > $(BASENAME).ll
+	@llvm-as $(BASENAME).ll -o=code_source.bc
+	@rm $(BASENAME).ll
+	@lli code_source.bc
+	@rm	code_source.bc
+
 .PHONY: all compile jar run clean test
