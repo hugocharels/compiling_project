@@ -77,11 +77,9 @@ public class LLVMCodeGenerator {
 		// Verify for each variable if it is declared
 		this.verifyVariables();
 
+		// ⟨Code⟩ is the third argument (others are useless)
 		CodeBlockNode codeBlockNode = CodeBlockNode.fromParseTree(this.parseTree.getChildren().get(3));
-//		StringBuilderWrapper pseudoCode = new StringBuilderWrapper();
-//		codeBlockNode.generatePseudoCode(pseudoCode);
-//		System.out.println(pseudoCode);
-		codeBlockNode.generateLLVM(this.llvmCode); // ⟨Code⟩ is the third argument (others are useless)
+		codeBlockNode.generateLLVM(this.llvmCode);
 
 		// Add the return statement
 		this.llvmCode.appendln("ret i32 0");
@@ -99,6 +97,11 @@ public class LLVMCodeGenerator {
 	}
 
 
+	/**
+	 * Verifies if all variables are declared.
+	 *
+	 * @throws CompilationException if a variable is not declared
+	 */
 	private void verifyVariables() throws CompilationException {
 		Set<String> declaredVariables = new HashSet<>();
 
@@ -113,7 +116,7 @@ public class LLVMCodeGenerator {
 				String variableName = node.getChild(0).getLexicalSymbol().getValue().toString();
 				if (!declaredVariables.contains(variableName)) {
 					// For each variable in the expression, check if it is declared
-					// DO another DFS to check if the variable is declared
+					// Do another DFS to check if the variable is declared
 					Stack<ParseTree> stack2 = new Stack<>();
 					stack2.push(node.getChild(2));
 					while (!stack2.isEmpty()) {
