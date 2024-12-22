@@ -89,6 +89,12 @@ UpToEnd        = ({Any}{EndLine}) | ({EndLine})
 // Loop keywords
   "WHILE"             {return new LexicalSymbol(LexicalUnit.WHILE, yyline, yycolumn, yytext());}
   "REPEAT"            {return new LexicalSymbol(LexicalUnit.REPEAT, yyline, yycolumn, yytext());}
+  "FOR"               {return new LexicalSymbol(LexicalUnit.FOR, yyline, yycolumn, yytext());}
+  "INCREASE"          {return new LexicalSymbol(LexicalUnit.INCREASE, yyline, yycolumn, yytext());}
+  "DECREASE"          {return new LexicalSymbol(LexicalUnit.DECREASE, yyline, yycolumn, yytext());}
+  "FROM"              {return new LexicalSymbol(LexicalUnit.FROM, yyline, yycolumn, yytext());}
+  "TO"                {return new LexicalSymbol(LexicalUnit.TO, yyline, yycolumn, yytext());}
+  "STEP"              {return new LexicalSymbol(LexicalUnit.STEP, yyline, yycolumn, yytext());}
 // Comparison operators
   "=="                {return new LexicalSymbol(LexicalUnit.EQUAL, yyline, yycolumn, yytext());}
   "<="                {return new LexicalSymbol(LexicalUnit.SMALEQ, yyline, yycolumn, yytext());}

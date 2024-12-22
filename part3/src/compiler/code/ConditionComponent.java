@@ -69,6 +69,7 @@ public interface ConditionComponent extends CodeComponent {
 		return switch (op){
 			case "<" -> "slt";
 			case "<=" -> "sle";
+			case ">" -> "sgt";
 			case "==" -> "eq";
             default -> "";
         };

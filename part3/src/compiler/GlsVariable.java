@@ -69,6 +69,14 @@ public enum GlsVariable implements Symbol {
 	 */
 	WHILE,
 	/**
+	 * The for variable.
+	 */
+	FOR,
+	/**
+	 * The order chosen in the for loop.
+	 */
+	ORDER,
+	/**
 	 * The output variable.
 	 */
 	OUTPUT,
@@ -102,6 +110,8 @@ public enum GlsVariable implements Symbol {
 			case COND_SIMPLE -> "<CondSimple>";
 			case COMP -> "<Comp>";
 			case WHILE -> "<While>";
+			case FOR -> "<For>";
+			case ORDER -> "<Order>";
 			case OUTPUT -> "<Output>";
 			case INPUT -> "<Input>";
 		};
@@ -123,6 +133,8 @@ public enum GlsVariable implements Symbol {
 			case COND, NEXT_COND, COND_SIMPLE -> "This condition";
 			case COMP -> "A comparison operator";
 			case WHILE -> "A while statement";
+			case FOR -> "A for statement";
+			case ORDER -> "The order chosen in the for loop";
 			case OUTPUT -> "An output";
 			case INPUT -> "An input";
 		};
@@ -152,6 +164,8 @@ public enum GlsVariable implements Symbol {
 			case COND_SIMPLE -> "\\langle \\text{CondSimple} \\rangle";
 			case COMP -> "\\langle \\text{Comp} \\rangle";
 			case WHILE -> "\\langle \\text{While} \\rangle";
+			case FOR -> "\\langle \\text{For} \\rangle";
+			case ORDER -> "\\langle \\text{Order} \\rangle";
 			case OUTPUT -> "\\langle \\text{Output} \\rangle";
 			case INPUT -> "\\langle \\text{Input} \\rangle";
 		};

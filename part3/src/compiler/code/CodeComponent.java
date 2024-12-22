@@ -12,6 +12,7 @@ public interface CodeComponent {
 			case GlsVariable.ASSIGN -> AssignNode.fromParseTree(parseTree);
 			case GlsVariable.IF -> IfNode.fromParseTree(parseTree);
 			case GlsVariable.WHILE -> WhileNode.fromParseTree(parseTree);
+			case GlsVariable.FOR -> ForNode.fromParseTree(parseTree);
 			case GlsVariable.OUTPUT -> OutputNode.fromParseTree(parseTree);
 			case GlsVariable.INPUT -> InputNode.fromParseTree(parseTree);
 			default -> null;
