@@ -2,6 +2,11 @@ package compiler;
 
 import compiler.code.CodeBlockNode;
 import compiler.code.StringBuilderWrapper;
+import compiler.exceptions.CompilationException;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
 
 public class LLVMCodeGenerator {
 	final ParseTree parseTree;
@@ -57,7 +62,7 @@ public class LLVMCodeGenerator {
 	/**
 	 * Generates the LLVM code from the parse tree.
 	 */
-	public void generateCode() {
+	public void generateCode() throws CompilationException {
 		// reset the LLVM code
 		this.llvmCode.clear();
 
@@ -69,12 +74,13 @@ public class LLVMCodeGenerator {
 		this.llvmCode.incrementIndentLevel();
 		this.llvmCode.appendln("entry:");
 
+		// Verify for each variable if it is declared
+		this.verifyVariables();
+
 		CodeBlockNode codeBlockNode = CodeBlockNode.fromParseTree(this.parseTree.getChildren().get(3));
-
-		StringBuilderWrapper pseudoCode = new StringBuilderWrapper();
-		codeBlockNode.generatePseudoCode(pseudoCode);
-		System.out.println(pseudoCode);
-
+		// StringBuilderWrapper pseudoCode = new StringBuilderWrapper();
+		// codeBlockNode.generatePseudoCode(pseudoCode);
+		// System.out.println(pseudoCode);
 		codeBlockNode.generateLLVM(this.llvmCode); // ⟨Code⟩ is the third argument (others are useless)
 
 		// Add the return statement
@@ -90,5 +96,42 @@ public class LLVMCodeGenerator {
 	 */
 	public String getLLVMCode() {
 		return this.llvmCode.toString();
+	}
+
+
+	private void verifyVariables() throws CompilationException {
+		Set<String> declaredVariables = new HashSet<>();
+
+		// Get the variables from the parse tree
+		Stack<ParseTree> stack = new Stack<>();
+		stack.push(this.parseTree.getChild(3));
+		while (!stack.isEmpty()) {
+			// Pop the top of the stack
+			ParseTree node = stack.pop();
+
+			if (node.getLabel().equals(GlsVariable.ASSIGN)) {
+				// Get the variable name
+				String variableName = node.getChild(0).getLexicalSymbol().getValue().toString();
+				declaredVariables.add(variableName);
+			} else if (node.getLabel().equals(GlsVariable.INPUT)) {
+				// Get the variable name
+				String variableName = node.getChild(2).getLexicalSymbol().getValue().toString();
+				if (declaredVariables.contains(variableName)) {
+					throw new CompilationException("Variable '" + variableName + "' has already been declared.");
+				}
+				declaredVariables.add(variableName);
+			} else if (node.getChildren().size() > 0) {
+				// Add all children (in the right order) to the stack
+				for (int i = node.getChildren().size() - 1; i >= 0; i--) {
+					stack.push(node.getChildren().get(i));
+				}
+			} else if (node.getLabel().equals(GlsTerminal.VARNAME)) {
+				// Get the variable name
+				String variableName = node.getLexicalSymbol().getValue().toString();
+				if (!declaredVariables.contains(variableName)) {
+					throw new CompilationException("Variable '" + variableName + "' is not declared.");
+				}
+			}
+		}
 	}
 }

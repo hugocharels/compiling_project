@@ -1,5 +1,6 @@
 package compiler;
 
+import compiler.exceptions.CompilationException;
 import compiler.exceptions.ParsingException;
 
 import java.io.FileReader;
@@ -59,6 +60,8 @@ public class Main {
 			System.err.println("Error reading the file: " + e.getMessage());
 		} catch (ParsingException e) {
 			System.err.println("Error during parsing: " + e.getMessage());
+		} catch (CompilationException e) {
+			System.err.println("Error during compilation: " + e.getMessage());
 		}
 	}
 }
