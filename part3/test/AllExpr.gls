@@ -1,4 +1,13 @@
+!! Should print -2, 5, -5 !!
 LET All_expr BE
 	a = -(1+2-3*4/5)*2+3/(5-1)*9:
 	OUT(a):
+	b = ----------------------5:
+	OUT(b):
+	IF {--b == ---------------------5} THEN
+		OUT(b):
+	ELSE
+		b = -b:
+		OUT(b):
+	END:
 END

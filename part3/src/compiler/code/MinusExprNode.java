@@ -23,8 +23,14 @@ public class MinusExprNode implements ExprComponent {
 	 */
 	@Override
 	public String generateLLVM(StringBuilderWrapper llvmCode) {
+		String minus = expr.generateLLVM(llvmCode);
+		String temp = minus;
+		if (VariableManager.getInstance().isDeclared(minus)) {
+			temp = llvmCode.createTempVar();
+			llvmCode.appendln(String.format("%s = load i32, i32* %s, align 4", temp, minus));
+		}
 		String tempVar = llvmCode.createTempVar();
-		llvmCode.appendln(String.format("%s = sub i32 0, %s", tempVar, expr.generateLLVM(llvmCode)));
+		llvmCode.appendln(String.format("%s = sub i32 0, %s", tempVar, temp));
 		return tempVar;
 	}
 

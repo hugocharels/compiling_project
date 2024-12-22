@@ -1,8 +1,0 @@
-LET All_expr BE
-	a = -(1+2-3*4/3):
-	OUT(a):
-	b = 2+(3+7)/(5)*2:
-	OUT(b):
-	c = a*b:
-	OUT(c):
-END

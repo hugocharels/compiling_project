@@ -39,7 +39,7 @@ public class IfNode implements CodeComponent {
 				CodeBlockNode.fromParseTree(parseTree.getChild(5)),
 				parseTree.getChild(6).getChild(0) // ⟨IfSeq⟩ → END | ELSE
 						.getLexicalSymbol().getType().toGlsTerminal().equals(GlsTerminal.END) ?
-						null : CodeBlockNode.fromParseTree(parseTree.getChild(6).getChild(0))
+						null : CodeBlockNode.fromParseTree(parseTree.getChild(6).getChild(1))
 		);
 	}
 

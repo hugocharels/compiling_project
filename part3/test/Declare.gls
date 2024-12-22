@@ -1,4 +1,5 @@
 LET Declare BE
+	a = 1:
 	c = c + a:
 	OUT(c):
 END
