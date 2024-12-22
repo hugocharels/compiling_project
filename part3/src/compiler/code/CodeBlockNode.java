@@ -3,17 +3,31 @@ package compiler.code;
 import compiler.GlsTerminal;
 import compiler.ParseTree;
 
-// Composite node: Represents a block of code
+/**
+ * Composite node: Represents a block of code.
+ * Implements the CodeComponent interface.
+ */
 public class CodeBlockNode implements CodeComponent {
-	private final CodeComponent first;
-	private final CodeBlockNode next;
+	private final CodeComponent first; // The first code component in the block
+	private final CodeBlockNode next; // The next code block node
 
-
+	/**
+	 * Constructs a CodeBlockNode with the specified first code component and next code block node.
+	 *
+	 * @param first the first code component in the block
+	 * @param next  the next code block node
+	 */
 	public CodeBlockNode(CodeComponent first, CodeBlockNode next) {
 		this.first = first;
 		this.next = next;
 	}
 
+	/**
+	 * Creates a CodeBlockNode from a parse tree.
+	 *
+	 * @param parseTree the parse tree to create the CodeBlockNode from
+	 * @return the created CodeBlockNode
+	 */
 	public static CodeBlockNode fromParseTree(ParseTree parseTree) {
 		//⟨Code⟩ → ⟨Instruction⟩:⟨Code⟩ | ε
 		//               0      1   2     0
@@ -25,6 +39,12 @@ public class CodeBlockNode implements CodeComponent {
 		}
 	}
 
+	/**
+	 * Generates the LLVM code for this code block node.
+	 *
+	 * @param llvmCode the StringBuilderWrapper to append the generated LLVM code to
+	 * @return null
+	 */
 	@Override
 	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		first.generateLLVM(llvmCode);
@@ -34,6 +54,11 @@ public class CodeBlockNode implements CodeComponent {
 		return null;
 	}
 
+	/**
+	 * Generates the pseudo code for this code block node.
+	 *
+	 * @param pseudoCode the StringBuilderWrapper to append the generated pseudo code to
+	 */
 	@Override
 	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
 		first.generatePseudoCode(pseudoCode);

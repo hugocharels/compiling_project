@@ -3,6 +3,9 @@ package compiler.code;
 import compiler.GlsTerminal;
 import compiler.ParseTree;
 
+/**
+ * Represents a 'for' loop node in the compiler's abstract syntax tree.
+ */
 public class ForNode implements CodeComponent {
 	private final String varName;
 	private final String orderSign;
@@ -11,6 +14,16 @@ public class ForNode implements CodeComponent {
 	private final ExprComponent step;
 	private final CodeBlockNode body;
 
+	/**
+	 * Constructs a ForNode with the specified parameters.
+	 *
+	 * @param varName   the name of the loop variable
+	 * @param orderSign the order sign indicating the loop direction ("<" for increasing, ">" for decreasing)
+	 * @param from      the starting expression of the loop
+	 * @param to        the ending expression of the loop
+	 * @param step      the step expression of the loop
+	 * @param body      the body of the loop
+	 */
 	public ForNode(String varName, String orderSign, ExprComponent from, ExprComponent to, ExprComponent step, CodeBlockNode body) {
 		this.varName = varName;
 		this.orderSign = orderSign;
@@ -20,6 +33,12 @@ public class ForNode implements CodeComponent {
 		this.body = body;
 	}
 
+	/**
+	 * Creates a ForNode from a parse tree.
+	 *
+	 * @param parseTree the parse tree representing the 'for' loop
+	 * @return a new ForNode instance
+	 */
 	public static ForNode fromParseTree(ParseTree parseTree) {
 		// FOR { <Order> [VarName] FROM <Expr> TO <Expr> STEP <Expr> } REPEAT <Code> END
 		//  0  1   2       3        4     5    6    7     8     9   10  11    12     13
@@ -33,6 +52,12 @@ public class ForNode implements CodeComponent {
 		);
 	}
 
+	/**
+	 * Generates LLVM code for the 'for' loop.
+	 *
+	 * @param llvmCode the StringBuilderWrapper to append the generated LLVM code to
+	 * @return null
+	 */
 	@Override
 	public String generateLLVM(StringBuilderWrapper llvmCode) {
 		// Use the assign and while node to generate the for loop
@@ -57,6 +82,11 @@ public class ForNode implements CodeComponent {
 		return null;
 	}
 
+	/**
+	 * Generates pseudo code for the 'for' loop.
+	 *
+	 * @param pseudoCode the StringBuilderWrapper to append the generated pseudo code to
+	 */
 	@Override
 	public void generatePseudoCode(StringBuilderWrapper pseudoCode) {
 		pseudoCode.append("for (");

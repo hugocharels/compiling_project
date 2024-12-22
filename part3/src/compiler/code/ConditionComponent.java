@@ -6,6 +6,12 @@ import compiler.ParseTree;
 
 public interface ConditionComponent extends CodeComponent {
 
+	/**
+	 * Creates a ConditionComponent from a parse tree.
+	 *
+	 * @param parseTree the parse tree to create the ConditionComponent from
+	 * @return the created ConditionComponent
+	 */
 	static ConditionComponent fromParseTree(ParseTree parseTree) {
 		//           <Cond>
 		//          /     \
@@ -24,7 +30,12 @@ public interface ConditionComponent extends CodeComponent {
 		}
 	}
 
-
+	/**
+	 * Creates a ConditionComponent from a simple condition parse tree.
+	 *
+	 * @param parseTree the parse tree to create the ConditionComponent from
+	 * @return the created ConditionComponent
+	 */
 	static ConditionComponent fromCondSimpleParseTree(ParseTree parseTree) {
 		// <CondSimple> -> | <Cond> |
 		//              -> <Expr> <Comp> <Expr>
@@ -46,7 +57,12 @@ public interface ConditionComponent extends CodeComponent {
 		}
 	}
 
-
+	/**
+	 * Creates a ConditionComponent from a next condition parse tree.
+	 *
+	 * @param parseTree the parse tree to create the ConditionComponent from
+	 * @return the created ConditionComponent, or null if the parse tree represents an epsilon
+	 */
 	static ConditionComponent fromNextCondParseTree(ParseTree parseTree) {
 		// <NextCond> -> -> <CondSimple> <NextCond>
 		//            -> ε
@@ -65,13 +81,19 @@ public interface ConditionComponent extends CodeComponent {
 		return fromParseTree(newParseTree);
 	}
 
+	/**
+	 * Gets the LLVM logical operator corresponding to the given operator.
+	 *
+	 * @param op the operator
+	 * @return the corresponding LLVM logical operator
+	 */
 	default String getLLVMLogicalOperator(String op) {
-		return switch (op){
+		return switch (op) {
 			case "<" -> "slt";
 			case "<=" -> "sle";
 			case ">" -> "sgt";
 			case "==" -> "eq";
-            default -> "";
-        };
+			default -> "";
+		};
 	}
 }

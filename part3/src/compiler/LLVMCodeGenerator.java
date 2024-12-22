@@ -63,6 +63,9 @@ public class LLVMCodeGenerator {
 	 * Generates the LLVM code from the parse tree.
 	 */
 	public void generateCode() throws CompilationException {
+		// Verify for each variable if it is declared
+		this.verifyVariables();
+
 		// reset the LLVM code
 		this.llvmCode.clear();
 
@@ -73,9 +76,6 @@ public class LLVMCodeGenerator {
 		this.llvmCode.appendln("define i32 @main() {");
 		this.llvmCode.incrementIndentLevel();
 		this.llvmCode.appendln("entry:");
-
-		// Verify for each variable if it is declared
-		this.verifyVariables();
 
 		// ⟨Code⟩ is the third argument (others are useless)
 		CodeBlockNode codeBlockNode = CodeBlockNode.fromParseTree(this.parseTree.getChildren().get(3));
