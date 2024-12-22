@@ -56,7 +56,9 @@ public interface ConditionComponent extends CodeComponent {
 			return null;
 		}
 
-		// NextCond -> -> <CondSimple> <NextCond>
+		// ⟨Cond⟩ → ⟨CondSimple⟩⟨NextCond⟩
+		// ⟨NextCond⟩ → -> <CondSimple> <NextCond>
+		// We recreate a cond parseTree (since it is equivalent) to simplify
 		ParseTree newParseTree = new ParseTree(GlsVariable.COND);
 		newParseTree.addChild(parseTree.getChild(1));
 		newParseTree.addChild(parseTree.getChild(2));
