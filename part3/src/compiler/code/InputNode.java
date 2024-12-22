@@ -18,13 +18,16 @@ public class InputNode implements CodeComponent {
 
 	@Override
 	public String generateLLVM(StringBuilderWrapper llvmCode) {
-		llvmCode.appendln("%%%s = alloca i32, align 4".formatted(variableName));
-		llvmCode.appendln("%%%s = call i32 @readInt()".formatted(variableName + "_val"));
-		llvmCode.append("store i32 %%%s".formatted(variableName + "_val"));
+		String v = llvmCode.createTempVar();
+		if (!VariableManager.getInstance().isDeclared(variableName)) {
+			llvmCode.appendln("%%%s = alloca i32, align 4".formatted(variableName));
+			VariableManager.getInstance().declare(variableName);
+		}
+		llvmCode.appendln("%s = call i32 @readInt()".formatted(v));
+		llvmCode.append("store i32 %s".formatted(v));
 		llvmCode.appendln(", i32* %%%s, align 4".formatted(variableName));
 
-		VariableManager.getInstance().declare(variableName);
-		VariableManager.getInstance().declare(variableName + "_val");
+		VariableManager.getInstance().declare(v);
 		return null;
 	}
 

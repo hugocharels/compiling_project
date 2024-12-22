@@ -111,18 +111,38 @@ public class LLVMCodeGenerator {
 			if (node.getLabel().equals(GlsVariable.ASSIGN)) {
 				// Get the variable name
 				String variableName = node.getChild(0).getLexicalSymbol().getValue().toString();
+				if (!declaredVariables.contains(variableName)) {
+					// For each variable in the expression, check if it is declared
+					// DO another DFS to check if the variable is declared
+					Stack<ParseTree> stack2 = new Stack<>();
+					stack2.push(node.getChild(2));
+					while (!stack2.isEmpty()) {
+						ParseTree node2 = stack2.pop();
+						if (node2.getLabel().equals(GlsTerminal.VARNAME)) {
+							String variableName2 = node2.getLexicalSymbol().getValue().toString();
+							if (!declaredVariables.contains(variableName2)) {
+								throw new CompilationException("Variable '" + variableName + "' can not be assigned because variable '" + variableName2 + "' is not declared.");
+							}
+						} else if (node2.getChildren().size() > 0) {
+							// Add all children (in the right order) to the stack
+							for (int i = node2.getChildren().size() - 1; i >= 0; i--) {
+								stack2.push(node2.getChildren().get(i));
+							}
+						}
+					}
+				}
 				declaredVariables.add(variableName);
 			} else if (node.getLabel().equals(GlsVariable.INPUT)) {
 				// Get the variable name
 				String variableName = node.getChild(2).getLexicalSymbol().getValue().toString();
 				if (declaredVariables.contains(variableName)) {
-					throw new CompilationException("Variable '" + variableName + "' has already been declared.");
+					System.out.println("Warning: Variable '" + variableName + "' has been declared multiple times with the 'IN' keyword.");
 				}
 				declaredVariables.add(variableName);
 			} else if (node.getLabel().equals(GlsVariable.FOR)) {
 				String variableName = node.getChild(2).getLexicalSymbol().getValue().toString();
 				if (declaredVariables.contains(variableName)) {
-					throw new CompilationException("Variable '" + variableName + "' has already been declared.");
+					throw new CompilationException("Variable '" + variableName + "' has already been declared. Shadowing is not allowed.");
 				}
 				declaredVariables.add(variableName);
 				stack.push(node.getChild(11)); // Add the code block to the stack
